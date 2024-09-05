@@ -34,10 +34,8 @@ final class ViewModel: ObservableObject {
     }
     
     private func addCardType(withName name: String, fromFile fileName: String) {
-        print("Attempting to add card type from file: \(fileName)")
         do {
             if let fileContents = try? readTextFile(fileName: fileName) {
-                print("File contents for \(fileName): \(fileContents)") // Verify file contents
                 let lines = fileContents.components(separatedBy: .newlines)
                 
                 guard let colorLine = lines.first(where: { $0.starts(with: "Color:") }) else {
@@ -58,7 +56,6 @@ final class ViewModel: ObservableObject {
                 }
                 
                 realmManager.add(cardType)
-                print("Added CardType: \(cardType)")
             }
         } catch {
             print("Error reading file: \(error)")

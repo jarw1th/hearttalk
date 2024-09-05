@@ -26,6 +26,8 @@
 		21BDB40D2C89C1200097F90E /* couples.txt in Resources */ = {isa = PBXBuildFile; fileRef = 21BDB40B2C89BB060097F90E /* couples.txt */; };
 		21BDB40E2C89C1200097F90E /* family.txt in Resources */ = {isa = PBXBuildFile; fileRef = 21BDB40C2C89BB5A0097F90E /* family.txt */; };
 		21BDB4102C89C2B50097F90E /* Questions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB40F2C89C2B50097F90E /* Questions.swift */; };
+		21BDB4122C89C7D40097F90E /* ListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB4112C89C7D40097F90E /* ListItem.swift */; };
+		21BDB4142C89C87B0097F90E /* PlayfairDisplay-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21BDB4132C89C87B0097F90E /* PlayfairDisplay-SemiBold.ttf */; };
 		D2CF51266BD4E7B90F2FFA10 /* Pods_hearttalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA77230A8FA5D71531246F52 /* Pods_hearttalk.framework */; };
 /* End PBXBuildFile section */
 
@@ -52,6 +54,8 @@
 		21BDB40B2C89BB060097F90E /* couples.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = couples.txt; sourceTree = "<group>"; };
 		21BDB40C2C89BB5A0097F90E /* family.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = family.txt; sourceTree = "<group>"; };
 		21BDB40F2C89C2B50097F90E /* Questions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Questions.swift; sourceTree = "<group>"; };
+		21BDB4112C89C7D40097F90E /* ListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItem.swift; sourceTree = "<group>"; };
+		21BDB4132C89C87B0097F90E /* PlayfairDisplay-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PlayfairDisplay-SemiBold.ttf"; path = "../../../../../../../../Downloads/Playfair_Display/static/PlayfairDisplay-SemiBold.ttf"; sourceTree = "<group>"; };
 		AA77230A8FA5D71531246F52 /* Pods_hearttalk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_hearttalk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C370263732E8479A1916D866 /* Pods-hearttalk.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hearttalk.debug.xcconfig"; path = "Target Support Files/Pods-hearttalk/Pods-hearttalk.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -122,6 +126,7 @@
 		21BDB3A72C899ADD0097F90E /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				21BDB4132C89C87B0097F90E /* PlayfairDisplay-SemiBold.ttf */,
 				21BDB3F82C899E970097F90E /* PlayfairDisplay-Regular.ttf */,
 			);
 			path = Fonts;
@@ -152,6 +157,7 @@
 			children = (
 				21BDB3FE2C89A1940097F90E /* NavigationBar.swift */,
 				21BDB4002C89A35C0097F90E /* HomeCards.swift */,
+				21BDB4112C89C7D40097F90E /* ListItem.swift */,
 			);
 			path = Structs;
 			sourceTree = "<group>";
@@ -282,6 +288,7 @@
 				21BDB40D2C89C1200097F90E /* couples.txt in Resources */,
 				21BDB40E2C89C1200097F90E /* family.txt in Resources */,
 				21BDB40A2C89B9D30097F90E /* default.txt in Resources */,
+				21BDB4142C89C87B0097F90E /* PlayfairDisplay-SemiBold.ttf in Resources */,
 				21BDB3F92C899E970097F90E /* PlayfairDisplay-Regular.ttf in Resources */,
 				21BDB3FD2C89A0220097F90E /* Preview Assets.xcassets in Resources */,
 				21BDB3D82C899ADD0097F90E /* Assets.xcassets in Resources */,
@@ -345,6 +352,7 @@
 				21BDB4012C89A35C0097F90E /* HomeCards.swift in Sources */,
 				21BDB3FF2C89A1940097F90E /* NavigationBar.swift in Sources */,
 				21BDB4052C89B4A00097F90E /* Cards.swift in Sources */,
+				21BDB4122C89C7D40097F90E /* ListItem.swift in Sources */,
 				21BDB3D42C899ADD0097F90E /* ProjectApp.swift in Sources */,
 				21BDB3DD2C899ADD0097F90E /* RequestManager.swift in Sources */,
 				21BDB4032C89B42D0097F90E /* RealmManager.swift in Sources */,

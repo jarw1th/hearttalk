@@ -7,7 +7,6 @@ struct HomeCardProperties {
     let header: String
     let text: String
     let isAvailable: Bool
-    let tapAction: () -> Void
     
 }
 
@@ -24,37 +23,33 @@ struct HomeCard: View {
     }
     
     private func makeContent() -> some View {
-        Button {
-            properties.tapAction()
-        } label: {
-            ZStack {
+        ZStack {
+            RoundedRectangle(cornerRadius: 20)
+                .fill(properties.color)
+            
+            if !properties.isAvailable {
                 RoundedRectangle(cornerRadius: 20)
-                    .fill(properties.color)
-                
-                if !properties.isAvailable {
-                    RoundedRectangle(cornerRadius: 20)
-                        .stroke(.lightGray, lineWidth: 2)
-                }
-                
-                VStack {
-                    Spacer()
-                    HStack(alignment: .bottom) {
-                        Text(properties.header)
-                            .font(.custom("PlayfairDisplay-Regular", size: 20))
-                            .multilineTextAlignment(.leading)
-                            .foregroundStyle(.darkWhite)
-                        Spacer()
-                        Text(properties.text)
-                            .font(.custom("PlayfairDisplay-Regular", size: 16))
-                            .multilineTextAlignment(.trailing)
-                            .foregroundStyle(.darkWhite)
-                    }
-                }
-                .padding(24)
+                    .stroke(.lightGray, lineWidth: 2)
             }
-            .frame(maxWidth: .infinity)
-            .frame(height: 160)
+            
+            VStack {
+                Spacer()
+                HStack(alignment: .bottom) {
+                    Text(properties.header)
+                        .font(.custom("PlayfairDisplay-Regular", size: 20))
+                        .multilineTextAlignment(.leading)
+                        .foregroundStyle(.darkWhite)
+                    Spacer()
+                    Text(properties.text)
+                        .font(.custom("PlayfairDisplay-Regular", size: 16))
+                        .multilineTextAlignment(.trailing)
+                        .foregroundStyle(.darkWhite)
+                }
+            }
+            .padding(24)
         }
+        .frame(maxWidth: .infinity)
+        .frame(height: 160)
     }
     
 }

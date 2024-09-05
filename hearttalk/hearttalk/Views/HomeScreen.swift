@@ -8,8 +8,10 @@ struct HomeScreen: View {
     @State private var isShowSettings: Bool = false
     
     var body: some View {
-        makeContent()
-            .background(.lightBlack)
+        NavigationView {
+            makeContent()
+                .background(.lightBlack)
+        }
     }
     
     private func makeContent() -> some View {
@@ -34,11 +36,16 @@ struct HomeScreen: View {
         ScrollView {
             LazyVStack {
                 ForEach(viewModel.cardTypes) { cardType in
-                    HomeCard(HomeCardProperties(color: Color(hex: cardType.color),
-                                                header: cardType.name,
-                                                text: "\(cardType.cards.count) cards",
-                                                isAvailable: true,
-                                                tapAction: {}))
+                    NavigationLink(destination: {
+                        Questions(cardType: cardType)
+                            .environmentObject(viewModel)
+                            .navigationBarHidden(true)
+                    }, label: {
+                        HomeCard(HomeCardProperties(color: Color(hex: cardType.color),
+                                                    header: cardType.name,
+                                                    text: "\(cardType.cards.count) cards",
+                                                    isAvailable: true))
+                    })
                 }
                 AddHomeCard() {}
             }

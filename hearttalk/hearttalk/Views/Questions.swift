@@ -4,50 +4,65 @@ import SwiftUI
 struct Questions: View {
     
     @EnvironmentObject var viewModel: ViewModel
+    @Environment(\.presentationMode) var presentationMode
+    let cardType: CardType
     
     @State private var questionMode: QuestionMode = .cards
     
     var body: some View {
         makeContent()
             .background(.lightBlack)
+            .edgesIgnoringSafeArea(.bottom)
+            .onAppear {
+                viewModel.fetchCards(forCardTypeId: cardType.id)
+            }
     }
     
     private func makeContent() -> some View {
         VStack(spacing: 24) {
             NavigationBar {
-                Image("settings")
+                Image(questionMode.imageName())
                     .renderingMode(.template)
                     .resizable()
                     .foregroundStyle(.darkWhite)
                     .frame(width: 16, height: 16)
             } buttonAction: {
-                
+                questionMode.toggle()
             }
             .padding(.horizontal, 20)
             
-            makeFeed()
+            makeView()
+            makeBackButton()
         }
         .padding(.top, 8)
+        .padding(.bottom, 70)
     }
     
-    private func makeFeed() -> some View {
+    private func makeView() -> some View {
         ScrollView {
             LazyVStack {
-                ForEach(viewModel.cardTypes) { cardType in
-                    HomeCard(HomeCardProperties(color: Color(hex: cardType.color),
-                                                header: cardType.name,
-                                                text: "\(cardType.cards.count) cards",
-                                                isAvailable: true,
-                                                tapAction: {}))
+                ForEach(Array(viewModel.cards.enumerated()), id: \.element.id) { index, card in
+                    ListItem(number: index + 1, question: card.question)
                 }
-                AddHomeCard() {}
             }
-            .padding(.horizontal, 20)
+        }
+    }
+    
+    private func makeBackButton() -> some View {
+        Button {
+            presentationMode.wrappedValue.dismiss()
+        } label: {
+            Text("Go back")
+                .font(.custom("PlayfairDisplay-Regular", size: 16))
+                .underline()
+                .multilineTextAlignment(.center)
+                .foregroundStyle(.darkWhite)
+                .opacity(66)
         }
     }
     
 }
 
 #Preview {
-    Questions()
+    Questions(cardType: CardType(id: "", name: ""))
 }

@@ -7,18 +7,33 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		21BDB3962C88E0180097F90E /* hearttalkApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB3952C88E0180097F90E /* hearttalkApp.swift */; };
-		21BDB3982C88E0180097F90E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB3972C88E0180097F90E /* ContentView.swift */; };
-		21BDB39A2C88E01A0097F90E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21BDB3992C88E01A0097F90E /* Assets.xcassets */; };
-		21BDB39D2C88E01A0097F90E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21BDB39C2C88E01A0097F90E /* Preview Assets.xcassets */; };
+		21BDB3D42C899ADD0097F90E /* ProjectApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB3A42C899ADD0097F90E /* ProjectApp.swift */; };
+		21BDB3D52C899ADD0097F90E /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB3A52C899ADD0097F90E /* AppConstants.swift */; };
+		21BDB3D82C899ADD0097F90E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21BDB3AA2C899ADD0097F90E /* Assets.xcassets */; };
+		21BDB3DD2C899ADD0097F90E /* RequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB3B02C899ADD0097F90E /* RequestManager.swift */; };
+		21BDB3DE2C899ADD0097F90E /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB3B12C899ADD0097F90E /* ViewModel.swift */; };
+		21BDB3EA2C899ADD0097F90E /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB3C12C899ADD0097F90E /* Enums.swift */; };
+		21BDB3F12C899ADD0097F90E /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB3CB2C899ADD0097F90E /* HomeScreen.swift */; };
+		21BDB3F32C899ADD0097F90E /* LoadingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB3CD2C899ADD0097F90E /* LoadingScreen.swift */; };
+		21BDB3F92C899E970097F90E /* PlayfairDisplay-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21BDB3F82C899E970097F90E /* PlayfairDisplay-Regular.ttf */; };
+		21BDB3FD2C89A0220097F90E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21BDB3FB2C89A0220097F90E /* Preview Assets.xcassets */; };
+		21BDB3FF2C89A1940097F90E /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB3FE2C89A1940097F90E /* NavigationBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		21BDB3922C88E0180097F90E /* hearttalk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hearttalk.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		21BDB3952C88E0180097F90E /* hearttalkApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hearttalkApp.swift; sourceTree = "<group>"; };
-		21BDB3972C88E0180097F90E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		21BDB3992C88E01A0097F90E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		21BDB39C2C88E01A0097F90E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		21BDB3A42C899ADD0097F90E /* ProjectApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectApp.swift; sourceTree = "<group>"; };
+		21BDB3A52C899ADD0097F90E /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
+		21BDB3AA2C899ADD0097F90E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		21BDB3B02C899ADD0097F90E /* RequestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestManager.swift; sourceTree = "<group>"; };
+		21BDB3B12C899ADD0097F90E /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		21BDB3C12C899ADD0097F90E /* Enums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
+		21BDB3CB2C899ADD0097F90E /* HomeScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
+		21BDB3CD2C899ADD0097F90E /* LoadingScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingScreen.swift; sourceTree = "<group>"; };
+		21BDB3F82C899E970097F90E /* PlayfairDisplay-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlayfairDisplay-Regular.ttf"; sourceTree = "<group>"; };
+		21BDB3FA2C899ED50097F90E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		21BDB3FB2C89A0220097F90E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		21BDB3FE2C89A1940097F90E /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,18 +66,98 @@
 		21BDB3942C88E0180097F90E /* hearttalk */ = {
 			isa = PBXGroup;
 			children = (
-				21BDB3952C88E0180097F90E /* hearttalkApp.swift */,
-				21BDB3972C88E0180097F90E /* ContentView.swift */,
-				21BDB3992C88E01A0097F90E /* Assets.xcassets */,
-				21BDB39B2C88E01A0097F90E /* Preview Content */,
+				21BDB3FC2C89A0220097F90E /* Preview Content */,
+				21BDB3FA2C899ED50097F90E /* Info.plist */,
+				21BDB3A52C899ADD0097F90E /* AppConstants.swift */,
+				21BDB3AB2C899ADD0097F90E /* Assets */,
+				21BDB3C22C899ADD0097F90E /* Extensions */,
+				21BDB3C62C899ADD0097F90E /* Models */,
+				21BDB3A42C899ADD0097F90E /* ProjectApp.swift */,
+				21BDB3B22C899ADD0097F90E /* ViewModels */,
+				21BDB3D22C899ADD0097F90E /* Views */,
 			);
 			path = hearttalk;
 			sourceTree = "<group>";
 		};
-		21BDB39B2C88E01A0097F90E /* Preview Content */ = {
+		21BDB3A72C899ADD0097F90E /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				21BDB39C2C88E01A0097F90E /* Preview Assets.xcassets */,
+				21BDB3F82C899E970097F90E /* PlayfairDisplay-Regular.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		21BDB3AB2C899ADD0097F90E /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				21BDB3A72C899ADD0097F90E /* Fonts */,
+				21BDB3AA2C899ADD0097F90E /* Assets.xcassets */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		21BDB3B22C899ADD0097F90E /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				21BDB3B02C899ADD0097F90E /* RequestManager.swift */,
+				21BDB3B12C899ADD0097F90E /* ViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		21BDB3BA2C899ADD0097F90E /* Structs */ = {
+			isa = PBXGroup;
+			children = (
+				21BDB3FE2C89A1940097F90E /* NavigationBar.swift */,
+			);
+			path = Structs;
+			sourceTree = "<group>";
+		};
+		21BDB3BC2C899ADD0097F90E /* SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SwiftUI;
+			sourceTree = "<group>";
+		};
+		21BDB3BF2C899ADD0097F90E /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = UIKit;
+			sourceTree = "<group>";
+		};
+		21BDB3C22C899ADD0097F90E /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				21BDB3BA2C899ADD0097F90E /* Structs */,
+				21BDB3BC2C899ADD0097F90E /* SwiftUI */,
+				21BDB3BF2C899ADD0097F90E /* UIKit */,
+				21BDB3C12C899ADD0097F90E /* Enums.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		21BDB3C62C899ADD0097F90E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		21BDB3D22C899ADD0097F90E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				21BDB3CD2C899ADD0097F90E /* LoadingScreen.swift */,
+				21BDB3CB2C899ADD0097F90E /* HomeScreen.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		21BDB3FC2C89A0220097F90E /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				21BDB3FB2C89A0220097F90E /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
@@ -99,6 +194,7 @@
 				TargetAttributes = {
 					21BDB3912C88E0180097F90E = {
 						CreatedOnToolsVersion = 15.3;
+						LastSwiftMigration = 1530;
 					};
 				};
 			};
@@ -125,8 +221,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				21BDB39D2C88E01A0097F90E /* Preview Assets.xcassets in Resources */,
-				21BDB39A2C88E01A0097F90E /* Assets.xcassets in Resources */,
+				21BDB3F92C899E970097F90E /* PlayfairDisplay-Regular.ttf in Resources */,
+				21BDB3FD2C89A0220097F90E /* Preview Assets.xcassets in Resources */,
+				21BDB3D82C899ADD0097F90E /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,8 +234,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				21BDB3982C88E0180097F90E /* ContentView.swift in Sources */,
-				21BDB3962C88E0180097F90E /* hearttalkApp.swift in Sources */,
+				21BDB3F32C899ADD0097F90E /* LoadingScreen.swift in Sources */,
+				21BDB3EA2C899ADD0097F90E /* Enums.swift in Sources */,
+				21BDB3DE2C899ADD0097F90E /* ViewModel.swift in Sources */,
+				21BDB3FF2C89A1940097F90E /* NavigationBar.swift in Sources */,
+				21BDB3D42C899ADD0097F90E /* ProjectApp.swift in Sources */,
+				21BDB3DD2C899ADD0097F90E /* RequestManager.swift in Sources */,
+				21BDB3F12C899ADD0097F90E /* HomeScreen.swift in Sources */,
+				21BDB3D52C899ADD0097F90E /* AppConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,15 +372,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"hearttalk/Preview Content\"";
 				DEVELOPMENT_TEAM = QN6RC23FCQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = hearttalk/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -288,6 +394,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ruslanparastaev.hearttalk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -298,15 +405,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"hearttalk/Preview Content\"";
 				DEVELOPMENT_TEAM = QN6RC23FCQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = hearttalk/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (

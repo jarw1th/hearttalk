@@ -1,11 +1,11 @@
 
 import SwiftUI
 
-struct HomeScreen: View {
+struct Questions: View {
     
     @EnvironmentObject var viewModel: ViewModel
     
-    @State private var isShowSettings: Bool = false
+    @State private var questionMode: QuestionMode = .cards
     
     var body: some View {
         makeContent()
@@ -21,7 +21,7 @@ struct HomeScreen: View {
                     .foregroundStyle(.darkWhite)
                     .frame(width: 16, height: 16)
             } buttonAction: {
-                isShowSettings.toggle()
+                
             }
             .padding(.horizontal, 20)
             
@@ -49,5 +49,5 @@ struct HomeScreen: View {
 }
 
 #Preview {
-    HomeScreen()
+    Questions()
 }

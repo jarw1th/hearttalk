@@ -30,6 +30,9 @@
 		21BDB4142C89C87B0097F90E /* PlayfairDisplay-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21BDB4132C89C87B0097F90E /* PlayfairDisplay-SemiBold.ttf */; };
 		21BDB4162C89CA440097F90E /* AboutApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB4152C89CA440097F90E /* AboutApp.swift */; };
 		21BDB4182C89CB970097F90E /* AboutListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB4172C89CB970097F90E /* AboutListItem.swift */; };
+		21BDB41A2C8A2EA80097F90E /* CreateScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB4192C8A2EA80097F90E /* CreateScreen.swift */; };
+		21BDB41C2C8A2F900097F90E /* FillField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB41B2C8A2F900097F90E /* FillField.swift */; };
+		21BDB41F2C8A33540097F90E /* CustomRoundedRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB41E2C8A33540097F90E /* CustomRoundedRectangle.swift */; };
 		D2CF51266BD4E7B90F2FFA10 /* Pods_hearttalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA77230A8FA5D71531246F52 /* Pods_hearttalk.framework */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +63,9 @@
 		21BDB4132C89C87B0097F90E /* PlayfairDisplay-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PlayfairDisplay-SemiBold.ttf"; path = "../../../../../../../../Downloads/Playfair_Display/static/PlayfairDisplay-SemiBold.ttf"; sourceTree = "<group>"; };
 		21BDB4152C89CA440097F90E /* AboutApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutApp.swift; sourceTree = "<group>"; };
 		21BDB4172C89CB970097F90E /* AboutListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutListItem.swift; sourceTree = "<group>"; };
+		21BDB4192C8A2EA80097F90E /* CreateScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateScreen.swift; sourceTree = "<group>"; };
+		21BDB41B2C8A2F900097F90E /* FillField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillField.swift; sourceTree = "<group>"; };
+		21BDB41E2C8A33540097F90E /* CustomRoundedRectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomRoundedRectangle.swift; sourceTree = "<group>"; };
 		AA77230A8FA5D71531246F52 /* Pods_hearttalk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_hearttalk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C370263732E8479A1916D866 /* Pods-hearttalk.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hearttalk.debug.xcconfig"; path = "Target Support Files/Pods-hearttalk/Pods-hearttalk.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -163,6 +169,7 @@
 				21BDB4002C89A35C0097F90E /* HomeCards.swift */,
 				21BDB4112C89C7D40097F90E /* ListItem.swift */,
 				21BDB4172C89CB970097F90E /* AboutListItem.swift */,
+				21BDB41B2C8A2F900097F90E /* FillField.swift */,
 			);
 			path = Structs;
 			sourceTree = "<group>";
@@ -185,6 +192,7 @@
 		21BDB3C22C899ADD0097F90E /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				21BDB41D2C8A33310097F90E /* Shape */,
 				21BDB3BA2C899ADD0097F90E /* Structs */,
 				21BDB3BC2C899ADD0097F90E /* SwiftUI */,
 				21BDB3BF2C899ADD0097F90E /* UIKit */,
@@ -208,6 +216,7 @@
 				21BDB3CB2C899ADD0097F90E /* HomeScreen.swift */,
 				21BDB40F2C89C2B50097F90E /* Questions.swift */,
 				21BDB4152C89CA440097F90E /* AboutApp.swift */,
+				21BDB4192C8A2EA80097F90E /* CreateScreen.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -228,6 +237,14 @@
 				21BDB40C2C89BB5A0097F90E /* family.txt */,
 			);
 			path = TextContent;
+			sourceTree = "<group>";
+		};
+		21BDB41D2C8A33310097F90E /* Shape */ = {
+			isa = PBXGroup;
+			children = (
+				21BDB41E2C8A33540097F90E /* CustomRoundedRectangle.swift */,
+			);
+			path = Shape;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -364,8 +381,11 @@
 				21BDB3D42C899ADD0097F90E /* ProjectApp.swift in Sources */,
 				21BDB3DD2C899ADD0097F90E /* RequestManager.swift in Sources */,
 				21BDB4032C89B42D0097F90E /* RealmManager.swift in Sources */,
+				21BDB41F2C8A33540097F90E /* CustomRoundedRectangle.swift in Sources */,
 				21BDB3F12C899ADD0097F90E /* HomeScreen.swift in Sources */,
 				21BDB3D52C899ADD0097F90E /* AppConstants.swift in Sources */,
+				21BDB41A2C8A2EA80097F90E /* CreateScreen.swift in Sources */,
+				21BDB41C2C8A2F900097F90E /* FillField.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

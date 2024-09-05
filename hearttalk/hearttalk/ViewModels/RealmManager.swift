@@ -82,5 +82,4 @@ final class RealmManager {
         }
         return cardType.cards
     }
-    
 }

@@ -25,7 +25,7 @@ struct LoadingScreen: View {
                 .environmentObject(viewModel)
         }
         .onAppear {
-            checkData()
+            isShowNext.toggle()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -56,10 +56,6 @@ struct LoadingScreen: View {
             .multilineTextAlignment(.center)
             .foregroundStyle(.darkWhite)
             .opacity(66)
-    }
-    
-    private func checkData() {
-        isShowNext.toggle()
     }
     
     private func startRotation() {

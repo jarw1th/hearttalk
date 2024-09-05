@@ -64,3 +64,27 @@ enum AboutAppType: CaseIterable {
     }
     
 }
+
+enum CreateScreenType {
+    
+    case card, pack
+    
+    func header() -> String {
+        switch self {
+        case .card:
+            return "Create card"
+        case .pack:
+            return "Create pack"
+        }
+    }
+    
+    func placeholder() -> String {
+        switch self {
+        case .card:
+            return "Question"
+        case .pack:
+            return "Name"
+        }
+    }
+    
+}

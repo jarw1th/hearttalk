@@ -6,6 +6,8 @@ struct HomeScreen: View {
     @EnvironmentObject var viewModel: ViewModel
     
     @State private var isShowSettings: Bool = false
+    @State private var isShowCreateCard: Bool = false
+    @State private var isShowCreatePack: Bool = false
     
     var body: some View {
         NavigationView {
@@ -14,6 +16,14 @@ struct HomeScreen: View {
         }
         .sheet(isPresented: $isShowSettings) {
             AboutApp()
+                .environmentObject(viewModel)
+        }
+        .sheet(isPresented: $isShowCreateCard) {
+            CreateScreen(createScreenType: .card)
+                .environmentObject(viewModel)
+        }
+        .sheet(isPresented: $isShowCreatePack) {
+            CreateScreen(createScreenType: .pack)
                 .environmentObject(viewModel)
         }
     }
@@ -51,7 +61,17 @@ struct HomeScreen: View {
                                                     isAvailable: true))
                     })
                 }
-                AddHomeCard() {}
+            }
+            .padding(.horizontal, 20)
+            LazyVStack {
+                AddHomeCard() { type in
+                    switch type {
+                    case .pack:
+                        isShowCreatePack.toggle()
+                    case .card:
+                        isShowCreateCard.toggle()
+                    }
+                }
             }
             .padding(.horizontal, 20)
         }

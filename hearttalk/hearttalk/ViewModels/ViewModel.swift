@@ -6,7 +6,8 @@ import RealmSwift
 final class ViewModel: ObservableObject {
     
     static let shared = ViewModel()
-    @State private var realmManager = RealmManager()
+    
+    private var realmManager: RealmManager = RealmManager()
     
     @Published var cardTypes: [CardType] = []
     @Published var cards: [Card] = []
@@ -77,15 +78,17 @@ final class ViewModel: ObservableObject {
     }
     
     func fetchAllCardTypes() {
-        let cardTypesResults = realmManager.getAllCardTypes()
-        cardTypes = Array(cardTypesResults)
+        let cardTypesResults = self.realmManager.getAllCardTypes()
+        
+        self.cardTypes = Array(cardTypesResults)
     }
     
     func fetchCards(forCardTypeId cardTypeId: String) {
-        if let cardsList = realmManager.getCards(forCardTypeId: cardTypeId) {
-            cards = Array(cardsList)
+        if let cardsList = self.realmManager.getCards(forCardTypeId: cardTypeId) {
+            
+            self.cards = Array(cardsList)
         } else {
-            cards = []
+            self.cards = []
         }
     }
     

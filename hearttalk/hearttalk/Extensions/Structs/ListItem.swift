@@ -20,7 +20,7 @@ struct ListItem: View {
                 .font(.custom("PlayfairDisplay-SemiBold", size: 20))
                 .multilineTextAlignment(.leading)
                 .foregroundStyle(.lightBlack)
-                .frame(maxWidth: .infinity)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
         .frame(maxWidth: .infinity)
         .padding(.horizontal, 20)

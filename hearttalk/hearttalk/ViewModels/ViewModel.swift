@@ -10,6 +10,12 @@ final class ViewModel: ObservableObject {
     
     @Published var cardTypes: [CardType] = []
     @Published var cards: [Card] = []
+    var appVersion: String {
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            return version
+        }
+        return "1.0"
+    }
     
     private let hasImportedDataKey = "hasImportedData"
     

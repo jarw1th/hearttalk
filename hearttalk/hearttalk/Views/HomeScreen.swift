@@ -12,6 +12,10 @@ struct HomeScreen: View {
             makeContent()
                 .background(.lightBlack)
         }
+        .sheet(isPresented: $isShowSettings) {
+            AboutApp()
+                .environmentObject(viewModel)
+        }
     }
     
     private func makeContent() -> some View {

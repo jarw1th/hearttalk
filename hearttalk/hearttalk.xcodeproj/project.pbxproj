@@ -28,6 +28,8 @@
 		21BDB4102C89C2B50097F90E /* Questions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB40F2C89C2B50097F90E /* Questions.swift */; };
 		21BDB4122C89C7D40097F90E /* ListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB4112C89C7D40097F90E /* ListItem.swift */; };
 		21BDB4142C89C87B0097F90E /* PlayfairDisplay-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21BDB4132C89C87B0097F90E /* PlayfairDisplay-SemiBold.ttf */; };
+		21BDB4162C89CA440097F90E /* AboutApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB4152C89CA440097F90E /* AboutApp.swift */; };
+		21BDB4182C89CB970097F90E /* AboutListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB4172C89CB970097F90E /* AboutListItem.swift */; };
 		D2CF51266BD4E7B90F2FFA10 /* Pods_hearttalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA77230A8FA5D71531246F52 /* Pods_hearttalk.framework */; };
 /* End PBXBuildFile section */
 
@@ -56,6 +58,8 @@
 		21BDB40F2C89C2B50097F90E /* Questions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Questions.swift; sourceTree = "<group>"; };
 		21BDB4112C89C7D40097F90E /* ListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItem.swift; sourceTree = "<group>"; };
 		21BDB4132C89C87B0097F90E /* PlayfairDisplay-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PlayfairDisplay-SemiBold.ttf"; path = "../../../../../../../../Downloads/Playfair_Display/static/PlayfairDisplay-SemiBold.ttf"; sourceTree = "<group>"; };
+		21BDB4152C89CA440097F90E /* AboutApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutApp.swift; sourceTree = "<group>"; };
+		21BDB4172C89CB970097F90E /* AboutListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutListItem.swift; sourceTree = "<group>"; };
 		AA77230A8FA5D71531246F52 /* Pods_hearttalk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_hearttalk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C370263732E8479A1916D866 /* Pods-hearttalk.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hearttalk.debug.xcconfig"; path = "Target Support Files/Pods-hearttalk/Pods-hearttalk.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -158,6 +162,7 @@
 				21BDB3FE2C89A1940097F90E /* NavigationBar.swift */,
 				21BDB4002C89A35C0097F90E /* HomeCards.swift */,
 				21BDB4112C89C7D40097F90E /* ListItem.swift */,
+				21BDB4172C89CB970097F90E /* AboutListItem.swift */,
 			);
 			path = Structs;
 			sourceTree = "<group>";
@@ -202,6 +207,7 @@
 				21BDB3CD2C899ADD0097F90E /* LoadingScreen.swift */,
 				21BDB3CB2C899ADD0097F90E /* HomeScreen.swift */,
 				21BDB40F2C89C2B50097F90E /* Questions.swift */,
+				21BDB4152C89CA440097F90E /* AboutApp.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -348,11 +354,13 @@
 				21BDB3F32C899ADD0097F90E /* LoadingScreen.swift in Sources */,
 				21BDB4072C89B8E20097F90E /* Color+.swift in Sources */,
 				21BDB3EA2C899ADD0097F90E /* Enums.swift in Sources */,
+				21BDB4182C89CB970097F90E /* AboutListItem.swift in Sources */,
 				21BDB3DE2C899ADD0097F90E /* ViewModel.swift in Sources */,
 				21BDB4012C89A35C0097F90E /* HomeCards.swift in Sources */,
 				21BDB3FF2C89A1940097F90E /* NavigationBar.swift in Sources */,
 				21BDB4052C89B4A00097F90E /* Cards.swift in Sources */,
 				21BDB4122C89C7D40097F90E /* ListItem.swift in Sources */,
+				21BDB4162C89CA440097F90E /* AboutApp.swift in Sources */,
 				21BDB3D42C899ADD0097F90E /* ProjectApp.swift in Sources */,
 				21BDB3DD2C899ADD0097F90E /* RequestManager.swift in Sources */,
 				21BDB4032C89B42D0097F90E /* RealmManager.swift in Sources */,

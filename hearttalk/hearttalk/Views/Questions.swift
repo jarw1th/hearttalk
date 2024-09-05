@@ -31,20 +31,32 @@ struct Questions: View {
             }
             .padding(.horizontal, 20)
             
-            makeView()
+            if questionMode == .list {
+                makeList()
+            } else {
+                makeCards()
+            }
+            
             makeBackButton()
         }
         .padding(.top, 8)
         .padding(.bottom, 70)
     }
     
-    private func makeView() -> some View {
+    private func makeCards() -> some View {
+        ScrollView {
+            
+        }
+    }
+    
+    private func makeList() -> some View {
         ScrollView {
             LazyVStack {
                 ForEach(Array(viewModel.cards.enumerated()), id: \.element.id) { index, card in
                     ListItem(number: index + 1, question: card.question)
                 }
             }
+            .padding(.horizontal, 20)
         }
     }
     

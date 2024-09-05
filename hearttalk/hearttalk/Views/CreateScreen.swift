@@ -39,7 +39,10 @@ struct CreateScreen: View {
     
     private func makeCreateButton() -> some View {
         Button {
-            presentationMode.wrappedValue.dismiss()
+            if checkText() {
+                createAction()
+                presentationMode.wrappedValue.dismiss()
+            }
         } label: {
             Text("Create")
                 .font(.custom("PlayfairDisplay-Regular", size: 16))
@@ -59,6 +62,24 @@ struct CreateScreen: View {
                 .resizable()
                 .foregroundStyle(.darkWhite)
                 .frame(width: 24, height: 24)
+        }
+    }
+    
+    private func checkText() -> Bool {
+        switch createScreenType {
+        case .pack:
+            text.count > 4
+        case .card:
+            text.count > 10
+        }
+    }
+    
+    private func createAction() {
+        switch createScreenType {
+        case .pack:
+            viewModel.createPack(name: text, color: "#9CAFB7", cardQuestions: [])
+        case .card:
+            viewModel.createCard(question: text)
         }
     }
     

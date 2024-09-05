@@ -119,6 +119,7 @@ struct AddHomeCard: View {
     private func makePack() -> some View {
         Button {
             tapAction(.pack)
+            isOpened.toggle()
         } label: {
             ZStack(alignment: .topLeading) {
                 Rectangle()
@@ -141,6 +142,7 @@ struct AddHomeCard: View {
     private func makeCard() -> some View {
         Button {
             tapAction(.card)
+            isOpened.toggle()
         } label: {
             ZStack(alignment: .bottomTrailing) {
                 Rectangle()

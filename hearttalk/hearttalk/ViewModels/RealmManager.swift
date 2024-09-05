@@ -82,4 +82,9 @@ final class RealmManager {
         }
         return cardType.cards
     }
+    
+    func getCardType(forId id: String) -> CardType? {
+        return realm.object(ofType: CardType.self, forPrimaryKey: id)
+    }
+    
 }

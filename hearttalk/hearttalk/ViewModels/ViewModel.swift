@@ -19,6 +19,7 @@ final class ViewModel: ObservableObject {
     }
     
     private let hasImportedDataKey = "hasImportedData"
+    private var createdPackId: String?
     
     init() {
         if !UserDefaults.standard.bool(forKey: hasImportedDataKey) {
@@ -32,15 +33,17 @@ final class ViewModel: ObservableObject {
         let cardTypesWithFileNames = [
             ("Default mode", "default"),
             ("Couples", "couples"),
-            ("Family", "family")
+            ("Family", "family"),
+            ("Favorites", "favorites")
         ]
         
         for (cardTypeName, fileName) in cardTypesWithFileNames {
             addCardType(withName: cardTypeName, fromFile: fileName)
         }
+        addCardType(withName: "Created", fromFile: "my", save: true)
     }
     
-    private func addCardType(withName name: String, fromFile fileName: String) {
+    private func addCardType(withName name: String, fromFile fileName: String, save: Bool = false) {
         do {
             if let fileContents = try? readTextFile(fileName: fileName) {
                 let lines = fileContents.components(separatedBy: .newlines)
@@ -54,6 +57,9 @@ final class ViewModel: ObservableObject {
                 
                 let cardType = CardType(id: UUID().uuidString, name: name)
                 cardType.color = colorValue
+                if save {
+                    createdPackId = cardType.id
+                }
                 
                 let questions = lines.dropFirst().filter { !$0.isEmpty && !$0.starts(with: "Color:") }
                 
@@ -89,6 +95,50 @@ final class ViewModel: ObservableObject {
             self.cards = Array(cardsList)
         } else {
             self.cards = []
+        }
+    }
+    
+    func createPack(name: String, color: String, cardQuestions: [String]) {
+        do {
+            let cardType = CardType()
+            cardType.id = UUID().uuidString
+            cardType.name = name
+            cardType.color = color
+            
+            let cardObjects = cardQuestions.map { question -> Card in
+                let card = Card()
+                card.id = UUID().uuidString
+                card.question = question
+                return card
+            }
+            
+            self.realmManager.add(cardType)
+            cardType.cards.append(objectsIn: cardObjects)
+            
+            DispatchQueue.main.async {
+                self.fetchAllCardTypes() 
+            }
+        } catch {
+            print("Error creating CardType: \(error)")
+        }
+    }
+    
+    func createCard(question: String) {
+        do {
+            if let createdPackId = createdPackId,
+               let createdPack = self.realmManager.getCardType(forId: createdPackId) {
+                let newCard = Card()
+                newCard.id = UUID().uuidString
+                newCard.question = question
+                
+                self.realmManager.update {
+                    createdPack.cards.append(newCard)
+                }
+                
+                self.fetchCards(forCardTypeId: createdPackId)
+            }
+        } catch {
+            print("Error creating Card: \(error)")
         }
     }
     

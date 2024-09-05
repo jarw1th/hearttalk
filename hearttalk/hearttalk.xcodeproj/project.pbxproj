@@ -33,6 +33,8 @@
 		21BDB41A2C8A2EA80097F90E /* CreateScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB4192C8A2EA80097F90E /* CreateScreen.swift */; };
 		21BDB41C2C8A2F900097F90E /* FillField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB41B2C8A2F900097F90E /* FillField.swift */; };
 		21BDB41F2C8A33540097F90E /* CustomRoundedRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB41E2C8A33540097F90E /* CustomRoundedRectangle.swift */; };
+		21BDB4212C8A4C380097F90E /* favorites.txt in Resources */ = {isa = PBXBuildFile; fileRef = 21BDB4202C8A4C380097F90E /* favorites.txt */; };
+		21BDB4232C8A4DAB0097F90E /* my.txt in Resources */ = {isa = PBXBuildFile; fileRef = 21BDB4222C8A4DAB0097F90E /* my.txt */; };
 		D2CF51266BD4E7B90F2FFA10 /* Pods_hearttalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA77230A8FA5D71531246F52 /* Pods_hearttalk.framework */; };
 /* End PBXBuildFile section */
 
@@ -66,6 +68,8 @@
 		21BDB4192C8A2EA80097F90E /* CreateScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateScreen.swift; sourceTree = "<group>"; };
 		21BDB41B2C8A2F900097F90E /* FillField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillField.swift; sourceTree = "<group>"; };
 		21BDB41E2C8A33540097F90E /* CustomRoundedRectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomRoundedRectangle.swift; sourceTree = "<group>"; };
+		21BDB4202C8A4C380097F90E /* favorites.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = favorites.txt; sourceTree = "<group>"; };
+		21BDB4222C8A4DAB0097F90E /* my.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = my.txt; sourceTree = "<group>"; };
 		AA77230A8FA5D71531246F52 /* Pods_hearttalk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_hearttalk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C370263732E8479A1916D866 /* Pods-hearttalk.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hearttalk.debug.xcconfig"; path = "Target Support Files/Pods-hearttalk/Pods-hearttalk.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -235,6 +239,8 @@
 				21BDB4092C89B9D30097F90E /* default.txt */,
 				21BDB40B2C89BB060097F90E /* couples.txt */,
 				21BDB40C2C89BB5A0097F90E /* family.txt */,
+				21BDB4202C8A4C380097F90E /* favorites.txt */,
+				21BDB4222C8A4DAB0097F90E /* my.txt */,
 			);
 			path = TextContent;
 			sourceTree = "<group>";
@@ -311,9 +317,11 @@
 				21BDB40D2C89C1200097F90E /* couples.txt in Resources */,
 				21BDB40E2C89C1200097F90E /* family.txt in Resources */,
 				21BDB40A2C89B9D30097F90E /* default.txt in Resources */,
+				21BDB4232C8A4DAB0097F90E /* my.txt in Resources */,
 				21BDB4142C89C87B0097F90E /* PlayfairDisplay-SemiBold.ttf in Resources */,
 				21BDB3F92C899E970097F90E /* PlayfairDisplay-Regular.ttf in Resources */,
 				21BDB3FD2C89A0220097F90E /* Preview Assets.xcassets in Resources */,
+				21BDB4212C8A4C380097F90E /* favorites.txt in Resources */,
 				21BDB3D82C899ADD0097F90E /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

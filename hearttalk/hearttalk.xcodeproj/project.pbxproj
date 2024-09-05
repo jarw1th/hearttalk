@@ -18,6 +18,7 @@
 		21BDB3F92C899E970097F90E /* PlayfairDisplay-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21BDB3F82C899E970097F90E /* PlayfairDisplay-Regular.ttf */; };
 		21BDB3FD2C89A0220097F90E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21BDB3FB2C89A0220097F90E /* Preview Assets.xcassets */; };
 		21BDB3FF2C89A1940097F90E /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB3FE2C89A1940097F90E /* NavigationBar.swift */; };
+		21BDB4012C89A35C0097F90E /* HomeCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB4002C89A35C0097F90E /* HomeCards.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		21BDB3FA2C899ED50097F90E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		21BDB3FB2C89A0220097F90E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		21BDB3FE2C89A1940097F90E /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
+		21BDB4002C89A35C0097F90E /* HomeCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCards.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				21BDB3FE2C89A1940097F90E /* NavigationBar.swift */,
+				21BDB4002C89A35C0097F90E /* HomeCards.swift */,
 			);
 			path = Structs;
 			sourceTree = "<group>";
@@ -237,6 +240,7 @@
 				21BDB3F32C899ADD0097F90E /* LoadingScreen.swift in Sources */,
 				21BDB3EA2C899ADD0097F90E /* Enums.swift in Sources */,
 				21BDB3DE2C899ADD0097F90E /* ViewModel.swift in Sources */,
+				21BDB4012C89A35C0097F90E /* HomeCards.swift in Sources */,
 				21BDB3FF2C89A1940097F90E /* NavigationBar.swift in Sources */,
 				21BDB3D42C899ADD0097F90E /* ProjectApp.swift in Sources */,
 				21BDB3DD2C899ADD0097F90E /* RequestManager.swift in Sources */,

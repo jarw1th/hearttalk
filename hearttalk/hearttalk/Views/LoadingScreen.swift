@@ -24,6 +24,9 @@ struct LoadingScreen: View {
             HomeScreen()
                 .environmentObject(viewModel)
         }
+        .onAppear {
+            checkData()
+        }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     

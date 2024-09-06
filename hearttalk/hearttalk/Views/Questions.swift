@@ -10,6 +10,8 @@ struct Questions: View {
     @State private var questionMode: QuestionMode = .cards
     @State private var height: CGFloat = 0
     
+    @State private var isSwipeBack: Bool = false
+    
     var body: some View {
         makeContent()
             .background(.lightBlack)
@@ -33,14 +35,32 @@ struct Questions: View {
     private func makeCards() -> some View {
         ZStack {
             VStack(spacing: 24) {
-                NavigationBar {
-                    Image(questionMode.imageName())
-                        .renderingMode(.template)
-                        .resizable()
-                        .foregroundStyle(.darkWhite)
-                        .frame(width: 16, height: 16)
-                } buttonAction: {
-                    questionMode.toggle()
+                ZStack {
+                    NavigationBar {
+                        Image(questionMode.imageName())
+                            .renderingMode(.template)
+                            .resizable()
+                            .foregroundStyle(.darkWhite)
+                            .frame(width: 16, height: 16)
+                    } buttonAction: {
+                        questionMode.toggle()
+                    }
+                    
+                    HStack {
+                        if viewModel.cardIndex != 0 {
+                            Button {
+                                HapticManager.shared.triggerHapticFeedback(.soft)
+                                isSwipeBack.toggle()
+                            } label: {
+                                Image("swipeBack")
+                                    .renderingMode(.template)
+                                    .resizable()
+                                    .foregroundStyle(.darkWhite)
+                                    .frame(width: 16, height: 16)
+                            }
+                        }
+                        Spacer()
+                    }
                 }
                 .padding(.horizontal, 20)
                 Spacer()
@@ -57,7 +77,7 @@ struct Questions: View {
             .padding(.top, 8)
             .padding(.bottom, 70)
             
-            CardView()
+            CardView(isSwipeBack: $isSwipeBack)
                 .environmentObject(viewModel)
                 .frame(height: height)
         }

@@ -35,3 +35,4 @@ struct NavigationBar<Content: View>: View {
     }
     
 }
+

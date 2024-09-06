@@ -5,6 +5,8 @@ struct CardView: View {
     
     @EnvironmentObject var viewModel: ViewModel
     
+    @Binding var isSwipeBack: Bool
+    
     @State private var frontCardOffset: CGSize = .zero
     @State private var backCardOffset: CGSize = CGSize(width: 400, height: 0)
     @State private var backCardScale: CGFloat = 0.9
@@ -137,6 +139,12 @@ struct CardView: View {
         .sheet(isPresented: $isShare) {
             ActivityViewControllerRepresentableCenter(activityItems: [shareImage])
         }
+        .onChange(of: isSwipeBack) { value in
+            if value {
+                swipeBack()
+                isSwipeBack.toggle()
+            }
+        }
     }
     
     private func makeCardView(for card: Card) -> some View {
@@ -234,6 +242,26 @@ struct CardView: View {
     
     private func likeAction(_ card: Card) {
         viewModel.addCardToFavorites(card)
+    }
+    
+    private func swipeBack() {
+        withAnimation(.easeInOut) {
+            frontCardOffset = CGSize(width: cardWidth / 1.6, height: -24)
+            frontCardRotation = Double(10)
+            backCardOffset = CGSize(width: cardWidth / 1.5, height: -24)
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            frontCardOffset = CGSize(width: -1000, height: 0)
+            frontCardRotation = Double(-10)
+            backCardOffset = CGSize(width: cardWidth / 1.6, height: -24)
+            withAnimation(.easeInOut) {
+                frontCardOffset = .zero
+                frontCardRotation = 0
+            }
+        }
+        
+        viewModel.cardIndex = viewModel.cardIndex - 1
     }
     
 }

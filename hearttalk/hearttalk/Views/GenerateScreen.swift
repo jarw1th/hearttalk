@@ -5,6 +5,7 @@ struct GenerateScreen: View {
     
     @EnvironmentObject var viewModel: ViewModel
     @Environment(\.presentationMode) var presentationMode
+    @State private var requestManager: RequestManager = RequestManager()
     
     @State private var text: String = ""
     
@@ -41,8 +42,10 @@ struct GenerateScreen: View {
     
     private func makeGenerateButton() -> some View {
         Button {
-            HapticManager.shared.triggerHapticFeedback(.light)
-            generateAction()
+            if requestManager.checkInternetConnectivity() {
+                HapticManager.shared.triggerHapticFeedback(.light)
+                generateAction()
+            }
         } label: {
             Text(Localization.generateAction)
                 .font(.custom("PlayfairDisplay-Regular", size: 16))

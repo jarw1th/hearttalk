@@ -7,11 +7,7 @@ final class RequestManager: ObservableObject {
     static let shared = RequestManager()
     
     @discardableResult
-    func checkInternetConnectivity(withDelay: Bool = false) async -> Bool {
-        if withDelay {
-            try? await Task.sleep(nanoseconds: 2000000000)
-        }
-        
+    func checkInternetConnectivity() -> Bool {
         var zeroAddress = sockaddr_in()
         zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
         zeroAddress.sin_family = sa_family_t(AF_INET)

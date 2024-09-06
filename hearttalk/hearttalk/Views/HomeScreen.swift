@@ -4,6 +4,7 @@ import SwiftUI
 struct HomeScreen: View {
     
     @EnvironmentObject var viewModel: ViewModel
+    @State private var requestManager: RequestManager = RequestManager()
     
     @State private var isShowSettings: Bool = false
     @State private var isShowCreateCard: Bool = false
@@ -93,8 +94,12 @@ struct HomeScreen: View {
                         isShowCreateCard.toggle()
                     }
                 }
-                GenerateHomeCard() {
-                    isShowGenerate.toggle()
+                if requestManager.checkInternetConnectivity() {
+                    GenerateHomeCard() {
+                        if requestManager.checkInternetConnectivity() {
+                            isShowGenerate.toggle()
+                        }
+                    }
                 }
             }
             .padding(.horizontal, 20)

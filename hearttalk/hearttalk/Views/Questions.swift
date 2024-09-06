@@ -139,18 +139,20 @@ struct Questions: View {
                                 }
                             }
                         }
-                        .padding(.horizontal, 20)
+                        
                     }
-                    
+                    .scrollIndicators(.hidden, axes: .vertical)
+                    .clipShape(
+                        RoundedRectangle(cornerRadius: 20)
+                    )
+                    .padding(.horizontal, 20)
+                
                     makeBackButton()
                 }
                 .padding(.top, 8)
                 .padding(.bottom, 70)
             }
         }
-        .clipShape(
-            RoundedRectangle(cornerRadius: 20)
-        )
     }
     
     private func makeBackButton() -> some View {
@@ -167,8 +169,4 @@ struct Questions: View {
         }
     }
     
-}
-
-#Preview {
-    Questions(cardType: CardType(id: "", name: ""))
 }

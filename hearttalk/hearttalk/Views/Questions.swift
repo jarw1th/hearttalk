@@ -109,7 +109,7 @@ struct Questions: View {
                     
                     VStack {
                         Spacer()
-                        Text("That’s all")
+                        Text(Localization.thatIsAll)
                             .font(.custom("PlayfairDisplay-SemiBold", size: 20))
                             .multilineTextAlignment(.center)
                             .foregroundStyle(.darkWhite)
@@ -148,6 +148,9 @@ struct Questions: View {
                 .padding(.bottom, 70)
             }
         }
+        .clipShape(
+            RoundedRectangle(cornerRadius: 20)
+        )
     }
     
     private func makeBackButton() -> some View {
@@ -155,7 +158,7 @@ struct Questions: View {
             HapticManager.shared.triggerHapticFeedback(.light)
             presentationMode.wrappedValue.dismiss()
         } label: {
-            Text("Go back")
+            Text(Localization.goBack)
                 .font(.custom("PlayfairDisplay-Regular", size: 16))
                 .underline()
                 .multilineTextAlignment(.center)

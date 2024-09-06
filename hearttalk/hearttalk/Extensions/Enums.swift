@@ -51,19 +51,19 @@ enum AboutAppType: CaseIterable {
     func text() -> String {
         switch self {
         case .whatis:
-            return "What is Heart Talk?"
+            return Localization.whatIs
         case .share:
-            return "Share Heart Talk"
+            return Localization.share
         case .review:
-            return "Write a review"
+            return Localization.review
         case .terms:
-            return "Terms of Use"
+            return Localization.terms
         case .privacy:
-            return "Privacy Policy"
+            return Localization.privacy
         case .contact:
-            return "Contact us"
+            return Localization.contact
         case .clear:
-            return "Clear data"
+            return Localization.clear
         }
     }
     
@@ -85,18 +85,18 @@ enum CreateScreenType {
     func header() -> String {
         switch self {
         case .card:
-            return "Create card"
+            return Localization.createCard
         case .pack:
-            return "Create pack"
+            return Localization.createPack
         }
     }
     
     func placeholder() -> String {
         switch self {
         case .card:
-            return "Question"
+            return Localization.question
         case .pack:
-            return "Name"
+            return Localization.name
         }
     }
     

@@ -48,7 +48,7 @@ struct CreateScreen: View {
                 presentationMode.wrappedValue.dismiss()
             }
         } label: {
-            Text("Create")
+            Text(Localization.create)
                 .font(.custom("PlayfairDisplay-Regular", size: 16))
                 .underline()
                 .multilineTextAlignment(.center)

@@ -24,12 +24,12 @@ struct GenerateScreen: View {
                 makeBackButton()
             }
             VStack(spacing: 24) {
-                Text("Generate")
+                Text(Localization.generateNoun)
                     .font(.custom("PlayfairDisplay-SemiBold", size: 24))
                     .multilineTextAlignment(.leading)
                     .foregroundStyle(.darkWhite)
                     .frame(maxWidth: .infinity)
-                FillField(placeholder: "Prompt", text: $text)
+                FillField(placeholder: Localization.prompt, text: $text)
                 Spacer()
                 makeGenerateButton()
             }
@@ -44,7 +44,7 @@ struct GenerateScreen: View {
             HapticManager.shared.triggerHapticFeedback(.light)
             generateAction()
         } label: {
-            Text("Generate")
+            Text(Localization.generateAction)
                 .font(.custom("PlayfairDisplay-Regular", size: 16))
                 .underline()
                 .multilineTextAlignment(.center)

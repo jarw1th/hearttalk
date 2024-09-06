@@ -13,10 +13,10 @@ struct WhatIsCardView: View {
     @State private var cardWidth: CGFloat = 0
 
     private let texts: [(String, String)] = [
-        ("What is Heart talk?", "Heart Talk is the app designed to help families and couples strengthen their relationships through meaningful conversations. By providing a platform where users can engage with thoughtfully crafted questions, the app encourages deep and genuine communication."),
-        ("A lot of content", "Users can select from a range of card decks, each containing a series of questions intended to prompt reflection and discussion. Whether it’s a family gathering or a quiet moment with a partner, these questions are designed to foster a deeper understanding and connection between individuals."),
-        ("Get closer", "The core objective of Heart Talk is to bring people closer together by facilitating open and honest dialogue. By engaging with these prompts, users can explore each other's thoughts, feelings, and experiences, ultimately enhancing their relationships and building a stronger emotional bond."),
-        ("AI", "The app also features an advanced AI that generates custom questions based on user prompts. This personalized approach allows users to explore topics that are particularly relevant to their own experiences and interests, further enhancing the quality of their conversations.")]
+        (Localization.whatIs1Header, Localization.whatIs1Name),
+        (Localization.whatIs2Header, Localization.whatIs2Name),
+        (Localization.whatIs3Header, Localization.whatIs3Name),
+        (Localization.whatIs4Header, Localization.whatIs4Name)]
     
     var body: some View {
         ZStack {
@@ -127,7 +127,7 @@ struct WhatIsCardView: View {
             } else {
                 VStack {
                     Spacer()
-                    Text("You are perfect!")
+                    Text(Localization.perfect)
                         .font(.custom("PlayfairDisplay-SemiBold", size: 20))
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.darkWhite)

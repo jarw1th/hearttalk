@@ -63,7 +63,7 @@ struct HomeScreen: View {
                     }) {
                         HomeCard(HomeCardProperties(color: Color(hex: cardType.color),
                                                     header: cardType.name,
-                                                    text: cardType.cards.count == 0 ? "empty" : "\(cardType.cards.count) cards",
+                                                    text: cardType.cards.count == 0 ? Localization.empty : "\(cardType.cards.count) \(cardType.cards.count > 1 ? Localization.cards : Localization.card)",
                                                     isAvailable: true))
                     }
                     .background(

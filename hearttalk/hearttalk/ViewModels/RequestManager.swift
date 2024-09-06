@@ -6,8 +6,6 @@ final class RequestManager: ObservableObject {
     
     static let shared = RequestManager()
     
-    @Published private(set) var alertType: String = ""
-    
     @discardableResult
     func checkInternetConnectivity(withDelay: Bool = false) async -> Bool {
         if withDelay {
@@ -36,9 +34,5 @@ final class RequestManager: ObservableObject {
 
         return (isReachable && !needsConnection)
     }
-    
-    func resetAlert() {
-        alertType = ""
-   }
     
 }

@@ -129,7 +129,7 @@ struct AddHomeCard: View {
                     .fill(.lightGray)
                     .clipShape(CustomRoundedRectangle(topLeft: 20, topRight: 20))
                 
-                Text("Create pack")
+                Text(Localization.createPack)
                     .font(.custom("PlayfairDisplay-SemiBold", size: 20))
                     .multilineTextAlignment(.leading)
                     .foregroundStyle(.darkGreen)
@@ -153,7 +153,7 @@ struct AddHomeCard: View {
                     .fill(.lightGray)
                     .clipShape(CustomRoundedRectangle(bottomLeft: 20, bottomRight: 20))
                 
-                Text("Create card")
+                Text(Localization.createCard)
                     .font(.custom("PlayfairDisplay-SemiBold", size: 20))
                     .multilineTextAlignment(.trailing)
                     .foregroundStyle(.darkGreen)
@@ -186,7 +186,7 @@ struct GenerateHomeCard: View {
                     .stroke(.lightGray, lineWidth: 2)
                 
                 VStack {
-                    Text("Generate")
+                    Text(Localization.generateAction)
                         .font(.custom("PlayfairDisplay-Regular", size: 20))
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.lightGray)

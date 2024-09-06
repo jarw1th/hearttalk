@@ -39,62 +39,76 @@ final class ViewModel: ObservableObject {
         }
     }
     
-    private let defaultCardTypes = ["Default mode", "Couples", "Family", "Favorites", "Created"]
+    private let defaultCardTypes = [Localization.defaultMode, Localization.couples, Localization.family, Localization.favorites, Localization.created]
     private let hasImportedDataKey = "hasImportedData"
     private var createdPackId: String?
     
     init() {
-        if !UserDefaults.standard.bool(forKey: hasImportedDataKey) {
-            parseCardTypesFromFile()
-            UserDefaults.standard.set(true, forKey: hasImportedDataKey)
+        let userLanguage = Locale.preferredLanguages.first?.prefix(2) ?? "en"
+        if UserDefaults.standard.string(forKey: "selectedLanguage") ?? "en" == userLanguage {
+            if !UserDefaults.standard.bool(forKey: hasImportedDataKey) {
+                parseCardTypesFromFile()
+                UserDefaults.standard.set(true, forKey: hasImportedDataKey)
+            }
+            fetchAllCardTypes()
+        } else {
+            clearData()
+            UserDefaults.standard.set(userLanguage, forKey: "selectedLanguage")
         }
-        fetchAllCardTypes()
     }
     
     private func parseCardTypesFromFile() {
         let cardTypesWithFileNames = [
-            ("Default mode", "default"),
-            ("Couples", "couples"),
-            ("Family", "family"),
-            ("Favorites", "favorites")
+            (Localization.defaultMode, "default"),
+            (Localization.couples, "couples"),
+            (Localization.family, "family")
         ]
         
-        for (cardTypeName, fileName) in cardTypesWithFileNames {
-            addCardType(withName: cardTypeName, fromFile: fileName)
+        let userLanguage = Locale.preferredLanguages.first?.prefix(2) ?? "en"
+        
+        for (cardTypeName, baseFileName) in cardTypesWithFileNames {
+            let fileName = "\(baseFileName)_\(userLanguage)"
+            addCardType(withName: cardTypeName, fromFile: fileName, with: "\(baseFileName)_en")
         }
-        addCardType(withName: "Created", fromFile: "my", save: true)
+        addCardType(withName: Localization.favorites, fromFile: "favorites", with: "favorites", save: false)
+        addCardType(withName: Localization.created, fromFile: "my", with: "my", save: true)
     }
     
-    private func addCardType(withName name: String, fromFile fileName: String, save: Bool = false) {
-        do {
-            if let fileContents = try? readTextFile(fileName: fileName) {
-                let lines = fileContents.components(separatedBy: .newlines)
-                
-                guard let colorLine = lines.first(where: { $0.starts(with: "Color:") }) else {
-                    print("Error: No color found in file \(fileName)")
-                    return
-                }
-                
-                let colorValue = colorLine.replacingOccurrences(of: "Color:", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
-                
-                let cardType = CardType(id: UUID().uuidString, name: name)
-                cardType.color = colorValue
-                if save {
-                    createdPackId = cardType.id
-                }
-                
-                let questions = lines.dropFirst().filter { !$0.isEmpty && !$0.starts(with: "Color:") }
-                
-                for question in questions {
-                    let card = Card(id: UUID().uuidString, question: question)
-                    cardType.cards.append(card)
-                }
-                
-                realmManager.add(cardType)
-            }
-        } catch {
-            print("Error reading file: \(error)")
+    private func addCardType(withName name: String, fromFile fileName: String, with baseName: String, save: Bool = false) {
+        var fileContents: String = ""
+        guard let baseFileContents = try? readTextFile(fileName: baseName) else {
+            print("Error fetching file")
+            return
         }
+        if let langFileContents = try? readTextFile(fileName: fileName) {
+            fileContents = langFileContents
+        } else {
+            fileContents = baseFileContents
+        }
+        
+        let lines = fileContents.components(separatedBy: .newlines)
+        
+        guard let colorLine = lines.first(where: { $0.starts(with: "Color:") }) else {
+            print("Error: No color found in file \(fileName)")
+            return
+        }
+        
+        let colorValue = colorLine.replacingOccurrences(of: "Color:", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        let cardType = CardType(id: UUID().uuidString, name: name)
+        cardType.color = colorValue
+        if save {
+            createdPackId = cardType.id
+        }
+        
+        let questions = lines.dropFirst().filter { !$0.isEmpty && !$0.starts(with: "Color:") }
+        
+        for question in questions {
+            let card = Card(id: UUID().uuidString, question: question)
+            cardType.cards.append(card)
+        }
+        
+        realmManager.add(cardType)
     }
     
     private func readTextFile(fileName: String) throws -> String {
@@ -192,7 +206,7 @@ final class ViewModel: ObservableObject {
     }
     
     func addCardToFavorites(_ card: Card) {
-        guard let favoritesCardType = realmManager.getCardType(forName: "Favorites") else {
+        guard let favoritesCardType = realmManager.getCardType(forName: Localization.favorites) else {
             print("Error: 'Favorites' card type not found.")
             return
         }
@@ -233,7 +247,7 @@ final class ViewModel: ObservableObject {
     }
     
     func updateCardFavoriteStatus() {
-        guard let favoritesCardType = realmManager.getCardType(forName: "Favorites") else {
+        guard let favoritesCardType = realmManager.getCardType(forName: Localization.favorites) else {
             print("Error: 'Favorites' card type not found.")
             isCardFavorite = false
             return

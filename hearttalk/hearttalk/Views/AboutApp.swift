@@ -21,9 +21,9 @@ struct AboutApp: View {
                 WhatIsTheApp()
             }
             .alert(isPresented: $isClearAlert) {
-                Alert(title: Text("You are going to delete all data"), primaryButton: .destructive(Text("Delete"), action: {
+                Alert(title: Text(Localization.deleting), primaryButton: .destructive(Text(Localization.delete), action: {
                     viewModel.clearData()
-                }), secondaryButton: .cancel(Text("Cancel"), action: {}))
+                }), secondaryButton: .cancel(Text(Localization.cancel), action: {}))
             }
     }
     
@@ -34,7 +34,7 @@ struct AboutApp: View {
                 makeBackButton()
             }
             VStack(spacing: 24) {
-                Text("About the app")
+                Text(Localization.aboutTheApp)
                     .font(.custom("PlayfairDisplay-SemiBold", size: 24))
                     .multilineTextAlignment(.leading)
                     .foregroundStyle(.darkWhite)
@@ -43,7 +43,7 @@ struct AboutApp: View {
                 makeCridential()
                     .padding(.top, 12)
                 Spacer()
-                Text("version \(viewModel.appVersion)")
+                Text("\(Localization.version) \(viewModel.appVersion)")
                     .font(.custom("PlayfairDisplay-Regular", size: 10))
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.darkWhite)
@@ -63,7 +63,7 @@ struct AboutApp: View {
                 .foregroundStyle(.darkWhite)
                 .frame(width: 20, height: 18)
                 .opacity(0.66)
-            Text("Ruslan Parastaev")
+            Text(Localization.credential)
                 .font(.custom("PlayfairDisplay-SemiBold", size: 16))
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.darkWhite)

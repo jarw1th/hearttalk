@@ -68,7 +68,7 @@ struct WhatIsTheApp: View {
             HapticManager.shared.triggerHapticFeedback(.light)
             presentationMode.wrappedValue.dismiss()
         } label: {
-            Text("Go back")
+            Text(Localization.goBack)
                 .font(.custom("PlayfairDisplay-Regular", size: 16))
                 .underline()
                 .multilineTextAlignment(.center)

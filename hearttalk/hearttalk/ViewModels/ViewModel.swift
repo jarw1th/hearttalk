@@ -12,6 +12,7 @@ final class ViewModel: ObservableObject {
     private var realmManager: RealmManager = RealmManager()
     private var networkManager: NetworkManager = NetworkManager()
     
+    @Published var myCardTypes: [CardType] = []
     @Published var cardTypes: [CardType] = []
     @Published var cards: [Card] = []
     @Published var cardIndex: Int = 0 {
@@ -38,6 +39,7 @@ final class ViewModel: ObservableObject {
         }
     }
     
+    private let defaultCardTypes = ["Default mode", "Couples", "Family", "Favorites", "Created"]
     private let hasImportedDataKey = "hasImportedData"
     private var createdPackId: String?
     
@@ -104,14 +106,16 @@ final class ViewModel: ObservableObject {
     }
     
     func fetchAllCardTypes() {
+        self.cardTypes = []
+        self.myCardTypes = []
         let cardTypesResults = self.realmManager.getAllCardTypes()
         
         self.cardTypes = Array(cardTypesResults)
+        self.myCardTypes = Array(cardTypesResults).filter { !defaultCardTypes.contains($0.name) }
     }
     
     func fetchCards(forCardTypeId cardTypeId: String) {
         if let cardsList = self.realmManager.getCards(forCardTypeId: cardTypeId) {
-            
             self.cards = Array(cardsList)
         } else {
             self.cards = []
@@ -203,6 +207,24 @@ final class ViewModel: ObservableObject {
         } else {
             realmManager.update {
                 favoritesCardType.cards.append(card)
+            }
+            print("Card added to Favorites.")
+        }
+        
+        updateCardFavoriteStatus()
+    }
+    
+    func addCard(_ card: Card, to cardType: CardType) {
+        if let existingCard = cardType.cards.first(where: { $0.id == card.id }) {
+            realmManager.update {
+                if let index = cardType.cards.firstIndex(of: existingCard) {
+                    cardType.cards.remove(at: index)
+                }
+            }
+            print("Card removed from Favorites.")
+        } else {
+            realmManager.update {
+                cardType.cards.append(card)
             }
             print("Card added to Favorites.")
         }

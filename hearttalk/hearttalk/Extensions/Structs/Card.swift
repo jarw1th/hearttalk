@@ -12,6 +12,7 @@ struct CardView: View {
     @State private var backCardScale: CGFloat = 0.9
     @State private var frontCardRotation: Double = 0
     @State private var cardWidth: CGFloat = 0
+    @State private var isShowMenu: Bool = false
     
     @State private var isShare: Bool = false
     @State private var shareImage: UIImage?
@@ -188,6 +189,48 @@ struct CardView: View {
                 }
                 .padding(.bottom, 48)
                 .padding(.leading, 48)
+            } else if isShowMenu && !viewModel.myCardTypes.isEmpty {
+                VStack(spacing: 0) {
+                    Spacer()
+                    VStack {
+                        ForEach(Array(viewModel.myCardTypes.enumerated()), id: \.element) { index, myCardType in
+                            VStack(alignment: .leading, spacing: 4) {
+                                Button {
+                                    HapticManager.shared.triggerHapticFeedback(.light)
+                                    viewModel.addCard(card, to: myCardType)
+                                    isShowMenu.toggle()
+                                } label: {
+                                    Text(myCardType.name)
+                                        .font(.custom("PlayfairDisplay-Regular", size: 10))
+                                        .multilineTextAlignment(.leading)
+                                        .foregroundStyle(.darkWhite)
+                                        .frame(maxWidth: .infinite, alignment: .leading)
+                                }
+                                .padding(.trailing, 16)
+                                if index < viewModel.myCardTypes.endIndex - 1 {
+                                    Rectangle()
+                                        .fill(.darkWhite)
+                                        .frame(height: 1)
+                                        .frame(maxWidth: .infinity)
+                                }
+                            }
+                        }
+                    }
+                    .padding(.vertical, 8)
+                    .padding(.leading, 16)
+                    .frame(width: 120)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(.darkGreen)
+                    )
+                    Image("pick")
+                        .renderingMode(.template)
+                        .resizable()
+                        .foregroundStyle(.darkGreen)
+                        .frame(width: 120, height: 10)
+                }
+                .padding(.bottom, 48)
+                .padding(.leading, 160)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -199,16 +242,19 @@ struct CardView: View {
     }
     
     private func makeLikeButton(_ card: Card) -> some View {
-        Button {
-            HapticManager.shared.triggerHapticFeedback(.light)
-            likeAction(card)
-        } label: {
-            Image(viewModel.isCardFavorite ? "liked" : "like")
-                .renderingMode(.template)
-                .resizable()
-                .foregroundStyle(.darkGreen)
-                .frame(width: 16, height: 16)
-        }
+        Image(viewModel.isCardFavorite ? "liked" : "like")
+            .renderingMode(.template)
+            .resizable()
+            .foregroundStyle(.darkGreen)
+            .frame(width: 16, height: 16)
+            .onTapGesture {
+                HapticManager.shared.triggerHapticFeedback(.light)
+                likeAction(card)
+            }
+            .onLongPressGesture(minimumDuration: 0.5) {
+                HapticManager.shared.triggerHapticFeedback(.medium)
+                isShowMenu.toggle()
+            }
     }
     
     private func makeShareButton(_ card: Card) -> some View {

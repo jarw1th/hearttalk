@@ -11,6 +11,7 @@ final class ViewModel: ObservableObject {
     
     @Published var cardTypes: [CardType] = []
     @Published var cards: [Card] = []
+    @Published var cardIndex: Int = 0
     var appVersion: String {
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             return version

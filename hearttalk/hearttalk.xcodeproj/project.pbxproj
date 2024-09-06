@@ -35,6 +35,7 @@
 		21BDB41F2C8A33540097F90E /* CustomRoundedRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB41E2C8A33540097F90E /* CustomRoundedRectangle.swift */; };
 		21BDB4212C8A4C380097F90E /* favorites.txt in Resources */ = {isa = PBXBuildFile; fileRef = 21BDB4202C8A4C380097F90E /* favorites.txt */; };
 		21BDB4232C8A4DAB0097F90E /* my.txt in Resources */ = {isa = PBXBuildFile; fileRef = 21BDB4222C8A4DAB0097F90E /* my.txt */; };
+		21BDB4252C8AE0390097F90E /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB4242C8AE0390097F90E /* Card.swift */; };
 		D2CF51266BD4E7B90F2FFA10 /* Pods_hearttalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA77230A8FA5D71531246F52 /* Pods_hearttalk.framework */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +71,7 @@
 		21BDB41E2C8A33540097F90E /* CustomRoundedRectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomRoundedRectangle.swift; sourceTree = "<group>"; };
 		21BDB4202C8A4C380097F90E /* favorites.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = favorites.txt; sourceTree = "<group>"; };
 		21BDB4222C8A4DAB0097F90E /* my.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = my.txt; sourceTree = "<group>"; };
+		21BDB4242C8AE0390097F90E /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		AA77230A8FA5D71531246F52 /* Pods_hearttalk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_hearttalk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C370263732E8479A1916D866 /* Pods-hearttalk.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hearttalk.debug.xcconfig"; path = "Target Support Files/Pods-hearttalk/Pods-hearttalk.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -174,6 +176,7 @@
 				21BDB4112C89C7D40097F90E /* ListItem.swift */,
 				21BDB4172C89CB970097F90E /* AboutListItem.swift */,
 				21BDB41B2C8A2F900097F90E /* FillField.swift */,
+				21BDB4242C8AE0390097F90E /* Card.swift */,
 			);
 			path = Structs;
 			sourceTree = "<group>";
@@ -382,6 +385,7 @@
 				21BDB4182C89CB970097F90E /* AboutListItem.swift in Sources */,
 				21BDB3DE2C899ADD0097F90E /* ViewModel.swift in Sources */,
 				21BDB4012C89A35C0097F90E /* HomeCards.swift in Sources */,
+				21BDB4252C8AE0390097F90E /* Card.swift in Sources */,
 				21BDB3FF2C89A1940097F90E /* NavigationBar.swift in Sources */,
 				21BDB4052C89B4A00097F90E /* Cards.swift in Sources */,
 				21BDB4122C89C7D40097F90E /* ListItem.swift in Sources */,

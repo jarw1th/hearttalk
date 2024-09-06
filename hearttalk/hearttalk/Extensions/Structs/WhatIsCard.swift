@@ -1,32 +1,33 @@
 
 import SwiftUI
 
-struct CardView: View {
-    
-    @EnvironmentObject var viewModel: ViewModel
+struct WhatIsCardView: View {
     
     @Binding var isSwipeBack: Bool
+    @Binding var index: Int
     
     @State private var frontCardOffset: CGSize = .zero
     @State private var backCardOffset: CGSize = CGSize(width: 400, height: 0)
     @State private var backCardScale: CGFloat = 0.9
     @State private var frontCardRotation: Double = 0
     @State private var cardWidth: CGFloat = 0
-    @State private var isShowMenu: Bool = false
-    
-    @State private var isShare: Bool = false
-    @State private var shareImage: UIImage?
+
+    private let texts: [(String, String)] = [
+        ("What is Heart talk?", "Heart Talk is the app designed to help families and couples strengthen their relationships through meaningful conversations. By providing a platform where users can engage with thoughtfully crafted questions, the app encourages deep and genuine communication."),
+        ("A lot of content", "Users can select from a range of card decks, each containing a series of questions intended to prompt reflection and discussion. Whether it’s a family gathering or a quiet moment with a partner, these questions are designed to foster a deeper understanding and connection between individuals."),
+        ("Get closer", "The core objective of Heart Talk is to bring people closer together by facilitating open and honest dialogue. By engaging with these prompts, users can explore each other's thoughts, feelings, and experiences, ultimately enhancing their relationships and building a stronger emotional bond."),
+        ("AI", "The app also features an advanced AI that generates custom questions based on user prompts. This personalized approach allows users to explore topics that are particularly relevant to their own experiences and interests, further enhancing the quality of their conversations.")]
     
     var body: some View {
         ZStack {
-            if viewModel.cards.count > viewModel.cardIndex + 1 {
-                makeCardView(for: viewModel.cards[viewModel.cardIndex + 1])
+            if texts.count > index + 1 {
+                makeCardView(for: texts[index + 1])
                     .scaleEffect(backCardScale)
                     .offset(x: backCardOffset.width, y: backCardOffset.height)
                     .rotationEffect(.degrees(10))
                     .zIndex(0)
                 
-                makeCardView(for: viewModel.cards[viewModel.cardIndex])
+                makeCardView(for: texts[index])
                     .offset(x: frontCardOffset.width, y: frontCardOffset.height)
                     .rotationEffect(.degrees(frontCardRotation))
                     .zIndex(1)
@@ -79,8 +80,8 @@ struct CardView: View {
                                 }
                         }
                     )
-            } else if viewModel.cards.count == viewModel.cardIndex + 1 {
-                makeCardView(for: viewModel.cards[viewModel.cardIndex])
+            } else if texts.count == index + 1 {
+                makeCardView(for: texts[index])
                     .offset(x: frontCardOffset.width, y: frontCardOffset.height)
                     .rotationEffect(.degrees(frontCardRotation))
                     .zIndex(1)
@@ -126,7 +127,7 @@ struct CardView: View {
             } else {
                 VStack {
                     Spacer()
-                    Text("That’s all")
+                    Text("You are perfect!")
                         .font(.custom("PlayfairDisplay-SemiBold", size: 20))
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.darkWhite)
@@ -137,9 +138,6 @@ struct CardView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .sheet(isPresented: $isShare) {
-            ActivityViewControllerRepresentableCenter(activityItems: [shareImage])
-        }
         .onChange(of: isSwipeBack) { value in
             if value {
                 swipeBack()
@@ -148,90 +146,28 @@ struct CardView: View {
         }
     }
     
-    private func makeCardView(for card: Card) -> some View {
+    private func makeCardView(for card: (String, String)) -> some View {
         ZStack {
             VStack {
                 Spacer()
-                Text(card.question)
+                Text(card.1)
                     .font(.custom("PlayfairDisplay-SemiBold", size: 20))
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.lightBlack)
                     .padding(.horizontal, 48)
                 Spacer()
             }
-            VStack {
-                Spacer()
-                HStack(spacing: 64) {
-                    makeSpeakButton(card)
-                    makeShareButton(card)
-                    makeLikeButton(card)
-                }
-            }
-            .padding(.bottom, 24)
             
-            if card == viewModel.cards[viewModel.cardIndex] && viewModel.isShowTip {
-                VStack {
-                    Spacer()
-                    ZStack {
-                        Image("tipBackground")
-                            .renderingMode(.template)
-                            .resizable()
-                            .foregroundStyle(.lightBlack)
-                            .frame(width: 160, height: 40)
-                        
-                        Text("Hold for your custom packs")
-                            .font(.custom("PlayfairDisplay-Regular", size: 10))
-                            .multilineTextAlignment(.leading)
-                            .foregroundStyle(.darkWhite)
-                            .padding(.horizontal, 16)
-                            .padding(.bottom, 10)
-                    }
-                }
-                .padding(.bottom, 48)
-                .padding(.leading, 48)
-            } else if isShowMenu && !viewModel.myCardTypes.isEmpty {
-                VStack(spacing: 0) {
-                    Spacer()
-                    VStack {
-                        ForEach(Array(viewModel.myCardTypes.enumerated()), id: \.element) { index, myCardType in
-                            VStack(alignment: .leading, spacing: 4) {
-                                Button {
-                                    HapticManager.shared.triggerHapticFeedback(.light)
-                                    viewModel.addCard(card, to: myCardType)
-                                    isShowMenu.toggle()
-                                } label: {
-                                    Text(myCardType.name)
-                                        .font(.custom("PlayfairDisplay-Regular", size: 10))
-                                        .multilineTextAlignment(.leading)
-                                        .foregroundStyle(.darkWhite)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                }
-                                .padding(.trailing, 16)
-                                if index < viewModel.myCardTypes.endIndex - 1 {
-                                    Rectangle()
-                                        .fill(.darkWhite)
-                                        .frame(height: 1)
-                                        .frame(maxWidth: .infinity)
-                                }
-                            }
-                        }
-                    }
-                    .padding(.vertical, 8)
-                    .padding(.leading, 16)
-                    .frame(width: 120)
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(.darkGreen)
-                    )
-                    Image("pick")
-                        .renderingMode(.template)
-                        .resizable()
-                        .foregroundStyle(.darkGreen)
-                        .frame(width: 120, height: 10)
-                }
-                .padding(.bottom, 48)
-                .padding(.leading, 160)
+            VStack {
+                Text(card.0)
+                    .font(.custom("PlayfairDisplay-Regular", size: 16))
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(.lightBlack)
+                    .opacity(0.66)
+                    .padding(.horizontal, 48)
+                Spacer()
             }
+            .padding(.top, 24)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(
@@ -241,50 +177,8 @@ struct CardView: View {
         )
     }
     
-    private func makeLikeButton(_ card: Card) -> some View {
-        Image(viewModel.isCardFavorite ? "liked" : "like")
-            .renderingMode(.template)
-            .resizable()
-            .foregroundStyle(.darkGreen)
-            .frame(width: 16, height: 16)
-            .onTapGesture {
-                HapticManager.shared.triggerHapticFeedback(.light)
-                likeAction(card)
-            }
-            .onLongPressGesture(minimumDuration: 0.5) {
-                HapticManager.shared.triggerHapticFeedback(.medium)
-                isShowMenu.toggle()
-            }
-    }
-    
-    private func makeShareButton(_ card: Card) -> some View {
-        Button {
-            HapticManager.shared.triggerHapticFeedback(.light)
-            shareAction(card)
-        } label: {
-            Image("shareCard")
-                .renderingMode(.template)
-                .resizable()
-                .foregroundStyle(.darkGreen)
-                .frame(width: 16, height: 16)
-        }
-    }
-    
-    private func makeSpeakButton(_ card: Card) -> some View {
-        Button {
-            HapticManager.shared.triggerHapticFeedback(.light)
-            speakAction(card)
-        } label: {
-            Image("speaker")
-                .renderingMode(.template)
-                .resizable()
-                .foregroundStyle(.darkGreen)
-                .frame(width: 16, height: 16)
-        }
-    }
-    
     private func moveToNextCard() {
-        viewModel.cardIndex = viewModel.cardIndex + 1
+        index = index + 1
     }
     
     private func resetCardPosition() {
@@ -295,21 +189,6 @@ struct CardView: View {
     private func moveCardRightPosition() {
         frontCardOffset = CGSize(width: cardWidth / 1.6, height: -24)
         frontCardRotation = Double(10)
-    }
-    
-    private func shareAction(_ card: Card) {
-        shareImage = viewModel.createCardImage(card.question)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            isShare.toggle()
-        }
-    }
-    
-    private func speakAction(_ card: Card) {
-        viewModel.speak(text: card.question)
-    }
-    
-    private func likeAction(_ card: Card) {
-        viewModel.addCardToFavorites(card)
     }
     
     private func swipeBack() {
@@ -329,7 +208,7 @@ struct CardView: View {
             }
         }
         
-        viewModel.cardIndex = viewModel.cardIndex - 1
+        index = index - 1
     }
     
 }

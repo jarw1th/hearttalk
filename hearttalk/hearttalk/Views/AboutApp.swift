@@ -8,6 +8,7 @@ struct AboutApp: View {
     
     @State private var isShareApp: Bool = false
     @State private var isClearAlert: Bool = false
+    @State private var isShowWhatIs: Bool = false
     
     var body: some View {
         makeContent()
@@ -15,6 +16,9 @@ struct AboutApp: View {
             .edgesIgnoringSafeArea(.bottom)
             .sheet(isPresented: $isShareApp) {
                 ActivityViewControllerRepresentableCenter(activityItems: [viewModel.shareApp()])
+            }
+            .fullScreenCover(isPresented: $isShowWhatIs) {
+                WhatIsTheApp()
             }
             .alert(isPresented: $isClearAlert) {
                 Alert(title: Text("You are going to delete all data"), primaryButton: .destructive(Text("Delete"), action: {
@@ -78,6 +82,8 @@ struct AboutApp: View {
                         reviewAction()
                     case .clear:
                         clearAction()
+                    case .whatis:
+                        whatIsAction()
                     default:
                         print()
                     }
@@ -109,6 +115,10 @@ struct AboutApp: View {
     
     private func clearAction() {
         isClearAlert.toggle()
+    }
+    
+    private func whatIsAction() {
+        isShowWhatIs.toggle()
     }
     
 }

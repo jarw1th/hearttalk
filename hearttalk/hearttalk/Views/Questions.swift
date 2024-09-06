@@ -20,6 +20,9 @@ struct Questions: View {
                 viewModel.fetchCards(forCardTypeId: cardType.id)
                 viewModel.cardIndex = 0
             }
+            .onTapGesture {
+                viewModel.isShowTip = false
+            }
     }
     
     private func makeContent() -> some View {

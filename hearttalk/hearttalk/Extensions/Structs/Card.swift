@@ -167,6 +167,28 @@ struct CardView: View {
                 }
             }
             .padding(.bottom, 24)
+            
+            if card == viewModel.cards[viewModel.cardIndex] && viewModel.isShowTip {
+                VStack {
+                    Spacer()
+                    ZStack {
+                        Image("tipBackground")
+                            .renderingMode(.template)
+                            .resizable()
+                            .foregroundStyle(.lightBlack)
+                            .frame(width: 160, height: 40)
+                        
+                        Text("Hold for your custom packs")
+                            .font(.custom("PlayfairDisplay-Regular", size: 10))
+                            .multilineTextAlignment(.leading)
+                            .foregroundStyle(.darkWhite)
+                            .padding(.horizontal, 16)
+                            .padding(.bottom, 10)
+                    }
+                }
+                .padding(.bottom, 48)
+                .padding(.leading, 48)
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(
@@ -181,7 +203,7 @@ struct CardView: View {
             HapticManager.shared.triggerHapticFeedback(.light)
             likeAction(card)
         } label: {
-            Image(viewModel.checkCardFavorites(card) ? "liked" : "like")
+            Image(viewModel.isCardFavorite ? "liked" : "like")
                 .renderingMode(.template)
                 .resizable()
                 .foregroundStyle(.darkGreen)

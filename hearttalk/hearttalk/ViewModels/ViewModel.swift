@@ -14,12 +14,28 @@ final class ViewModel: ObservableObject {
     
     @Published var cardTypes: [CardType] = []
     @Published var cards: [Card] = []
-    @Published var cardIndex: Int = 0
+    @Published var cardIndex: Int = 0 {
+        didSet {
+            updateCardFavoriteStatus()
+        }
+    }
+    @Published var isCardFavorite: Bool = false
     var appVersion: String {
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             return version
         }
         return "1.0"
+    }
+    var isShowTip: Bool {
+        get {
+            if UserDefaults.standard.object(forKey: "isShowTip") == nil {
+                return true
+            }
+            return UserDefaults.standard.bool(forKey: "isShowTip")
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "isShowTip")
+        }
     }
     
     private let hasImportedDataKey = "hasImportedData"
@@ -172,42 +188,36 @@ final class ViewModel: ObservableObject {
     }
     
     func addCardToFavorites(_ card: Card) {
-        do {
-            guard let favoritesCardType = realmManager.getCardType(forName: "Favorites") else {
-                print("Error: 'Favorites' card type not found.")
-                return
-            }
-            
-            if let existingCard = favoritesCardType.cards.first(where: { $0.id == card.id }) {
-                try realmManager.update {
-                    if let index = favoritesCardType.cards.firstIndex(of: existingCard) {
-                        favoritesCardType.cards.remove(at: index)
-                    }
-                }
-                print("Card removed from Favorites.")
-            } else {
-                try realmManager.update {
-                    favoritesCardType.cards.append(card)
-                }
-                print("Card added to Favorites.")
-            }
-        } catch {
-            print("Error updating Favorites: \(error)")
+        guard let favoritesCardType = realmManager.getCardType(forName: "Favorites") else {
+            print("Error: 'Favorites' card type not found.")
+            return
         }
+        
+        if let existingCard = favoritesCardType.cards.first(where: { $0.id == card.id }) {
+            realmManager.update {
+                if let index = favoritesCardType.cards.firstIndex(of: existingCard) {
+                    favoritesCardType.cards.remove(at: index)
+                }
+            }
+            print("Card removed from Favorites.")
+        } else {
+            realmManager.update {
+                favoritesCardType.cards.append(card)
+            }
+            print("Card added to Favorites.")
+        }
+        
+        updateCardFavoriteStatus()
     }
     
-    func checkCardFavorites(_ card: Card) -> Bool {
-        do {
-            guard let favoritesCardType = realmManager.getCardType(forName: "Favorites") else {
-                print("Error: 'Favorites' card type not found.")
-                return false
-            }
-            
-            return favoritesCardType.cards.contains(where: { $0.id == card.id })
-        } catch {
-            print("Error checking card in Favorites: \(error)")
-            return false
+    func updateCardFavoriteStatus() {
+        guard let favoritesCardType = realmManager.getCardType(forName: "Favorites") else {
+            print("Error: 'Favorites' card type not found.")
+            isCardFavorite = false
+            return
         }
+        
+        isCardFavorite = favoritesCardType.cards.contains { $0.id == cards[cardIndex].id }
     }
     
     func speak(text: String) {
@@ -234,6 +244,10 @@ final class ViewModel: ObservableObject {
     func clearData() {
         realmManager.deleteAll()
         parseCardTypesFromFile()
+        fetchAllCardTypes()
+        cardIndex = 0
+        cards = []
+        isCardFavorite = false
     }
     
 }

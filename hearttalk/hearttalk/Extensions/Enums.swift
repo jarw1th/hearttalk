@@ -27,7 +27,7 @@ enum QuestionMode {
 
 enum AboutAppType: CaseIterable {
     
-    case whatis, share, review, terms, privacy, contact
+    case whatis, share, review, terms, privacy, contact, clear
     
     func imageName() -> String {
         switch self {
@@ -43,6 +43,8 @@ enum AboutAppType: CaseIterable {
             return "privacy"
         case .contact:
             return "contact"
+        case .clear:
+            return "trash"
         }
     }
     
@@ -60,6 +62,17 @@ enum AboutAppType: CaseIterable {
             return "Privacy Policy"
         case .contact:
             return "Contact us"
+        case .clear:
+            return "Clear data"
+        }
+    }
+    
+    func isSpecial() -> Bool {
+        switch self {
+        case .clear:
+            return true
+        default:
+            return false
         }
     }
     

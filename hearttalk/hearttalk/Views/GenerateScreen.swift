@@ -1,12 +1,11 @@
 
 import SwiftUI
 
-struct CreateScreen: View {
+struct GenerateScreen: View {
     
     @EnvironmentObject var viewModel: ViewModel
     @Environment(\.presentationMode) var presentationMode
     
-    let createScreenType: CreateScreenType
     @State private var text: String = ""
     
     var body: some View {
@@ -25,14 +24,14 @@ struct CreateScreen: View {
                 makeBackButton()
             }
             VStack(spacing: 24) {
-                Text(createScreenType.header())
+                Text("Generate")
                     .font(.custom("PlayfairDisplay-SemiBold", size: 24))
                     .multilineTextAlignment(.leading)
                     .foregroundStyle(.darkWhite)
                     .frame(maxWidth: .infinity)
-                FillField(placeholder: createScreenType.placeholder(), text: $text)
+                FillField(placeholder: "Prompt", text: $text)
                 Spacer()
-                makeCreateButton()
+                makeGenerateButton()
             }
         }
         .padding(.top, 20)
@@ -40,15 +39,12 @@ struct CreateScreen: View {
         .padding(.horizontal, 20)
     }
     
-    private func makeCreateButton() -> some View {
+    private func makeGenerateButton() -> some View {
         Button {
-            if checkText() {
-                HapticManager.shared.triggerHapticFeedback(.light)
-                createAction()
-                presentationMode.wrappedValue.dismiss()
-            }
+            HapticManager.shared.triggerHapticFeedback(.light)
+            generateAction()
         } label: {
-            Text("Create")
+            Text("Generate")
                 .font(.custom("PlayfairDisplay-Regular", size: 16))
                 .underline()
                 .multilineTextAlignment(.center)
@@ -70,26 +66,18 @@ struct CreateScreen: View {
         }
     }
     
-    private func checkText() -> Bool {
-        switch createScreenType {
-        case .pack:
-            text.count > 4
-        case .card:
-            text.count > 10
-        }
-    }
-    
-    private func createAction() {
-        switch createScreenType {
-        case .pack:
-            viewModel.createPack(name: text, color: "#9CAFB7", cardQuestions: [])
-        case .card:
-            viewModel.createCard(question: text)
+    private func generateAction() {
+        Task {
+            let question = await viewModel.createQuestionAI(prompt: text)
+            if question.count > 4 {
+                viewModel.createCard(question: question)
+                presentationMode.wrappedValue.dismiss()
+            }
         }
     }
     
 }
 
 #Preview {
-    CreateScreen(createScreenType: .card)
+    GenerateScreen()
 }

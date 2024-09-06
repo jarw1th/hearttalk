@@ -7,6 +7,7 @@ struct AboutApp: View {
     @Environment(\.presentationMode) var presentationMode
     
     @State private var isShareApp: Bool = false
+    @State private var isClearAlert: Bool = false
     
     var body: some View {
         makeContent()
@@ -14,6 +15,11 @@ struct AboutApp: View {
             .edgesIgnoringSafeArea(.bottom)
             .sheet(isPresented: $isShareApp) {
                 ActivityViewControllerRepresentableCenter(activityItems: [viewModel.shareApp()])
+            }
+            .alert(isPresented: $isClearAlert) {
+                Alert(title: Text("You are going to delete all data"), primaryButton: .destructive(Text("Delete"), action: {
+                    viewModel.clearData()
+                }), secondaryButton: .cancel(Text("Cancel"), action: {}))
             }
     }
     
@@ -64,12 +70,14 @@ struct AboutApp: View {
     private func makeList() -> some View {
         VStack(spacing: 8) {
             ForEach(Array(AboutAppType.allCases.enumerated()), id: \.element) { index, aboutAppType in
-                AboutListItem(imageName: aboutAppType.imageName(), text: aboutAppType.text()) {
+                AboutListItem(imageName: aboutAppType.imageName(), text: aboutAppType.text(), isSpecial: aboutAppType.isSpecial()) {
                     switch aboutAppType {
                     case .share:
                         shareAction()
                     case .review:
                         reviewAction()
+                    case .clear:
+                        clearAction()
                     default:
                         print()
                     }
@@ -80,6 +88,7 @@ struct AboutApp: View {
     
     private func makeBackButton() -> some View {
         Button {
+            HapticManager.shared.triggerHapticFeedback(.light)
             presentationMode.wrappedValue.dismiss()
         } label: {
             Image("cross")
@@ -96,6 +105,10 @@ struct AboutApp: View {
     
     private func reviewAction() {
         viewModel.requestReview()
+    }
+    
+    private func clearAction() {
+        isClearAlert.toggle()
     }
     
 }

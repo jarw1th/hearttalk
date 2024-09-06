@@ -72,6 +72,7 @@ struct AddHomeCard: View {
     
     private func makePlus() -> some View {
         Button {
+            HapticManager.shared.triggerHapticFeedback(.light)
             isOpened.toggle()
         } label: {
             ZStack {
@@ -106,6 +107,7 @@ struct AddHomeCard: View {
     
     private func makeCross() -> some View {
         Button {
+            HapticManager.shared.triggerHapticFeedback(.light)
             isOpened.toggle()
         } label: {
             VStack {
@@ -118,6 +120,7 @@ struct AddHomeCard: View {
     
     private func makePack() -> some View {
         Button {
+            HapticManager.shared.triggerHapticFeedback(.light)
             tapAction(.pack)
             isOpened.toggle()
         } label: {
@@ -141,6 +144,7 @@ struct AddHomeCard: View {
     
     private func makeCard() -> some View {
         Button {
+            HapticManager.shared.triggerHapticFeedback(.light)
             tapAction(.card)
             isOpened.toggle()
         } label: {
@@ -159,6 +163,38 @@ struct AddHomeCard: View {
             }
             .frame(maxWidth: .infinity)
             .frame(height: 79)
+        }
+    }
+    
+}
+
+struct GenerateHomeCard: View {
+    
+    let tapAction: () -> Void
+    
+    var body: some View {
+        makeContent()
+    }
+    
+    private func makeContent() -> some View {
+        Button {
+            HapticManager.shared.triggerHapticFeedback(.light)
+            tapAction()
+        } label: {
+            ZStack {
+                RoundedRectangle(cornerRadius: 20)
+                    .stroke(.lightGray, lineWidth: 2)
+                
+                VStack {
+                    Text("Generate")
+                        .font(.custom("PlayfairDisplay-Regular", size: 20))
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.lightGray)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 160)
         }
     }
     

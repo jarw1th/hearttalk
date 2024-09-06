@@ -39,19 +39,23 @@ struct CardView: View {
                             }
                             .onEnded { gesture in
                                 if frontCardOffset.width < -150 {
+                                    HapticManager.shared.triggerHapticFeedback(.soft)
+                                    
                                     withAnimation(.easeInOut) {
                                         frontCardOffset = CGSize(width: frontCardOffset.width > 0 ? 1000 : -1000, height: frontCardOffset.height)
                                         frontCardRotation = Double(frontCardOffset.width / 20)
                                     }
                                     
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                                         moveCardRightPosition()
                                         moveToNextCard()
                                         withAnimation(.easeInOut) {
                                             backCardOffset = .zero
                                             resetCardPosition()
                                         }
-                                        backCardOffset = CGSize(width: cardWidth / 1.6, height: -24)
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                            backCardOffset = CGSize(width: cardWidth / 1.6, height: -24)
+                                        }
                                     }
                                 } else {
                                     withAnimation {
@@ -85,12 +89,14 @@ struct CardView: View {
                             }
                             .onEnded { gesture in
                                 if frontCardOffset.width < -150 {
+                                    HapticManager.shared.triggerHapticFeedback(.soft)
+                                    
                                     withAnimation(.easeInOut) {
                                         frontCardOffset = CGSize(width: frontCardOffset.width > 0 ? 1000 : -1000, height: frontCardOffset.height)
                                         frontCardRotation = Double(frontCardOffset.width / 20)
                                     }
                                     
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                                         moveToNextCard()
                                         withAnimation(.easeInOut) {
                                             resetCardPosition()
@@ -164,6 +170,7 @@ struct CardView: View {
     
     private func makeLikeButton(_ card: Card) -> some View {
         Button {
+            HapticManager.shared.triggerHapticFeedback(.light)
             likeAction(card)
         } label: {
             Image(viewModel.checkCardFavorites(card) ? "liked" : "like")
@@ -176,6 +183,7 @@ struct CardView: View {
     
     private func makeShareButton(_ card: Card) -> some View {
         Button {
+            HapticManager.shared.triggerHapticFeedback(.light)
             shareAction(card)
         } label: {
             Image("shareCard")
@@ -188,6 +196,7 @@ struct CardView: View {
     
     private func makeSpeakButton(_ card: Card) -> some View {
         Button {
+            HapticManager.shared.triggerHapticFeedback(.light)
             speakAction(card)
         } label: {
             Image("speaker")
@@ -208,7 +217,7 @@ struct CardView: View {
     }
     
     private func moveCardRightPosition() {
-        frontCardOffset = CGSize(width: 1000, height: frontCardOffset.height)
+        frontCardOffset = CGSize(width: cardWidth / 1.6, height: -24)
         frontCardRotation = Double(10)
     }
     

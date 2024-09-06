@@ -110,7 +110,10 @@ struct Questions: View {
                     ScrollView {
                         LazyVStack {
                             ForEach(Array(viewModel.cards.enumerated()), id: \.element.id) { index, card in
-                                ListItem(number: index + 1, question: card.question)
+                                ListItem(number: index + 1, question: card.question) {
+                                    viewModel.cardIndex = index
+                                    questionMode.toggle()
+                                }
                             }
                         }
                         .padding(.horizontal, 20)
@@ -126,6 +129,7 @@ struct Questions: View {
     
     private func makeBackButton() -> some View {
         Button {
+            HapticManager.shared.triggerHapticFeedback(.light)
             presentationMode.wrappedValue.dismiss()
         } label: {
             Text("Go back")

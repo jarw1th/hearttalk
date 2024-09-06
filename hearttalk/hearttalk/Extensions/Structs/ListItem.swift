@@ -5,30 +5,36 @@ struct ListItem: View {
     
     let number: Int
     let question: String
+    let action: () -> Void
     
     var body: some View {
         makeContent()
     }
     
     private func makeContent() -> some View {
-        HStack(alignment: .top, spacing: 24) {
-            Text("#\(number)")
-                .font(.custom("PlayfairDisplay-SemiBold", size: 20))
-                .multilineTextAlignment(.leading)
-                .foregroundStyle(.lightBlack)
-            Text(question)
-                .font(.custom("PlayfairDisplay-SemiBold", size: 20))
-                .multilineTextAlignment(.leading)
-                .foregroundStyle(.lightBlack)
-                .frame(maxWidth: .infinity, alignment: .leading)
+        Button {
+            HapticManager.shared.triggerHapticFeedback(.light)
+            action()
+        } label: {
+            HStack(alignment: .top, spacing: 24) {
+                Text("#\(number)")
+                    .font(.custom("PlayfairDisplay-SemiBold", size: 20))
+                    .multilineTextAlignment(.leading)
+                    .foregroundStyle(.lightBlack)
+                Text(question)
+                    .font(.custom("PlayfairDisplay-SemiBold", size: 20))
+                    .multilineTextAlignment(.leading)
+                    .foregroundStyle(.lightBlack)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 16)
+            .background(
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(.darkWhite)
+            )
         }
-        .frame(maxWidth: .infinity)
-        .padding(.horizontal, 20)
-        .padding(.vertical, 16)
-        .background(
-            RoundedRectangle(cornerRadius: 20)
-                .fill(.darkWhite)
-        )
     }
     
 }

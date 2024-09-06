@@ -5,6 +5,7 @@ struct AboutListItem: View {
     
     let imageName: String
     let text: String
+    let isSpecial: Bool
     let action: () -> Void
     
     var body: some View {
@@ -13,18 +14,19 @@ struct AboutListItem: View {
     
     private func makeContent() -> some View {
         Button {
+            HapticManager.shared.triggerHapticFeedback(.light)
             action()
         } label: {
             HStack(spacing: 24) {
                 Image(imageName)
                     .renderingMode(.template)
                     .resizable()
-                    .foregroundStyle(.lightBlack)
+                    .foregroundStyle(isSpecial ? .darkWhite : .lightBlack)
                     .frame(width: 24, height: 24)
                 Text(text)
                     .font(.custom("PlayfairDisplay-Regular", size: 16))
                     .multilineTextAlignment(.leading)
-                    .foregroundStyle(.lightBlack)
+                    .foregroundStyle(isSpecial ? .darkWhite : .lightBlack)
                 Spacer()
             }
             .frame(maxWidth: .infinity)
@@ -32,7 +34,11 @@ struct AboutListItem: View {
             .padding(.vertical, 12)
             .background(
                 RoundedRectangle(cornerRadius: 20)
-                    .fill(.darkWhite)
+                    .fill(isSpecial ? .darkGreen : .darkWhite)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 20)
+                    .stroke(isSpecial ? .darkWhite : .clear)
             )
         }
     }

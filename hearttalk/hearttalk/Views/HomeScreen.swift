@@ -8,6 +8,9 @@ struct HomeScreen: View {
     @State private var isShowSettings: Bool = false
     @State private var isShowCreateCard: Bool = false
     @State private var isShowCreatePack: Bool = false
+    @State private var isShowGenerate: Bool = false
+    
+    @State private var selectedCardType: CardType?
     
     var body: some View {
         NavigationView {
@@ -24,6 +27,10 @@ struct HomeScreen: View {
         }
         .sheet(isPresented: $isShowCreatePack) {
             CreateScreen(createScreenType: .pack)
+                .environmentObject(viewModel)
+        }
+        .sheet(isPresented: $isShowGenerate) {
+            GenerateScreen()
                 .environmentObject(viewModel)
         }
     }
@@ -50,16 +57,30 @@ struct HomeScreen: View {
         ScrollView {
             LazyVStack {
                 ForEach(viewModel.cardTypes) { cardType in
-                    NavigationLink(destination: {
-                        Questions(cardType: cardType)
-                            .environmentObject(viewModel)
-                            .navigationBarHidden(true)
-                    }, label: {
+                    Button(action: {
+                        HapticManager.shared.triggerHapticFeedback(.light)
+                        selectedCardType = cardType
+                    }) {
                         HomeCard(HomeCardProperties(color: Color(hex: cardType.color),
                                                     header: cardType.name,
                                                     text: cardType.cards.count == 0 ? "empty" : "\(cardType.cards.count) cards",
                                                     isAvailable: true))
-                    })
+                    }
+                    .background(
+                        NavigationLink(
+                            destination: Questions(cardType: selectedCardType ?? cardType)
+                                .environmentObject(viewModel)
+                                .navigationBarHidden(true),
+                            isActive: Binding(
+                                get: { selectedCardType == cardType },
+                                set: { isActive in
+                                    if !isActive { selectedCardType = nil }
+                                }
+                            )
+                        ) {
+                            EmptyView()
+                        }
+                    )
                 }
             }
             .padding(.horizontal, 20)
@@ -71,6 +92,9 @@ struct HomeScreen: View {
                     case .card:
                         isShowCreateCard.toggle()
                     }
+                }
+                GenerateHomeCard() {
+                    isShowGenerate.toggle()
                 }
             }
             .padding(.horizontal, 20)

@@ -24,6 +24,7 @@ struct NavigationBar<Content: View>: View {
             Spacer()
             if let buttonAction = buttonAction {
                 Button {
+                    HapticManager.shared.triggerHapticFeedback(.light)
                     buttonAction()
                 } label: {
                     buttonContent()

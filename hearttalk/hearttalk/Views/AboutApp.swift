@@ -9,6 +9,9 @@ struct AboutApp: View {
     @State private var isShareApp: Bool = false
     @State private var isClearAlert: Bool = false
     @State private var isShowWhatIs: Bool = false
+    @State private var isShowPDF: Bool = false
+    
+    @State private var pdftype: PDFType = .privacy
     
     var body: some View {
         makeContent()
@@ -19,6 +22,9 @@ struct AboutApp: View {
             }
             .fullScreenCover(isPresented: $isShowWhatIs) {
                 WhatIsTheApp()
+            }
+            .fullScreenCover(isPresented: $isShowPDF) {
+                PDFScreen(pdfType: pdftype)
             }
             .alert(isPresented: $isClearAlert) {
                 Alert(title: Text(Localization.deleting), primaryButton: .destructive(Text(Localization.delete), action: {
@@ -84,8 +90,12 @@ struct AboutApp: View {
                         clearAction()
                     case .whatis:
                         whatIsAction()
-                    default:
-                        print()
+                    case .contact:
+                        contactAction()
+                    case .terms:
+                        termsAction()
+                    case .privacy:
+                        privacyAction()
                     }
                 }
             }
@@ -119,6 +129,27 @@ struct AboutApp: View {
     
     private func whatIsAction() {
         isShowWhatIs.toggle()
+    }
+    
+    private func contactAction() {
+        let email = "mailto:help.hearttalk@gmail.com"
+        if let url = URL(string: email) {
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url)
+            } else {
+                print("Can't open Gmail")
+            }
+        }
+    }
+    
+    private func termsAction() {
+        pdftype = .terms
+        isShowPDF.toggle()
+    }
+    
+    private func privacyAction() {
+        pdftype = .privacy
+        isShowPDF.toggle()
     }
     
 }

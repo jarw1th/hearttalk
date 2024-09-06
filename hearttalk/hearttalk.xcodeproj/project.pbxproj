@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2103FDCF2C8B9ECA0020D1AE /* PDFScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2103FDCE2C8B9ECA0020D1AE /* PDFScreen.swift */; };
+		2103FDD12C8B9EF10020D1AE /* PDF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2103FDD02C8B9EF10020D1AE /* PDF.swift */; };
+		2103FDD62C8BA1660020D1AE /* TermsOfUse.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2103FDD52C8BA1660020D1AE /* TermsOfUse.pdf */; };
+		2103FDD82C8BA2090020D1AE /* PrivacyPolicy.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2103FDD72C8BA2090020D1AE /* PrivacyPolicy.pdf */; };
 		21BDB3D42C899ADD0097F90E /* ProjectApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB3A42C899ADD0097F90E /* ProjectApp.swift */; };
 		21BDB3D52C899ADD0097F90E /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB3A52C899ADD0097F90E /* Localization.swift */; };
 		21BDB3D82C899ADD0097F90E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21BDB3AA2C899ADD0097F90E /* Assets.xcassets */; };
@@ -55,6 +59,10 @@
 
 /* Begin PBXFileReference section */
 		02E4DEC13E1BE42614966649 /* Pods-hearttalk.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hearttalk.release.xcconfig"; path = "Target Support Files/Pods-hearttalk/Pods-hearttalk.release.xcconfig"; sourceTree = "<group>"; };
+		2103FDCE2C8B9ECA0020D1AE /* PDFScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFScreen.swift; sourceTree = "<group>"; };
+		2103FDD02C8B9EF10020D1AE /* PDF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDF.swift; sourceTree = "<group>"; };
+		2103FDD52C8BA1660020D1AE /* TermsOfUse.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = TermsOfUse.pdf; sourceTree = "<group>"; };
+		2103FDD72C8BA2090020D1AE /* PrivacyPolicy.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = PrivacyPolicy.pdf; sourceTree = "<group>"; };
 		21BDB3922C88E0180097F90E /* hearttalk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hearttalk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		21BDB3A42C899ADD0097F90E /* ProjectApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectApp.swift; sourceTree = "<group>"; };
 		21BDB3A52C899ADD0097F90E /* Localization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
@@ -134,6 +142,15 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		2103FDD22C8B9F9E0020D1AE /* PDF */ = {
+			isa = PBXGroup;
+			children = (
+				2103FDD72C8BA2090020D1AE /* PrivacyPolicy.pdf */,
+				2103FDD52C8BA1660020D1AE /* TermsOfUse.pdf */,
+			);
+			path = PDF;
+			sourceTree = "<group>";
+		};
 		21BDB3892C88E0180097F90E = {
 			isa = PBXGroup;
 			children = (
@@ -180,6 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				21BDB4442C8B69520097F90E /* Localization */,
+				2103FDD22C8B9F9E0020D1AE /* PDF */,
 				21BDB4082C89B9940097F90E /* TextContent */,
 				21BDB3A72C899ADD0097F90E /* Fonts */,
 				21BDB3AA2C899ADD0097F90E /* Assets.xcassets */,
@@ -209,6 +227,7 @@
 				21BDB4242C8AE0390097F90E /* Card.swift */,
 				21BDB43C2C8B61820097F90E /* WhatIsCard.swift */,
 				21BDB4262C8AFC0A0097F90E /* CardForShare.swift */,
+				2103FDD02C8B9EF10020D1AE /* PDF.swift */,
 			);
 			path = Structs;
 			sourceTree = "<group>";
@@ -263,6 +282,7 @@
 				21BDB4192C8A2EA80097F90E /* CreateScreen.swift */,
 				21BDB4302C8B1B160097F90E /* GenerateScreen.swift */,
 				21BDB43A2C8B61330097F90E /* WhatIsTheApp.swift */,
+				2103FDCE2C8B9ECA0020D1AE /* PDFScreen.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -385,6 +405,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2103FDD82C8BA2090020D1AE /* PrivacyPolicy.pdf in Resources */,
 				21BDB40D2C89C1200097F90E /* couples_en.txt in Resources */,
 				21BDB40E2C89C1200097F90E /* family_en.txt in Resources */,
 				21BDB40A2C89B9D30097F90E /* default_en.txt in Resources */,
@@ -396,6 +417,7 @@
 				21BDB43F2C8B66220097F90E /* default_ru.txt in Resources */,
 				21BDB4472C8B69630097F90E /* Localizable.strings in Resources */,
 				21BDB4212C8A4C380097F90E /* favorites.txt in Resources */,
+				2103FDD62C8BA1660020D1AE /* TermsOfUse.pdf in Resources */,
 				21BDB3D82C899ADD0097F90E /* Assets.xcassets in Resources */,
 				21BDB4412C8B663E0097F90E /* couples_ru.txt in Resources */,
 			);
@@ -460,6 +482,7 @@
 				21BDB3EA2C899ADD0097F90E /* Enums.swift in Sources */,
 				21BDB4182C89CB970097F90E /* AboutListItem.swift in Sources */,
 				21BDB3DE2C899ADD0097F90E /* ViewModel.swift in Sources */,
+				2103FDCF2C8B9ECA0020D1AE /* PDFScreen.swift in Sources */,
 				21BDB4012C89A35C0097F90E /* HomeCards.swift in Sources */,
 				21BDB4252C8AE0390097F90E /* Card.swift in Sources */,
 				21BDB3FF2C89A1940097F90E /* NavigationBar.swift in Sources */,
@@ -479,6 +502,7 @@
 				21BDB43B2C8B61330097F90E /* WhatIsTheApp.swift in Sources */,
 				21BDB4312C8B1B160097F90E /* GenerateScreen.swift in Sources */,
 				21BDB41A2C8A2EA80097F90E /* CreateScreen.swift in Sources */,
+				2103FDD12C8B9EF10020D1AE /* PDF.swift in Sources */,
 				21BDB41C2C8A2F900097F90E /* FillField.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

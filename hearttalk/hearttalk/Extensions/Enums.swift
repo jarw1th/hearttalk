@@ -101,3 +101,18 @@ enum CreateScreenType {
     }
     
 }
+
+enum PDFType {
+    
+    case terms, privacy
+    
+    func url() -> URL? {
+        switch self {
+        case .terms:
+            return Bundle.main.url(forResource: "TermsOfUse", withExtension: "pdf")
+        case .privacy:
+            return Bundle.main.url(forResource: "PrivacyPolicy", withExtension: "pdf")
+        }
+    }
+    
+}

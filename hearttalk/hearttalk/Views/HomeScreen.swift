@@ -57,7 +57,7 @@ struct HomeScreen: View {
                     }, label: {
                         HomeCard(HomeCardProperties(color: Color(hex: cardType.color),
                                                     header: cardType.name,
-                                                    text: "\(cardType.cards.count) cards",
+                                                    text: cardType.cards.count == 0 ? "empty" : "\(cardType.cards.count) cards",
                                                     isAvailable: true))
                     })
                 }

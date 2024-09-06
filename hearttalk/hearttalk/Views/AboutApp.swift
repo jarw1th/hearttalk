@@ -6,10 +6,15 @@ struct AboutApp: View {
     @EnvironmentObject var viewModel: ViewModel
     @Environment(\.presentationMode) var presentationMode
     
+    @State private var isShareApp: Bool = false
+    
     var body: some View {
         makeContent()
             .background(.lightBlack)
             .edgesIgnoringSafeArea(.bottom)
+            .sheet(isPresented: $isShareApp) {
+                ActivityViewControllerRepresentableCenter(activityItems: [viewModel.shareApp()])
+            }
     }
     
     private func makeContent() -> some View {
@@ -60,7 +65,14 @@ struct AboutApp: View {
         VStack(spacing: 8) {
             ForEach(Array(AboutAppType.allCases.enumerated()), id: \.element) { index, aboutAppType in
                 AboutListItem(imageName: aboutAppType.imageName(), text: aboutAppType.text()) {
-                    
+                    switch aboutAppType {
+                    case .share:
+                        shareAction()
+                    case .review:
+                        reviewAction()
+                    default:
+                        print()
+                    }
                 }
             }
         }
@@ -76,6 +88,14 @@ struct AboutApp: View {
                 .foregroundStyle(.darkWhite)
                 .frame(width: 24, height: 24)
         }
+    }
+    
+    private func shareAction() {
+        isShareApp.toggle()
+    }
+    
+    private func reviewAction() {
+        viewModel.requestReview()
     }
     
 }

@@ -1,1 +1,1 @@
-Color: #D44A13
+Color: #b97375

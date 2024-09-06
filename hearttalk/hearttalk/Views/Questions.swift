@@ -16,6 +16,7 @@ struct Questions: View {
             .edgesIgnoringSafeArea(.bottom)
             .onAppear {
                 viewModel.fetchCards(forCardTypeId: cardType.id)
+                viewModel.cardIndex = 0
             }
     }
     
@@ -63,31 +64,64 @@ struct Questions: View {
     }
     
     private func makeList() -> some View {
-        VStack(spacing: 24) {
-            NavigationBar {
-                Image(questionMode.imageName())
-                    .renderingMode(.template)
-                    .resizable()
-                    .foregroundStyle(.darkWhite)
-                    .frame(width: 16, height: 16)
-            } buttonAction: {
-                questionMode.toggle()
-            }
-            .padding(.horizontal, 20)
-            
-            ScrollView {
-                LazyVStack {
-                    ForEach(Array(viewModel.cards.enumerated()), id: \.element.id) { index, card in
-                        ListItem(number: index + 1, question: card.question)
+        VStack {
+            if viewModel.cards.count == 0 {
+                ZStack {
+                    VStack(spacing: 24) {
+                        NavigationBar {
+                            Image(questionMode.imageName())
+                                .renderingMode(.template)
+                                .resizable()
+                                .foregroundStyle(.darkWhite)
+                                .frame(width: 16, height: 16)
+                        } buttonAction: {
+                            questionMode.toggle()
+                        }
+                        .padding(.horizontal, 20)
+                        Spacer()
+                        makeBackButton()
+                    }
+                    .padding(.top, 8)
+                    .padding(.bottom, 70)
+                    
+                    VStack {
+                        Spacer()
+                        Text("That’s all")
+                            .font(.custom("PlayfairDisplay-SemiBold", size: 20))
+                            .multilineTextAlignment(.center)
+                            .foregroundStyle(.darkWhite)
+                            .padding(.horizontal, 48)
+                        Spacer()
                     }
                 }
-                .padding(.horizontal, 20)
+            } else {
+                VStack(spacing: 24) {
+                    NavigationBar {
+                        Image(questionMode.imageName())
+                            .renderingMode(.template)
+                            .resizable()
+                            .foregroundStyle(.darkWhite)
+                            .frame(width: 16, height: 16)
+                    } buttonAction: {
+                        questionMode.toggle()
+                    }
+                    .padding(.horizontal, 20)
+                    
+                    ScrollView {
+                        LazyVStack {
+                            ForEach(Array(viewModel.cards.enumerated()), id: \.element.id) { index, card in
+                                ListItem(number: index + 1, question: card.question)
+                            }
+                        }
+                        .padding(.horizontal, 20)
+                    }
+                    
+                    makeBackButton()
+                }
+                .padding(.top, 8)
+                .padding(.bottom, 70)
             }
-            
-            makeBackButton()
         }
-        .padding(.top, 8)
-        .padding(.bottom, 70)
     }
     
     private func makeBackButton() -> some View {

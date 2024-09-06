@@ -1,6 +1,8 @@
 
 import SwiftUI
 import RealmSwift
+import StoreKit
+import AVFoundation
 
 @MainActor
 final class ViewModel: ObservableObject {
@@ -141,6 +143,83 @@ final class ViewModel: ObservableObject {
         } catch {
             print("Error creating Card: \(error)")
         }
+    }
+    
+    func createCardImage(_ question: String) -> UIImage? {
+        let hostingController = UIHostingController(rootView: CardForShare(question: question))
+        let view = hostingController.view
+        let targetSize = CGSize(width: 300, height: 600) 
+        
+        view?.bounds = CGRect(origin: .zero, size: targetSize)
+        view?.backgroundColor = .clear
+        
+        let renderer = UIGraphicsImageRenderer(size: targetSize)
+        return renderer.image { _ in
+            view?.drawHierarchy(in: CGRect(origin: .zero, size: targetSize), afterScreenUpdates: true)
+        }
+    }
+    
+    func shareApp() -> String {
+        let appName = Bundle.main.infoDictionary?[kCFBundleNameKey as String] as? String ?? "MyApp"
+        let appURL = "https://apps.apple.com/app/idYOUR_APP_ID"
+        let shareText = "Check out \(appName) - \(appURL)"
+        return shareText
+    }
+    
+    func requestReview() {
+        SKStoreReviewController.requestReview()
+    }
+    
+    func addCardToFavorites(_ card: Card) {
+        do {
+            guard let favoritesCardType = realmManager.getCardType(forName: "Favorites") else {
+                print("Error: 'Favorites' card type not found.")
+                return
+            }
+            
+            if let existingCard = favoritesCardType.cards.first(where: { $0.id == card.id }) {
+                try realmManager.update {
+                    if let index = favoritesCardType.cards.firstIndex(of: existingCard) {
+                        favoritesCardType.cards.remove(at: index)
+                    }
+                }
+                print("Card removed from Favorites.")
+            } else {
+                try realmManager.update {
+                    favoritesCardType.cards.append(card)
+                }
+                print("Card added to Favorites.")
+            }
+        } catch {
+            print("Error updating Favorites: \(error)")
+        }
+    }
+    
+    func checkCardFavorites(_ card: Card) -> Bool {
+        do {
+            guard let favoritesCardType = realmManager.getCardType(forName: "Favorites") else {
+                print("Error: 'Favorites' card type not found.")
+                return false
+            }
+            
+            return favoritesCardType.cards.contains(where: { $0.id == card.id })
+        } catch {
+            print("Error checking card in Favorites: \(error)")
+            return false
+        }
+    }
+    
+    func speak(text: String) {
+        let currentLocale = NSLocale.current
+        let languageCode = currentLocale.languageCode ?? "en"
+        let languageName = currentLocale.localizedString(forLanguageCode: languageCode) ?? "en-US"
+        
+        let utterance = AVSpeechUtterance(string: text)
+        utterance.voice = AVSpeechSynthesisVoice(language: languageName)
+        utterance.rate = AVSpeechUtteranceDefaultSpeechRate
+
+        let synthesizer = AVSpeechSynthesizer()
+        synthesizer.speak(utterance)
     }
     
 }

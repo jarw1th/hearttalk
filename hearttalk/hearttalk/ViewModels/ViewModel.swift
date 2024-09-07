@@ -253,7 +253,9 @@ final class ViewModel: ObservableObject {
             return
         }
         
-        isCardFavorite = favoritesCardType.cards.contains { $0.id == cards[cardIndex].id }
+        if cardIndex < cards.count {
+            isCardFavorite = favoritesCardType.cards.contains { $0.id == cards[cardIndex].id }
+        }
     }
     
     func speak(text: String) {

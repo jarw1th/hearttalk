@@ -116,3 +116,18 @@ enum PDFType {
     }
     
 }
+
+enum OnlineScreenType {
+    
+    case create, join
+    
+    func header() -> String {
+        switch self {
+        case .create:
+            return "Create room"
+        case .join:
+            return "Join room"
+        }
+    }
+    
+}

@@ -56,54 +56,68 @@ struct HomeScreen: View {
     
     private func makeFeed() -> some View {
         ScrollView {
-            LazyVStack {
-                ForEach(viewModel.cardTypes) { cardType in
-                    Button(action: {
-                        HapticManager.shared.triggerHapticFeedback(.light)
-                        selectedCardType = cardType
-                    }) {
-                        HomeCard(HomeCardProperties(color: Color(hex: cardType.color),
-                                                    header: cardType.name,
-                                                    text: cardType.cards.count == 0 ? Localization.empty : "\(cardType.cards.count) \(cardType.cards.count > 1 ? Localization.cards : Localization.card)",
-                                                    isAvailable: true))
-                    }
-                    .background(
-                        NavigationLink(
-                            destination: Questions(cardType: selectedCardType ?? cardType)
-                                .environmentObject(viewModel)
-                                .navigationBarHidden(true),
-                            isActive: Binding(
-                                get: { selectedCardType == cardType },
-                                set: { isActive in
-                                    if !isActive { selectedCardType = nil }
-                                }
-                            )
-                        ) {
-                            EmptyView()
+            LazyVStack(spacing: 16) {
+                LazyVStack(spacing: 16) {
+                    ForEach(viewModel.cardTypes) { cardType in
+                        Button(action: {
+                            HapticManager.shared.triggerHapticFeedback(.light)
+                            selectedCardType = cardType
+                        }) {
+                            HomeCard(HomeCardProperties(color: Color(hex: cardType.color),
+                                                        header: cardType.name,
+                                                        text: cardType.cards.count == 0 ? Localization.empty : "\(cardType.cards.count) \(cardType.cards.count > 1 ? Localization.cards : Localization.card)",
+                                                        isAvailable: true))
                         }
-                    )
-                }
-            }
-            .padding(.horizontal, 20)
-            LazyVStack {
-                AddHomeCard() { type in
-                    switch type {
-                    case .pack:
-                        isShowCreatePack.toggle()
-                    case .card:
-                        isShowCreateCard.toggle()
+                        .background(
+                            NavigationLink(
+                                destination: Questions(cardType: selectedCardType ?? cardType)
+                                    .environmentObject(viewModel)
+                                    .navigationBarHidden(true),
+                                isActive: Binding(
+                                    get: { selectedCardType == cardType },
+                                    set: { isActive in
+                                        if !isActive { selectedCardType = nil }
+                                    }
+                                )
+                            ) {
+                                EmptyView()
+                            }
+                        )
                     }
                 }
-                if requestManager.checkInternetConnectivity() {
-                    GenerateHomeCard() {
-                        if requestManager.checkInternetConnectivity() {
-                            isShowGenerate.toggle()
+                
+                LazyVStack(spacing: 16) {
+                    AddHomeCard() { type in
+                        switch type {
+                        case .pack:
+                            isShowCreatePack.toggle()
+                        case .card:
+                            isShowCreateCard.toggle()
                         }
                     }
+                    if requestManager.checkInternetConnectivity() {
+                        OnlineHomeCard() { type in
+                            switch type {
+                            case .create:
+                                print()
+                            case .join:
+                                print()
+                            }
+                        }
+                        GenerateHomeCard() {
+                            if requestManager.checkInternetConnectivity() {
+                                isShowGenerate.toggle()
+                            }
+                        }
+                    }
                 }
             }
-            .padding(.horizontal, 20)
         }
+        .scrollIndicators(.hidden, axes: .vertical)
+        .clipShape(
+            RoundedRectangle(cornerRadius: 20)
+        )
+        .padding(.horizontal, 20)
     }
     
 }

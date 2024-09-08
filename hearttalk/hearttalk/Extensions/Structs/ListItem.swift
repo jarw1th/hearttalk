@@ -16,20 +16,20 @@ struct ListItem: View {
             HapticManager.shared.triggerHapticFeedback(.light)
             action()
         } label: {
-            HStack(alignment: .top, spacing: 24) {
+            HStack(alignment: .top, spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32) {
                 Text("#\(number)")
-                    .font(.custom("PlayfairDisplay-SemiBold", size: 20))
+                    .font(.custom("PlayfairDisplay-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32))
                     .multilineTextAlignment(.leading)
                     .foregroundStyle(.lightBlack)
                 Text(question)
-                    .font(.custom("PlayfairDisplay-SemiBold", size: 20))
+                    .font(.custom("PlayfairDisplay-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32))
                     .multilineTextAlignment(.leading)
                     .foregroundStyle(.lightBlack)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             .frame(maxWidth: .infinity)
-            .padding(.horizontal, 20)
-            .padding(.vertical, 16)
+            .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32)
+            .padding(.vertical, UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24)
             .background(
                 RoundedRectangle(cornerRadius: 20)
                     .fill(.darkWhite)

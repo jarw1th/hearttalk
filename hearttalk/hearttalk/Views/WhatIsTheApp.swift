@@ -23,7 +23,7 @@ struct WhatIsTheApp: View {
     
     private func makeCards() -> some View {
         ZStack {
-            VStack(spacing: 24) {
+            VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32) {
                 ZStack {
                     NavigationBar(buttonContent: {}, buttonAction: nil)
                     
@@ -37,13 +37,13 @@ struct WhatIsTheApp: View {
                                     .renderingMode(.template)
                                     .resizable()
                                     .foregroundStyle(.darkWhite)
-                                    .frame(width: 16, height: 16)
+                                    .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32, height: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
                             }
                         }
                         Spacer()
                     }
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
                 Spacer()
                     .background(
                         GeometryReader { reader in
@@ -55,8 +55,8 @@ struct WhatIsTheApp: View {
                     )
                 makeBackButton()
             }
-            .padding(.top, 8)
-            .padding(.bottom, 70)
+            .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 8 : 24)
+            .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 70 : 120)
             
             WhatIsCardView(isSwipeBack: $isSwipeBack, index: $index)
                 .frame(height: height)
@@ -69,7 +69,7 @@ struct WhatIsTheApp: View {
             presentationMode.wrappedValue.dismiss()
         } label: {
             Text(Localization.goBack)
-                .font(.custom("PlayfairDisplay-Regular", size: 16))
+                .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32))
                 .underline()
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.darkWhite)

@@ -17,21 +17,21 @@ struct AboutListItem: View {
             HapticManager.shared.triggerHapticFeedback(.light)
             action()
         } label: {
-            HStack(spacing: 24) {
+            HStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32) {
                 Image(imageName)
                     .renderingMode(.template)
                     .resizable()
                     .foregroundStyle(isSpecial ? .darkWhite : .lightBlack)
-                    .frame(width: 24, height: 24)
+                    .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48, height: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48)
                 Text(text)
-                    .font(.custom("PlayfairDisplay-Regular", size: 16))
+                    .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24))
                     .multilineTextAlignment(.leading)
                     .foregroundStyle(isSpecial ? .darkWhite : .lightBlack)
                 Spacer()
             }
             .frame(maxWidth: .infinity)
-            .padding(.horizontal, 24)
-            .padding(.vertical, 12)
+            .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32)
+            .padding(.vertical, UIDevice.current.userInterfaceIdiom == .phone ? 12 : 16)
             .background(
                 RoundedRectangle(cornerRadius: 20)
                     .fill(isSpecial ? .darkGreen : .darkWhite)

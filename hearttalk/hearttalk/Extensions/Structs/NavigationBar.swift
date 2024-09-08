@@ -14,10 +14,10 @@ struct NavigationBar<Content: View>: View {
         HStack {
             Rectangle()
                 .fill(.clear)
-                .frame(width: 16, height: 16)
+                .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32, height: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
             Spacer()
             Text("Heart Talk")
-                .font(.custom("PlayfairDisplay-Regular", size: 16))
+                .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32))
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.darkWhite)
                 .opacity(66)
@@ -29,7 +29,7 @@ struct NavigationBar<Content: View>: View {
                 } label: {
                     buttonContent()
                 }
-                .frame(width: 16, height: 16)
+                .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32, height: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
             }
         }
     }

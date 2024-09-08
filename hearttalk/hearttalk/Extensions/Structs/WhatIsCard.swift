@@ -58,24 +58,24 @@ struct WhatIsCardView: View {
                                             resetCardPosition()
                                         }
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                            backCardOffset = CGSize(width: cardWidth / 1.6, height: -24)
+                                            backCardOffset = CGSize(width: cardWidth / 1.6, height: UIDevice.current.userInterfaceIdiom == .phone ? -24 : -36)
                                         }
                                     }
                                 } else {
                                     withAnimation {
                                         resetCardPosition()
-                                        backCardOffset = CGSize(width: cardWidth / 1.6, height: -24)
+                                        backCardOffset = CGSize(width: cardWidth / 1.6, height: UIDevice.current.userInterfaceIdiom == .phone ? -24 : -36)
                                     }
                                 }
                             }
                     )
-                    .padding(.bottom, 48)
-                    .padding(.horizontal, 20)
+                    .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 48 : 72)
+                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 180)
                     .background(
                         GeometryReader { reader in
                             Color.clear
                                 .onAppear {
-                                    backCardOffset = CGSize(width: reader.size.width / 1.6, height: -24)
+                                    backCardOffset = CGSize(width: reader.size.width / 1.6, height: UIDevice.current.userInterfaceIdiom == .phone ? -24 : -36)
                                     cardWidth = reader.size.width
                                 }
                         }
@@ -113,13 +113,13 @@ struct WhatIsCardView: View {
                                 }
                             }
                     )
-                    .padding(.bottom, 48)
-                    .padding(.horizontal, 20)
+                    .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 48 : 72)
+                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 180)
                     .background(
                         GeometryReader { reader in
                             Color.clear
                                 .onAppear {
-                                    backCardOffset = CGSize(width: reader.size.width / 1.6, height: -24)
+                                    backCardOffset = CGSize(width: reader.size.width / 1.6, height: UIDevice.current.userInterfaceIdiom == .phone ? -24 : -36)
                                     cardWidth = reader.size.width
                                 }
                         }
@@ -128,10 +128,10 @@ struct WhatIsCardView: View {
                 VStack {
                     Spacer()
                     Text(Localization.perfect)
-                        .font(.custom("PlayfairDisplay-SemiBold", size: 20))
+                        .font(.custom("PlayfairDisplay-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32))
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.darkWhite)
-                        .padding(.horizontal, 48)
+                        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 48 : 100)
                     Spacer()
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -151,23 +151,23 @@ struct WhatIsCardView: View {
             VStack {
                 Spacer()
                 Text(card.1)
-                    .font(.custom("PlayfairDisplay-SemiBold", size: 20))
+                    .font(.custom("PlayfairDisplay-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32))
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.lightBlack)
-                    .padding(.horizontal, 48)
+                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 48 : 64)
                 Spacer()
             }
             
             VStack {
                 Text(card.0)
-                    .font(.custom("PlayfairDisplay-Regular", size: 16))
+                    .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24))
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.lightBlack)
                     .opacity(0.66)
-                    .padding(.horizontal, 48)
+                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 48 : 64)
                 Spacer()
             }
-            .padding(.top, 24)
+            .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(
@@ -187,21 +187,21 @@ struct WhatIsCardView: View {
     }
     
     private func moveCardRightPosition() {
-        frontCardOffset = CGSize(width: cardWidth / 1.6, height: -24)
+        frontCardOffset = CGSize(width: cardWidth / 1.6, height: UIDevice.current.userInterfaceIdiom == .phone ? -24 : -36)
         frontCardRotation = Double(10)
     }
     
     private func swipeBack() {
         withAnimation(.easeInOut) {
-            frontCardOffset = CGSize(width: cardWidth / 1.6, height: -24)
+            frontCardOffset = CGSize(width: cardWidth / 1.6, height: UIDevice.current.userInterfaceIdiom == .phone ? -24 : -36)
             frontCardRotation = Double(10)
-            backCardOffset = CGSize(width: cardWidth / 1.5, height: -24)
+            backCardOffset = CGSize(width: cardWidth / 1.5, height: UIDevice.current.userInterfaceIdiom == .phone ? -24 : -36)
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             frontCardOffset = CGSize(width: -1000, height: 0)
             frontCardRotation = Double(-10)
-            backCardOffset = CGSize(width: cardWidth / 1.6, height: -24)
+            backCardOffset = CGSize(width: cardWidth / 1.6, height: UIDevice.current.userInterfaceIdiom == .phone ? -24 : -36)
             withAnimation(.easeInOut) {
                 frontCardOffset = .zero
                 frontCardRotation = 0

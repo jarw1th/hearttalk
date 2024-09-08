@@ -36,17 +36,17 @@ struct HomeCard: View {
                 Spacer()
                 HStack(alignment: .bottom) {
                     Text(properties.header)
-                        .font(.custom("PlayfairDisplay-Regular", size: 20))
+                        .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32))
                         .multilineTextAlignment(.leading)
                         .foregroundStyle(.darkWhite)
                     Spacer()
                     Text(properties.text)
-                        .font(.custom("PlayfairDisplay-Regular", size: 16))
+                        .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24))
                         .multilineTextAlignment(.trailing)
                         .foregroundStyle(.darkWhite)
                 }
             }
-            .padding(24)
+            .padding(UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32)
         }
         .frame(maxWidth: .infinity)
         .frame(height: 160)
@@ -84,7 +84,7 @@ struct AddHomeCard: View {
                         .renderingMode(.template)
                         .resizable()
                         .foregroundStyle(.lightGray)
-                        .frame(width: 48, height: 48)
+                        .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 48 : 64, height: UIDevice.current.userInterfaceIdiom == .phone ? 48 : 64)
                 }
             }
             .frame(maxWidth: .infinity)
@@ -94,7 +94,7 @@ struct AddHomeCard: View {
     
     private func makeOpen() -> some View {
         ZStack {
-            VStack(spacing: 2) {
+            VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 2 : 4) {
                 makePack()
                 makeCard()
             }
@@ -113,7 +113,7 @@ struct AddHomeCard: View {
             VStack {
                 Image("greenCross")
                     .resizable()
-                    .frame(width: 48, height: 48)
+                    .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 48 : 64, height: UIDevice.current.userInterfaceIdiom == .phone ? 48 : 64)
             }
         }
     }
@@ -130,15 +130,15 @@ struct AddHomeCard: View {
                     .clipShape(CustomRoundedRectangle(topLeft: 20, topRight: 20))
                 
                 Text(Localization.createPack)
-                    .font(.custom("PlayfairDisplay-SemiBold", size: 20))
+                    .font(.custom("PlayfairDisplay-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32))
                     .multilineTextAlignment(.leading)
                     .foregroundStyle(.darkGreen)
                     .padding(.top, 20)
-                    .padding(.leading, 24)
+                    .padding(.leading, UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 79)
+            .frame(height: UIDevice.current.userInterfaceIdiom == .phone ? 79 : 78)
         }
     }
     
@@ -154,15 +154,15 @@ struct AddHomeCard: View {
                     .clipShape(CustomRoundedRectangle(bottomLeft: 20, bottomRight: 20))
                 
                 Text(Localization.createCard)
-                    .font(.custom("PlayfairDisplay-SemiBold", size: 20))
+                    .font(.custom("PlayfairDisplay-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32))
                     .multilineTextAlignment(.trailing)
                     .foregroundStyle(.darkGreen)
                     .padding(.bottom, 20)
-                    .padding(.trailing, 24)
+                    .padding(.trailing, UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32)
                     .frame(maxWidth: .infinity, alignment: .trailing)
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 79)
+            .frame(height: UIDevice.current.userInterfaceIdiom == .phone ? 79 : 78)
         }
     }
     
@@ -187,7 +187,7 @@ struct GenerateHomeCard: View {
                 
                 VStack {
                     Text(Localization.generateAction)
-                        .font(.custom("PlayfairDisplay-Regular", size: 20))
+                        .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32))
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.lightGray)
                         .frame(maxWidth: .infinity, alignment: .center)
@@ -227,7 +227,7 @@ struct OnlineHomeCard: View {
                 
                 VStack {
                     Text("Online")
-                        .font(.custom("PlayfairDisplay-Regular", size: 20))
+                        .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32))
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.lightGray)
                         .frame(maxWidth: .infinity, alignment: .center)
@@ -240,7 +240,7 @@ struct OnlineHomeCard: View {
     
     private func makeOpen() -> some View {
         ZStack {
-            VStack(spacing: 2) {
+            VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 2 : 4) {
                 makeCreateRoom()
                 makeJoinRoom()
             }
@@ -259,7 +259,7 @@ struct OnlineHomeCard: View {
             VStack {
                 Image("greenCross")
                     .resizable()
-                    .frame(width: 48, height: 48)
+                    .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 48 : 64, height: UIDevice.current.userInterfaceIdiom == .phone ? 48 : 64)
             }
         }
     }
@@ -276,15 +276,15 @@ struct OnlineHomeCard: View {
                     .clipShape(CustomRoundedRectangle(topLeft: 20, topRight: 20))
                 
                 Text("Create room")
-                    .font(.custom("PlayfairDisplay-SemiBold", size: 20))
+                    .font(.custom("PlayfairDisplay-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32))
                     .multilineTextAlignment(.leading)
                     .foregroundStyle(.darkGreen)
                     .padding(.top, 20)
-                    .padding(.leading, 24)
+                    .padding(.leading, UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 79)
+            .frame(height: UIDevice.current.userInterfaceIdiom == .phone ? 79 : 78)
         }
     }
     
@@ -300,15 +300,15 @@ struct OnlineHomeCard: View {
                     .clipShape(CustomRoundedRectangle(bottomLeft: 20, bottomRight: 20))
                 
                 Text("Join room")
-                    .font(.custom("PlayfairDisplay-SemiBold", size: 20))
+                    .font(.custom("PlayfairDisplay-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32))
                     .multilineTextAlignment(.trailing)
                     .foregroundStyle(.darkGreen)
                     .padding(.bottom, 20)
-                    .padding(.trailing, 24)
+                    .padding(.trailing, UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32)
                     .frame(maxWidth: .infinity, alignment: .trailing)
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 79)
+            .frame(height: UIDevice.current.userInterfaceIdiom == .phone ? 79 : 78)
         }
     }
     

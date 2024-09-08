@@ -14,7 +14,7 @@ struct PDFScreen: View {
     }
     
     private func makeContent() -> some View {
-        VStack(spacing: 24) {
+        VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32) {
             NavigationBar(buttonContent: {}, buttonAction: nil)
             
             if let url = pdfType.url() {
@@ -25,9 +25,9 @@ struct PDFScreen: View {
             
             makeBackButton()
         }
-        .padding(.top, 8)
-        .padding(.bottom, 70)
-        .padding(.horizontal, 20)
+        .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 8 : 24)
+        .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 70 : 120)
+        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
     }
     
     private func makeBackButton() -> some View {
@@ -36,7 +36,7 @@ struct PDFScreen: View {
             presentationMode.wrappedValue.dismiss()
         } label: {
             Text(Localization.goBack)
-                .font(.custom("PlayfairDisplay-Regular", size: 16))
+                .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32))
                 .underline()
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.darkWhite)

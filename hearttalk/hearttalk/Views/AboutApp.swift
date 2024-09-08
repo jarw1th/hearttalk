@@ -39,38 +39,40 @@ struct AboutApp: View {
                 Spacer()
                 makeBackButton()
             }
-            VStack(spacing: 24) {
+            VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48) {
                 Text(Localization.aboutTheApp)
-                    .font(.custom("PlayfairDisplay-SemiBold", size: 24))
+                    .font(.custom("PlayfairDisplay-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48))
                     .multilineTextAlignment(.leading)
                     .foregroundStyle(.darkWhite)
                     .frame(maxWidth: .infinity)
                 makeList()
                 makeCridential()
-                    .padding(.top, 12)
+                    .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 12 : 0)
                 Spacer()
-                Text("\(Localization.version) \(viewModel.appVersion)")
-                    .font(.custom("PlayfairDisplay-Regular", size: 10))
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(.darkWhite)
-                    .opacity(0.66)
+                if  UIDevice.current.userInterfaceIdiom == .phone {
+                    Text("\(Localization.version) \(viewModel.appVersion)")
+                        .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 10 : 14))
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.darkWhite)
+                        .opacity(0.66)
+                }
             }
         }
-        .padding(.top, 20)
-        .padding(.bottom, 70)
-        .padding(.horizontal, 20)
+        .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32)
+        .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 70 : 10)
+        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
     }
     
     private func makeCridential() -> some View {
-        VStack {
+        VStack(spacing: 8) {
             Image("logoIcon")
                 .renderingMode(.template)
                 .resizable()
                 .foregroundStyle(.darkWhite)
-                .frame(width: 20, height: 18)
+                .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 40, height: UIDevice.current.userInterfaceIdiom == .phone ? 18 : 34)
                 .opacity(0.66)
             Text(Localization.credential)
-                .font(.custom("PlayfairDisplay-SemiBold", size: 16))
+                .font(.custom("PlayfairDisplay-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24))
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.darkWhite)
                 .opacity(0.66)
@@ -78,7 +80,7 @@ struct AboutApp: View {
     }
     
     private func makeList() -> some View {
-        VStack(spacing: 8) {
+        VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 8 : 16) {
             ForEach(Array(AboutAppType.allCases.enumerated()), id: \.element) { index, aboutAppType in
                 AboutListItem(imageName: aboutAppType.imageName(), text: aboutAppType.text(), isSpecial: aboutAppType.isSpecial()) {
                     switch aboutAppType {
@@ -111,7 +113,7 @@ struct AboutApp: View {
                 .renderingMode(.template)
                 .resizable()
                 .foregroundStyle(.darkWhite)
-                .frame(width: 24, height: 24)
+                .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48, height: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48)
         }
     }
     

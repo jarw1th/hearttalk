@@ -43,21 +43,21 @@ struct HomeScreen: View {
                     .renderingMode(.template)
                     .resizable()
                     .foregroundStyle(.darkWhite)
-                    .frame(width: 16, height: 16)
+                    .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32, height: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
             } buttonAction: {
                 isShowSettings.toggle()
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
             
             makeFeed()
         }
-        .padding(.top, 8)
+        .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 8 : 24)
     }
     
     private func makeFeed() -> some View {
         ScrollView {
-            LazyVStack(spacing: 16) {
-                LazyVStack(spacing: 16) {
+            LazyVStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
+                LazyVStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
                     ForEach(viewModel.cardTypes) { cardType in
                         Button(action: {
                             HapticManager.shared.triggerHapticFeedback(.light)
@@ -86,7 +86,7 @@ struct HomeScreen: View {
                     }
                 }
                 
-                LazyVStack(spacing: 16) {
+                LazyVStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
                     AddHomeCard() { type in
                         switch type {
                         case .pack:
@@ -117,7 +117,7 @@ struct HomeScreen: View {
         .clipShape(
             RoundedRectangle(cornerRadius: 20)
         )
-        .padding(.horizontal, 20)
+        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
     }
     
 }

@@ -37,14 +37,14 @@ struct Questions: View {
     
     private func makeCards() -> some View {
         ZStack {
-            VStack(spacing: 24) {
+            VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32) {
                 ZStack {
                     NavigationBar {
                         Image(questionMode.imageName())
                             .renderingMode(.template)
                             .resizable()
                             .foregroundStyle(.darkWhite)
-                            .frame(width: 16, height: 16)
+                            .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32, height: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
                     } buttonAction: {
                         questionMode.toggle()
                     }
@@ -59,13 +59,13 @@ struct Questions: View {
                                     .renderingMode(.template)
                                     .resizable()
                                     .foregroundStyle(.darkWhite)
-                                    .frame(width: 16, height: 16)
+                                    .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32, height: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
                             }
                         }
                         Spacer()
                     }
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
                 Spacer()
                     .background(
                         GeometryReader { reader in
@@ -77,8 +77,8 @@ struct Questions: View {
                     )
                 makeBackButton()
             }
-            .padding(.top, 8)
-            .padding(.bottom, 70)
+            .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 8 : 24)
+            .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 70 : 120)
             
             CardView(isSwipeBack: $isSwipeBack)
                 .environmentObject(viewModel)
@@ -90,45 +90,45 @@ struct Questions: View {
         VStack {
             if viewModel.cards.count == 0 {
                 ZStack {
-                    VStack(spacing: 24) {
+                    VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32) {
                         NavigationBar {
                             Image(questionMode.imageName())
                                 .renderingMode(.template)
                                 .resizable()
                                 .foregroundStyle(.darkWhite)
-                                .frame(width: 16, height: 16)
+                                .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32, height: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
                         } buttonAction: {
                             questionMode.toggle()
                         }
-                        .padding(.horizontal, 20)
+                        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
                         Spacer()
                         makeBackButton()
                     }
-                    .padding(.top, 8)
-                    .padding(.bottom, 70)
+                    .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 8 : 24)
+                    .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 70 : 120)
                     
                     VStack {
                         Spacer()
                         Text(Localization.thatIsAll)
-                            .font(.custom("PlayfairDisplay-SemiBold", size: 20))
+                            .font(.custom("PlayfairDisplay-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32))
                             .multilineTextAlignment(.center)
                             .foregroundStyle(.darkWhite)
-                            .padding(.horizontal, 48)
+                            .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 48 : 100)
                         Spacer()
                     }
                 }
             } else {
-                VStack(spacing: 24) {
+                VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32) {
                     NavigationBar {
                         Image(questionMode.imageName())
                             .renderingMode(.template)
                             .resizable()
                             .foregroundStyle(.darkWhite)
-                            .frame(width: 16, height: 16)
+                            .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32, height: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
                     } buttonAction: {
                         questionMode.toggle()
                     }
-                    .padding(.horizontal, 20)
+                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
                     
                     ScrollView {
                         LazyVStack {
@@ -145,12 +145,12 @@ struct Questions: View {
                     .clipShape(
                         RoundedRectangle(cornerRadius: 20)
                     )
-                    .padding(.horizontal, 20)
+                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
                 
                     makeBackButton()
                 }
-                .padding(.top, 8)
-                .padding(.bottom, 70)
+                .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 8 : 24)
+                .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 70 : 120)
             }
         }
     }
@@ -161,7 +161,7 @@ struct Questions: View {
             presentationMode.wrappedValue.dismiss()
         } label: {
             Text(Localization.goBack)
-                .font(.custom("PlayfairDisplay-Regular", size: 16))
+                .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32))
                 .underline()
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.darkWhite)

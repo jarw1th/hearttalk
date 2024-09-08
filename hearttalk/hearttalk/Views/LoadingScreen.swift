@@ -16,7 +16,7 @@ struct LoadingScreen: View {
     }
     
     private func makeContent() -> some View {
-        VStack(spacing: 16) {
+        VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 48) {
             makeLoader()
             makeText()
         }
@@ -36,13 +36,13 @@ struct LoadingScreen: View {
                 .renderingMode(.template)
                 .resizable()
                 .foregroundStyle(.darkWhite)
-                .frame(width: 200, height: 172)
+                .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 200 : 400, height: UIDevice.current.userInterfaceIdiom == .phone ? 172 : 344)
             
             Image("hLogoPart")
                 .renderingMode(.template)
                 .resizable()
                 .foregroundStyle(.lightBlack)
-                .frame(width: 54, height: 54)
+                .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 54 : 106, height: UIDevice.current.userInterfaceIdiom == .phone ? 54 : 106)
                 .rotationEffect(.degrees(rotation))
                 .onAppear {
                     startRotation()
@@ -52,7 +52,7 @@ struct LoadingScreen: View {
     
     private func makeText() -> some View {
         Text("Heart Talk")
-            .font(.custom("PlayfairDisplay-Regular", size: 36))
+            .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 36 : 64))
             .multilineTextAlignment(.center)
             .foregroundStyle(.darkWhite)
             .opacity(66)

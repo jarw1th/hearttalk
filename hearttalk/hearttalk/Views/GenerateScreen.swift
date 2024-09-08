@@ -24,9 +24,9 @@ struct GenerateScreen: View {
                 Spacer()
                 makeBackButton()
             }
-            VStack(spacing: 24) {
+            VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48) {
                 Text(Localization.generateNoun)
-                    .font(.custom("PlayfairDisplay-SemiBold", size: 24))
+                    .font(.custom("PlayfairDisplay-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48))
                     .multilineTextAlignment(.leading)
                     .foregroundStyle(.darkWhite)
                     .frame(maxWidth: .infinity)
@@ -35,9 +35,9 @@ struct GenerateScreen: View {
                 makeGenerateButton()
             }
         }
-        .padding(.top, 20)
-        .padding(.bottom, 70)
-        .padding(.horizontal, 20)
+        .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32)
+        .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 70 : 120)
+        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
     }
     
     private func makeGenerateButton() -> some View {
@@ -48,7 +48,7 @@ struct GenerateScreen: View {
             }
         } label: {
             Text(Localization.generateAction)
-                .font(.custom("PlayfairDisplay-Regular", size: 16))
+                .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32))
                 .underline()
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.darkWhite)
@@ -65,7 +65,7 @@ struct GenerateScreen: View {
                 .renderingMode(.template)
                 .resizable()
                 .foregroundStyle(.darkWhite)
-                .frame(width: 24, height: 24)
+                .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48, height: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48)
         }
     }
     

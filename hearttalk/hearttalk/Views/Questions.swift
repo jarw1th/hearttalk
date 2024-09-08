@@ -141,7 +141,7 @@ struct Questions: View {
                         }
                         
                     }
-                    .scrollIndicators(.hidden, axes: .vertical)
+                    .applyScrollIndicators(false, axes: .vertical)
                     .clipShape(
                         RoundedRectangle(cornerRadius: 20)
                     )

@@ -4,12 +4,10 @@ import SwiftUI
 struct HomeScreen: View {
     
     @EnvironmentObject var viewModel: ViewModel
-    @State private var requestManager: RequestManager = RequestManager()
     
     @State private var isShowSettings: Bool = false
     @State private var isShowCreateCard: Bool = false
     @State private var isShowCreatePack: Bool = false
-    @State private var isShowGenerate: Bool = false
     
     @State private var selectedCardType: CardType?
     
@@ -28,10 +26,6 @@ struct HomeScreen: View {
         }
         .sheet(isPresented: $isShowCreatePack) {
             CreateScreen(createScreenType: .pack)
-                .environmentObject(viewModel)
-        }
-        .sheet(isPresented: $isShowGenerate) {
-            GenerateScreen()
                 .environmentObject(viewModel)
         }
     }
@@ -95,25 +89,10 @@ struct HomeScreen: View {
                             isShowCreateCard.toggle()
                         }
                     }
-                    if requestManager.checkInternetConnectivity() {
-                        OnlineHomeCard() { type in
-                            switch type {
-                            case .create:
-                                print()
-                            case .join:
-                                print()
-                            }
-                        }
-                        GenerateHomeCard() {
-                            if requestManager.checkInternetConnectivity() {
-                                isShowGenerate.toggle()
-                            }
-                        }
-                    }
                 }
             }
         }
-        .scrollIndicators(.hidden, axes: .vertical)
+        .applyScrollIndicators(false, axes: .vertical)
         .clipShape(
             RoundedRectangle(cornerRadius: 20)
         )
@@ -122,6 +101,3 @@ struct HomeScreen: View {
     
 }
 
-#Preview {
-    HomeScreen()
-}

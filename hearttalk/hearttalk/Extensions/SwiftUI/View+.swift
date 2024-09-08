@@ -14,4 +14,13 @@ extension View {
         }
     }
     
+    @ViewBuilder
+    func applyScrollIndicators(_ visibilyty: Bool, axes: Axis.Set) -> some View {
+        if #available(iOS 16.0, *) {
+            self.scrollIndicators(visibilyty ? .visible : .never, axes: axes)
+        } else {
+            self
+        }
+    }
+    
 }

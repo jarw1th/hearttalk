@@ -89,7 +89,3 @@ struct CreateScreen: View {
     }
     
 }
-
-#Preview {
-    CreateScreen(createScreenType: .card)
-}

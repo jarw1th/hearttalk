@@ -9,9 +9,5 @@ target 'hearttalk' do
 
   # Pods for hearttalk
   pod 'RealmSwift'
-  pod 'Alamofire'
-  pod 'FirebaseCore'
-  pod 'FirebaseFirestore'
-  pod 'FirebaseDatabase'
 
 end

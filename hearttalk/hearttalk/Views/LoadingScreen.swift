@@ -70,7 +70,3 @@ struct LoadingScreen: View {
     }
     
 }
-
-#Preview {
-    LoadingScreen()
-}

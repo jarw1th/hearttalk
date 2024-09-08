@@ -238,6 +238,10 @@ struct CardView: View {
             RoundedRectangle(cornerRadius: 20)
                 .fill(.darkWhite)
                 .shadow(color: .shadow, radius: 5)
+                .onTapGesture {
+                    viewModel.isShowTip = false
+                    isShowMenu = false
+                }
         )
     }
     

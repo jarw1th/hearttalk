@@ -14,5 +14,7 @@
 		<key>UILaunchScreen</key>
 		<dict/>
 	</dict>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Heart Talk requires speech recognition.</string>
 </dict>
 </plist>

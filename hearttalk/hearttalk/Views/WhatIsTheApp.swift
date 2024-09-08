@@ -78,7 +78,3 @@ struct WhatIsTheApp: View {
     }
     
 }
-
-#Preview {
-    WhatIsTheApp()
-}

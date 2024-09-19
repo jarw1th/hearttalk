@@ -6,7 +6,7 @@ struct HomeCardProperties {
     let color: Color
     let header: String
     let text: String
-    let isAvailable: Bool
+    let description: String = ""
     
 }
 
@@ -26,11 +26,6 @@ struct HomeCard: View {
         ZStack {
             RoundedRectangle(cornerRadius: 20)
                 .fill(properties.color)
-            
-            if !properties.isAvailable {
-                RoundedRectangle(cornerRadius: 20)
-                    .stroke(.lightGray, lineWidth: 2)
-            }
             
             VStack {
                 Spacer()

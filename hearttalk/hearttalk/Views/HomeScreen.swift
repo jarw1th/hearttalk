@@ -11,6 +11,7 @@ struct HomeScreen: View {
     @State private var isShowCreatePack: Bool = false
     @State private var isShowGenerate: Bool = false
     
+    @State private var selectedCardPack: CardPack?
     @State private var selectedCardType: CardType?
     
     var body: some View {
@@ -58,31 +59,58 @@ struct HomeScreen: View {
         ScrollView {
             LazyVStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
                 LazyVStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
-                    ForEach(viewModel.cardTypes) { cardType in
+                    ForEach(viewModel.cardPacks) { cardPack in
                         Button(action: {
-                            HapticManager.shared.triggerHapticFeedback(.light)
-                            selectedCardType = cardType
+                            if cardPack.cardTypes.count != 0 {
+                                HapticManager.shared.triggerHapticFeedback(.light)
+                                selectedCardPack = cardPack
+                            }
                         }) {
-                            HomeCard(HomeCardProperties(color: Color(hex: cardType.color),
-                                                        header: cardType.name,
-                                                        text: cardType.cards.count == 0 ? Localization.empty : "\(cardType.cards.count) \(cardType.cards.count > 1 ? Localization.cards : Localization.card)",
-                                                        isAvailable: true))
+                            HomeCard(HomeCardProperties(color: Color(hex: cardPack.color),
+                                                        header: cardPack.name,
+                                                        text: cardPack.cardTypes.count == 0 ? Localization.empty : "\(cardPack.cardTypes.count) \(cardPack.cardTypes.count > 1 ? Localization.packs : Localization.pack)"))
                         }
-                        .background(
+                        .background {
                             NavigationLink(
-                                destination: Questions(cardType: selectedCardType ?? cardType)
+                                destination: PacksScreen(cardPack: selectedCardPack)
                                     .environmentObject(viewModel)
                                     .navigationBarHidden(true),
                                 isActive: Binding(
-                                    get: { selectedCardType == cardType },
+                                    get: { selectedCardPack == cardPack },
                                     set: { isActive in
-                                        if !isActive { selectedCardType = nil }
+                                        if !isActive { selectedCardPack = nil }
                                     }
                                 )
                             ) {
                                 EmptyView()
                             }
-                        )
+                        }
+                    }
+                }
+                
+                if let favoriteType = viewModel.favoriteType {
+                    Button(action: {
+                        HapticManager.shared.triggerHapticFeedback(.light)
+                        selectedCardType = favoriteType
+                    }) {
+                        HomeCard(HomeCardProperties(color: Color(hex: favoriteType.color),
+                                                    header: favoriteType.name,
+                                                    text: favoriteType.cards.count == 0 ? Localization.empty : "\(favoriteType.cards.count) \(favoriteType.cards.count ?? 0 > 1 ? Localization.cards : Localization.card)"))
+                    }
+                    .background {
+                        NavigationLink(
+                            destination: Questions(cardType: favoriteType)
+                                .environmentObject(viewModel)
+                                .navigationBarHidden(true),
+                            isActive: Binding(
+                                get: { selectedCardType == favoriteType },
+                                set: { isActive in
+                                    if !isActive { selectedCardType = nil }
+                                }
+                            )
+                        ) {
+                            EmptyView()
+                        }
                     }
                 }
                 

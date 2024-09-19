@@ -72,8 +72,19 @@ final class RealmManager {
         }
     }
     
+    func getAllCardPacks() -> Results<CardPack> {
+        return realm.objects(CardPack.self)
+    }
+    
     func getAllCardTypes() -> Results<CardType> {
         return realm.objects(CardType.self)
+    }
+    
+    func getCardTypes(forCardPackId cardPackId: String) -> List<CardType>? {
+        guard let cardPack = realm.object(ofType: CardPack.self, forPrimaryKey: cardPackId) else {
+            return nil
+        }
+        return cardPack.cardTypes
     }
     
     func getCards(forCardTypeId cardTypeId: String) -> List<Card>? {
@@ -81,6 +92,10 @@ final class RealmManager {
             return nil
         }
         return cardType.cards
+    }
+    
+    func getCardPack(forId id: String) -> CardPack? {
+        return realm.object(ofType: CardPack.self, forPrimaryKey: id)
     }
     
     func getCardType(forId id: String) -> CardType? {

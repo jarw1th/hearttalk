@@ -1,17 +1,35 @@
 
 import RealmSwift
 
-class CardType: Object, Identifiable {
+class CardPack: Object, Identifiable {
     
     @Persisted(primaryKey: true) var id: String
     @Persisted var name: String
     @Persisted var color: String
-    @Persisted var cards: List<Card>
+    @Persisted var cardTypes: List<CardType>
     
     convenience init(id: String, name: String) {
         self.init()
         self.id = id
         self.name = name
+    }
+    
+}
+
+class CardType: Object, Identifiable {
+    
+    @Persisted(primaryKey: true) var id: String
+    @Persisted var name: String
+    @Persisted var text: String
+    @Persisted var color: String
+    @Persisted var cards: List<Card>
+    @Persisted(originProperty: "cardTypes") var parentCardPack: LinkingObjects<CardPack>
+    
+    convenience init(id: String, name: String, text: String) {
+        self.init()
+        self.id = id
+        self.name = name
+        self.text = text
     }
     
 }

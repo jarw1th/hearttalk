@@ -14,6 +14,7 @@ final class ViewModel: ObservableObject {
     
     @Published var myCardTypes: [CardType] = []
     @Published var cardTypes: [CardType] = []
+    @Published var cardPacks: [CardPack] = []
     @Published var cards: [Card] = []
     @Published var cardIndex: Int = 0 {
         didSet {
@@ -21,6 +22,7 @@ final class ViewModel: ObservableObject {
         }
     }
     @Published var isCardFavorite: Bool = false
+    @Published var favoriteType: CardType?
     var appVersion: String {
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             return version
@@ -39,9 +41,10 @@ final class ViewModel: ObservableObject {
         }
     }
     
-    private let defaultCardTypes = [Localization.defaultMode, Localization.couples, Localization.family, Localization.favorites, Localization.created]
+    private let defaultCardTypes = [Localization.simple, Localization.family, Localization.close, Localization.closer, Localization.closest]
     private let hasImportedDataKey = "hasImportedData"
     private var createdPackId: String?
+    private var createdTypeId: String?
     
     init() {
         let userLanguage = Locale.preferredLanguages.first?.prefix(2) ?? "en"
@@ -50,7 +53,7 @@ final class ViewModel: ObservableObject {
                 parseCardTypesFromFile()
                 UserDefaults.standard.set(true, forKey: hasImportedDataKey)
             }
-            fetchAllCardTypes()
+            fetchAll()
         } else {
             clearData()
             UserDefaults.standard.set(userLanguage, forKey: "selectedLanguage")
@@ -58,27 +61,35 @@ final class ViewModel: ObservableObject {
     }
     
     private func parseCardTypesFromFile() {
-        let cardTypesWithFileNames = [
-            (Localization.defaultMode, "default"),
-            (Localization.couples, "couples"),
-            (Localization.family, "family")
-        ]
+        let cardPacks = [Localization.defaultPack, Localization.couples, Localization.adult]
+        let cardTypes = [[(Localization.simple, "", "default_simple"), (Localization.family, "", "default_family")],
+                         [(Localization.close, "", "couples_close"), (Localization.closer, "", "couples_closer"), (Localization.closest, "", "couples_closest")],
+                         [("", "", "")]]
         
-        let userLanguage = Locale.preferredLanguages.first?.prefix(2) ?? "en"
-        
-        for (cardTypeName, baseFileName) in cardTypesWithFileNames {
-            let fileName = "\(baseFileName)_\(userLanguage)"
-            addCardType(withName: cardTypeName, fromFile: fileName, with: "\(baseFileName)_en")
+        for (index, cardPackName) in cardPacks.enumerated() {
+           addCardPack(packName: cardPackName, cardTypes: cardTypes[index])
         }
-        addCardType(withName: Localization.favorites, fromFile: "favorites", with: "favorites", save: false)
-        addCardType(withName: Localization.created, fromFile: "my", with: "my", save: true)
+        addCardPack(packName: Localization.favorites, cardTypes: [(Localization.favorites, "", "favorites")], isFavorites: true, isSpecial: true)
+        addCardPack(packName: Localization.created, cardTypes: [(Localization.unsorted, "", "created")], save: true, isSpecial: true)
     }
     
-    private func addCardType(withName name: String, fromFile fileName: String, with baseName: String, save: Bool = false) {
+    private func addCardPack(packName name: String, cardTypes: [(String, String, String)], save: Bool = false, isFavorites: Bool = false, isSpecial: Bool = false) {
+        let userLanguage = Locale.preferredLanguages.first?.prefix(2) ?? "en"
+        
+        var cardPack = CardPack(id: UUID().uuidString, name: name)
+        for (cardTypeName, description, baseFileName) in cardTypes {
+            let fileName = "\(baseFileName)_\(userLanguage)"
+            cardPack = addCardType(withPack: cardPack, withTypeName: cardTypeName, withText: description, fromFile: fileName, with: isSpecial ? baseFileName : "\(baseFileName)_en", save: save, isFavorites: isFavorites) ?? CardPack(id: UUID().uuidString, name: name)
+        }
+        
+        realmManager.add(cardPack)
+    }
+    
+    private func addCardType(withPack pack: CardPack, withTypeName typeName: String, withText description: String, fromFile fileName: String, with baseName: String, save: Bool = false, isFavorites: Bool = false) -> CardPack? {
         var fileContents: String = ""
         guard let baseFileContents = try? readTextFile(fileName: baseName) else {
             print("Error fetching file")
-            return
+            return nil
         }
         if let langFileContents = try? readTextFile(fileName: fileName) {
             fileContents = langFileContents
@@ -88,27 +99,38 @@ final class ViewModel: ObservableObject {
         
         let lines = fileContents.components(separatedBy: .newlines)
         
-        guard let colorLine = lines.first(where: { $0.starts(with: "Color:") }) else {
+        guard let packColorLine = lines.first(where: { $0.starts(with: "Pack Color:") }) else {
             print("Error: No color found in file \(fileName)")
-            return
+            return nil
+        }
+        guard let typeColorLine = lines.first(where: { $0.starts(with: "Type Color:") }) else {
+            print("Error: No color found in file \(fileName)")
+            return nil
         }
         
-        let colorValue = colorLine.replacingOccurrences(of: "Color:", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+        let packColor = packColorLine.replacingOccurrences(of: "Pack Color:", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+        pack.color = packColor
+        let typeColor = typeColorLine.replacingOccurrences(of: "Type Color:", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
         
-        let cardType = CardType(id: UUID().uuidString, name: name)
-        cardType.color = colorValue
+        let cardType = CardType(id: UUID().uuidString, name: typeName, text: description)
+        cardType.color = typeColor
+        if isFavorites {
+            favoriteType = cardType
+        }
         if save {
-            createdPackId = cardType.id
+            createdPackId = pack.id
+            createdTypeId = cardType.id
         }
         
-        let questions = lines.dropFirst().filter { !$0.isEmpty && !$0.starts(with: "Color:") }
+        let questions = lines.dropFirst().filter { !$0.isEmpty && !$0.starts(with: "Pack Color:") && !$0.starts(with: "Type Color:") }
         
         for question in questions {
             let card = Card(id: UUID().uuidString, question: question)
             cardType.cards.append(card)
         }
         
-        realmManager.add(cardType)
+        pack.cardTypes.append(cardType)
+        return pack
     }
     
     private func readTextFile(fileName: String) throws -> String {
@@ -119,13 +141,34 @@ final class ViewModel: ObservableObject {
         }
     }
     
-    func fetchAllCardTypes() {
+    func fetchAll() {
         self.cardTypes = []
         self.myCardTypes = []
+        self.favoriteType = nil
         let cardTypesResults = self.realmManager.getAllCardTypes()
         
+        fetchAllCardPacks()
         self.cardTypes = Array(cardTypesResults)
         self.myCardTypes = Array(cardTypesResults).filter { !defaultCardTypes.contains($0.name) }
+        self.favoriteType = cardTypes.filter({ $0.name == Localization.favorites }).first
+        self.createdPackId = cardPacks.filter({ $0.name == Localization.created }).first?.id
+        self.createdTypeId = cardTypes.filter({ $0.name == Localization.unsorted }).first?.id
+    }
+    
+    func fetchAllCardPacks() {
+        self.cardPacks = []
+        let cardPacksResults = self.realmManager.getAllCardPacks()
+        
+        self.cardPacks = Array(cardPacksResults).filter { $0.name != Localization.favorites }
+    }
+    
+    func fetchAllCardTypes(forCardPackId cardPackId: String) {
+        if let cardTypesList = self.realmManager.getCardTypes(forCardPackId: cardPackId) {
+            self.cardTypes = Array(cardTypesList)
+            self.myCardTypes = Array(cardTypesList).filter { !defaultCardTypes.contains($0.name) }
+        } else {
+            self.cardTypes = []
+        }
     }
     
     func fetchCards(forCardTypeId cardTypeId: String) {
@@ -136,8 +179,9 @@ final class ViewModel: ObservableObject {
         }
     }
     
-    func createPack(name: String, color: String, cardQuestions: [String]) {
-        do {
+    func createType(name: String, color: String, cardQuestions: [String]) {
+        if let createdPackId = createdPackId,
+           let createdPack = realmManager.getCardPack(forId: createdPackId) {
             let cardType = CardType()
             cardType.id = UUID().uuidString
             cardType.name = name
@@ -150,33 +194,32 @@ final class ViewModel: ObservableObject {
                 return card
             }
             
-            self.realmManager.add(cardType)
             cardType.cards.append(objectsIn: cardObjects)
+                
+            realmManager.update {
+                createdPack.cardTypes.append(cardType)
+            }
             
             DispatchQueue.main.async {
-                self.fetchAllCardTypes() 
+                self.fetchAll()
             }
-        } catch {
-            print("Error creating CardType: \(error)")
         }
     }
     
     func createCard(question: String) {
-        do {
-            if let createdPackId = createdPackId,
-               let createdPack = self.realmManager.getCardType(forId: createdPackId) {
-                let newCard = Card()
-                newCard.id = UUID().uuidString
-                newCard.question = question
-                
-                self.realmManager.update {
-                    createdPack.cards.append(newCard)
-                }
-                
-                self.fetchCards(forCardTypeId: createdPackId)
+        if let createdTypeId = createdTypeId,
+           let createdType = self.realmManager.getCardType(forId: createdTypeId) {
+            let newCard = Card()
+            newCard.id = UUID().uuidString
+            newCard.question = question
+            
+            self.realmManager.update {
+                createdType.cards.append(newCard)
             }
-        } catch {
-            print("Error creating Card: \(error)")
+            
+            DispatchQueue.main.async {
+                self.fetchAll()
+            }
         }
     }
     
@@ -197,7 +240,7 @@ final class ViewModel: ObservableObject {
     func shareApp() -> String {
         let appName = Bundle.main.infoDictionary?[kCFBundleNameKey as String] as? String ?? "MyApp"
         let appURL = "https://apps.apple.com/app/idYOUR_APP_ID"
-        let shareText = "Check out \(appName) - \(appURL)"
+        let shareText = "\(Localization.checkOut) \(appName) - \(appURL)"
         return shareText
     }
     
@@ -206,7 +249,7 @@ final class ViewModel: ObservableObject {
     }
     
     func addCardToFavorites(_ card: Card) {
-        guard let favoritesCardType = realmManager.getCardType(forName: Localization.favorites) else {
+        guard let favoritesCardType = realmManager.getCardType(forId: favoriteType?.id ?? "") else {
             print("Error: 'Favorites' card type not found.")
             return
         }
@@ -247,7 +290,7 @@ final class ViewModel: ObservableObject {
     }
     
     func updateCardFavoriteStatus() {
-        guard let favoritesCardType = realmManager.getCardType(forName: Localization.favorites) else {
+        guard let favoritesCardType = realmManager.getCardType(forId: favoriteType?.id ?? "") else {
             print("Error: 'Favorites' card type not found.")
             isCardFavorite = false
             return
@@ -282,9 +325,10 @@ final class ViewModel: ObservableObject {
     func clearData() {
         realmManager.deleteAll()
         parseCardTypesFromFile()
-        fetchAllCardTypes()
+        fetchAll()
         cardIndex = 0
         cards = []
+        cardTypes = []
         isCardFavorite = false
     }
     

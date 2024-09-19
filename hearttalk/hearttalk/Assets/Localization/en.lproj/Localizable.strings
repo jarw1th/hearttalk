@@ -1,7 +1,17 @@
 
-"defaultMode" = "Default mode";
+"defaultPacks" = "Default packs";
+
+"simple" = "Simple";
 
 "couples" = "Couples";
+
+"close" = "Close";
+
+"closer" = "Closer";
+
+"closest" = "Closest";
+
+"18+" = "18+";
 
 "family" = "Family";
 
@@ -9,11 +19,17 @@
 
 "created" = "Created";
 
+"unsorted" = "Unsorted";
+
 "generateAction" = "Generate";
 
 "cards" = "cards";
 
 "card" = "card";
+
+"packs" = "packs";
+
+"pack" = "pack";
 
 "goBack" = "Go back";
 
@@ -32,6 +48,8 @@
 "contact" = "Contact us";
 
 "credential" = "Ruslan Parastaev";
+
+"checkOut" = "Check out";
 
 "version" = "version";
 

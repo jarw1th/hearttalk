@@ -82,7 +82,7 @@ struct CreateScreen: View {
     private func createAction() {
         switch createScreenType {
         case .pack:
-            viewModel.createPack(name: text, color: "#9CAFB7", cardQuestions: [])
+            viewModel.createType(name: text, color: "#9CAFB7", cardQuestions: [])
         case .card:
             viewModel.createCard(question: text)
         }

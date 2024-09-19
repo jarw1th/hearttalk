@@ -5,7 +5,7 @@ struct Questions: View {
     
     @EnvironmentObject var viewModel: ViewModel
     @Environment(\.presentationMode) var presentationMode
-    let cardType: CardType
+    let cardType: CardType?
     
     @State private var questionMode: QuestionMode = .cards
     @State private var height: CGFloat = 0
@@ -17,7 +17,7 @@ struct Questions: View {
             .background(.lightBlack)
             .edgesIgnoringSafeArea(.bottom)
             .onAppear {
-                viewModel.fetchCards(forCardTypeId: cardType.id)
+                viewModel.fetchCards(forCardTypeId: cardType?.id ?? "")
                 viewModel.cardIndex = 0
             }
             .onTapGesture {

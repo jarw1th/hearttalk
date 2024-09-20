@@ -177,7 +177,7 @@ final class ViewModel: ObservableObject {
     func fetchAllCardTypes(forCardPackId cardPackId: String) {
         if let cardTypesList = self.realmManager.getCardTypes(forCardPackId: cardPackId) {
             self.cardTypes = Array(cardTypesList)
-            self.myCardTypes = Array(cardTypesList).filter { !defaultCardTypes.contains($0.name) }
+            self.myCardTypes = Array(self.realmManager.getAllCardTypes()).filter { !defaultCardTypes.contains($0.name) }
         } else {
             self.cardTypes = []
         }
@@ -191,13 +191,14 @@ final class ViewModel: ObservableObject {
         }
     }
     
-    func createType(name: String, color: String, cardQuestions: [String]) {
+    func createType(name: String, color: String, description: String, cardQuestions: [String]) {
         if let createdPackId = createdPackId,
            let createdPack = realmManager.getCardPack(forId: createdPackId) {
             let cardType = CardType()
             cardType.id = UUID().uuidString
             cardType.name = name
             cardType.color = color
+            cardType.text = description
             
             let cardObjects = cardQuestions.map { question -> Card in
                 let card = Card()

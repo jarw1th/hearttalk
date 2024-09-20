@@ -15,8 +15,8 @@ struct PacksScreen: View {
         NavigationView {
             makeContent()
                 .background(.lightBlack)
+                .edgesIgnoringSafeArea(.bottom)
         }
-        .edgesIgnoringSafeArea(.bottom)
         .onAppear {
             viewModel.fetchAllCardTypes(forCardPackId: cardPack?.id ?? "")
             viewModel.cardIndex = 0

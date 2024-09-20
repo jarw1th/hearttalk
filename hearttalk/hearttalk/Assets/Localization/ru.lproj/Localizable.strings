@@ -122,3 +122,7 @@
 "perfect" = "Ты великолепен!";
 
 "empty" = "пусто";
+
+"description" = "Описание";
+
+"descriptionPlaceholder" = "Твой созданный набор.";

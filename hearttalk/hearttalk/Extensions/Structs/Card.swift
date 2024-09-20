@@ -29,7 +29,7 @@ struct CardView: View {
                     .offset(x: frontCardOffset.width, y: frontCardOffset.height)
                     .rotationEffect(.degrees(frontCardRotation))
                     .zIndex(1)
-                    .gesture(
+                    .simultaneousGesture(
                         DragGesture()
                             .onChanged { gesture in
                                 frontCardOffset = gesture.translation
@@ -83,7 +83,7 @@ struct CardView: View {
                     .offset(x: frontCardOffset.width, y: frontCardOffset.height)
                     .rotationEffect(.degrees(frontCardRotation))
                     .zIndex(1)
-                    .gesture(
+                    .simultaneousGesture(
                         DragGesture()
                             .onChanged { gesture in
                                 frontCardOffset = gesture.translation
@@ -219,25 +219,26 @@ struct CardView: View {
     }
     
     private func makeLikeButton(_ card: Card) -> some View {
-        Image(viewModel.isCardFavorite ? "liked" : "like")
-            .renderingMode(.template)
-            .resizable()
-            .foregroundStyle(.darkGreen)
-            .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32, height: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
-            .onTapGesture {
-                HapticManager.shared.triggerHapticFeedback(.light)
-                likeAction(card)
-            }
-            .contextMenu {
-                ForEach(Array(viewModel.myCardTypes.enumerated()), id: \.element) { index, myCardType in
-                    Button {
-                        HapticManager.shared.triggerHapticFeedback(.light)
-                        viewModel.addCard(card, to: myCardType)
-                    } label: {
-                        Label(myCardType.name, systemImage: "greetingcard.fill")
-                    }
+        Button {
+            HapticManager.shared.triggerHapticFeedback(.light)
+            likeAction(card)
+        } label: {
+            Image(viewModel.isCardFavorite ? "liked" : "like")
+                .renderingMode(.template)
+                .resizable()
+                .foregroundStyle(.darkGreen)
+                .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32, height: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
+        }
+        .contextMenu {
+            ForEach(viewModel.myCardTypes, id: \.self) { myCardType in
+                Button {
+                    HapticManager.shared.triggerHapticFeedback(.light)
+                    viewModel.addCard(card, to: myCardType)
+                } label: {
+                    Text(myCardType.name)
                 }
             }
+        }
     }
     
     private func makeShareButton(_ card: Card) -> some View {

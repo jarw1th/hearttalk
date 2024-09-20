@@ -122,3 +122,7 @@
 "perfect" = "You are perfect!";
 
 "empty" = "empty";
+
+"description" = "Description";
+
+"descriptionPlaceholder" = "Your created pack.";

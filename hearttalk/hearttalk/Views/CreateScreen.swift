@@ -8,6 +8,7 @@ struct CreateScreen: View {
     
     let createScreenType: CreateScreenType
     @State private var text: String = ""
+    @State private var description: String = ""
     
     var body: some View {
         makeContent()
@@ -31,6 +32,9 @@ struct CreateScreen: View {
                     .foregroundStyle(.darkWhite)
                     .frame(maxWidth: .infinity)
                 FillField(placeholder: createScreenType.placeholder(), text: $text)
+                if createScreenType == .pack {
+                    FillField(placeholder: Localization.description, text: $description)
+                }
                 Spacer()
                 makeCreateButton()
             }
@@ -82,7 +86,7 @@ struct CreateScreen: View {
     private func createAction() {
         switch createScreenType {
         case .pack:
-            viewModel.createType(name: text, color: "#9CAFB7", cardQuestions: [])
+            viewModel.createType(name: text, color: "#9CAFB7", description: description.isEmpty ? Localization.descriptionPlaceholder : description, cardQuestions: [])
         case .card:
             viewModel.createCard(question: text)
         }

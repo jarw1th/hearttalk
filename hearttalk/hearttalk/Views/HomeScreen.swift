@@ -10,6 +10,7 @@ struct HomeScreen: View {
     @State private var isShowCreateCard: Bool = false
     @State private var isShowCreatePack: Bool = false
     @State private var isShowGenerate: Bool = false
+    @State private var isShowAgeAlert: Bool = false
     
     @State private var selectedCardPack: CardPack?
     @State private var selectedCardType: CardType?
@@ -34,6 +35,11 @@ struct HomeScreen: View {
         .sheet(isPresented: $isShowGenerate) {
             GenerateScreen()
                 .environmentObject(viewModel)
+        }
+        .alert(isPresented: $isShowAgeAlert) {
+            Alert(title: Text(Localization.adultAlertTitle), message: Text(Localization.adultAlertMessage), primaryButton: .default(Text(Localization.confirm), action: {
+                viewModel.isShowAgeAlert = false
+            }), secondaryButton: .cancel(Text(Localization.cancel), action: {}))
         }
     }
     
@@ -61,9 +67,13 @@ struct HomeScreen: View {
                 LazyVStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
                     ForEach(viewModel.cardPacks) { cardPack in
                         Button(action: {
-                            if cardPack.cardTypes.count != 0 {
-                                HapticManager.shared.triggerHapticFeedback(.light)
-                                selectedCardPack = cardPack
+                            if cardPack.isAdult && viewModel.isShowAgeAlert {
+                                isShowAgeAlert.toggle()
+                            } else {
+                                if cardPack.cardTypes.count != 0 {
+                                    HapticManager.shared.triggerHapticFeedback(.light)
+                                    selectedCardPack = cardPack
+                                }
                             }
                         }) {
                             HomeCard(HomeCardProperties(color: Color(hex: cardPack.color),

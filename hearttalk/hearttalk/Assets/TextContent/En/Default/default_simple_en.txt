@@ -1,5 +1,5 @@
 Pack Color: #F06543
-Type Color: #F06543
+Type Color: #f38468
 What is your biggest fear in life?
 What does happiness mean to you?
 How do you define success?

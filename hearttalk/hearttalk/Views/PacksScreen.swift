@@ -56,7 +56,8 @@ struct PacksScreen: View {
                         }) {
                             HomePack(HomeCardProperties(color: Color(hex: cardType.color),
                                                         header: cardType.name,
-                                                        text: cardType.cards.count == 0 ? Localization.empty : "\(cardType.cards.count) \(cardType.cards.count > 1 ? Localization.cards : Localization.card)"))
+                                                        text: cardType.cards.count == 0 ? Localization.empty : "\(cardType.cards.count) \(cardType.cards.count > 1 ? Localization.cards : Localization.card)",
+                                                        description: cardType.text))
                         }
                         .background(
                             NavigationLink(

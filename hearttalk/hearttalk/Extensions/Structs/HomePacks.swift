@@ -15,11 +15,12 @@ struct HomePack: View {
     
     private func makeContent() -> some View {
         HStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
-            Text(properties.description)
+            Text(properties.description ?? "")
                 .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24))
                 .multilineTextAlignment(.leading)
                 .foregroundStyle(.darkWhite)
-                .frame(maxWidth: .infinity, maxHeight: 120)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.vertical, 20)
             makeCard()
         }
     }
@@ -29,7 +30,7 @@ struct HomePack: View {
             RoundedRectangle(cornerRadius: 20)
                 .fill(properties.color)
             
-            VStack {
+            VStack(alignment: .leading) {
                 Text(properties.header)
                     .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32))
                     .multilineTextAlignment(.leading)
@@ -37,12 +38,13 @@ struct HomePack: View {
                 Spacer()
                 Text(properties.text)
                     .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24))
-                    .multilineTextAlignment(.trailing)
+                    .multilineTextAlignment(.leading)
                     .foregroundStyle(.darkWhite)
             }
-            .padding(UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32)
+            .padding(UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
+            .frame(alignment: .leading)
         }
-        .frame(width: 140, height: 160)
+        .frame(width: 140)
     }
     
 }

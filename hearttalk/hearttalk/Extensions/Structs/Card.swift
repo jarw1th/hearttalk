@@ -12,7 +12,6 @@ struct CardView: View {
     @State private var backCardScale: CGFloat = 0.9
     @State private var frontCardRotation: Double = 0
     @State private var cardWidth: CGFloat = 0
-    @State private var isShowMenu: Bool = false
     
     @State private var isShare: Bool = false
     @State private var shareImage: UIImage?
@@ -20,7 +19,7 @@ struct CardView: View {
     var body: some View {
         ZStack {
             if viewModel.cards.count > viewModel.cardIndex + 1 {
-                makeCardView(for: viewModel.cards[viewModel.cardIndex + 1])
+                makeBackCardView(for: viewModel.cards[viewModel.cardIndex + 1])
                     .scaleEffect(backCardScale)
                     .offset(x: backCardOffset.width, y: backCardOffset.height)
                     .rotationEffect(.degrees(10))
@@ -189,48 +188,26 @@ struct CardView: View {
                 }
                 .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 48 : 80)
                 .padding(.leading, UIDevice.current.userInterfaceIdiom == .phone ? 48 : 100)
-            } else if isShowMenu && !viewModel.myCardTypes.isEmpty {
-                VStack(spacing: 0) {
-                    Spacer()
-                    VStack {
-                        ForEach(Array(viewModel.myCardTypes.enumerated()), id: \.element) { index, myCardType in
-                            VStack(alignment: .leading, spacing: 4) {
-                                Button {
-                                    HapticManager.shared.triggerHapticFeedback(.light)
-                                    viewModel.addCard(card, to: myCardType)
-                                    isShowMenu.toggle()
-                                } label: {
-                                    Text(myCardType.name)
-                                        .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 10 : 14))
-                                        .multilineTextAlignment(.leading)
-                                        .foregroundStyle(.darkWhite)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                }
-                                .padding(.trailing, UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24)
-                                if index < viewModel.myCardTypes.endIndex - 1 {
-                                    Rectangle()
-                                        .fill(.darkWhite)
-                                        .frame(height: 1)
-                                        .frame(maxWidth: .infinity)
-                                }
-                            }
-                        }
-                    }
-                    .padding(.vertical, UIDevice.current.userInterfaceIdiom == .phone ? 8 : 16)
-                    .padding(.leading, UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24)
-                    .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 120 : 200)
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(.darkGreen)
-                    )
-                    Image("pick")
-                        .renderingMode(.template)
-                        .resizable()
-                        .foregroundStyle(.darkGreen)
-                        .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 120 : 200, height: UIDevice.current.userInterfaceIdiom == .phone ? 10 : 16)
-                }
-                .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 48 : 80)
-                .padding(.leading, UIDevice.current.userInterfaceIdiom == .phone ? 160 : 220)
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(
+            RoundedRectangle(cornerRadius: 20)
+                .fill(.darkWhite)
+                .shadow(color: .shadow, radius: 5)
+        )
+    }
+    
+    private func makeBackCardView(for card: Card) -> some View {
+        ZStack {
+            VStack {
+                Spacer()
+                Text(card.question)
+                    .font(.custom("PlayfairDisplay-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32))
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(.lightBlack)
+                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 48 : 64)
+                Spacer()
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -251,9 +228,15 @@ struct CardView: View {
                 HapticManager.shared.triggerHapticFeedback(.light)
                 likeAction(card)
             }
-            .onLongPressGesture(minimumDuration: 0.5) {
-                HapticManager.shared.triggerHapticFeedback(.medium)
-                isShowMenu.toggle()
+            .contextMenu {
+                ForEach(Array(viewModel.myCardTypes.enumerated()), id: \.element) { index, myCardType in
+                    Button {
+                        HapticManager.shared.triggerHapticFeedback(.light)
+                        viewModel.addCard(card, to: myCardType)
+                    } label: {
+                        Label(myCardType.name, systemImage: "greetingcard.fill")
+                    }
+                }
             }
     }
     

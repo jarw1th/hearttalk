@@ -6,7 +6,14 @@ struct HomeCardProperties {
     let color: Color
     let header: String
     let text: String
-    let description: String = ""
+    let description: String?
+    
+    init(color: Color, header: String, text: String, description: String? = nil) {
+        self.color = color
+        self.header = header
+        self.text = text
+        self.description = description
+    }
     
 }
 

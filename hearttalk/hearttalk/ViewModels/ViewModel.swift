@@ -40,8 +40,19 @@ final class ViewModel: ObservableObject {
             UserDefaults.standard.set(newValue, forKey: "isShowTip")
         }
     }
+    var isShowAgeAlert: Bool {
+        get {
+            if UserDefaults.standard.object(forKey: "isShowAgeAlert") == nil {
+                return true
+            }
+            return UserDefaults.standard.bool(forKey: "isShowAgeAlert")
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "isShowAgeAlert")
+        }
+    }
     
-    private let defaultCardTypes = [Localization.simple, Localization.family, Localization.close, Localization.closer, Localization.closest]
+    private let defaultCardTypes = [Localization.simple, Localization.family, Localization.taboo, Localization.sex, Localization.close, Localization.closer, Localization.closest]
     private let hasImportedDataKey = "hasImportedData"
     private var createdPackId: String?
     private var createdTypeId: String?
@@ -62,18 +73,18 @@ final class ViewModel: ObservableObject {
     
     private func parseCardTypesFromFile() {
         let cardPacks = [Localization.defaultPack, Localization.couples, Localization.adult]
-        let cardTypes = [[(Localization.simple, "", "default_simple"), (Localization.family, "", "default_family")],
-                         [(Localization.close, "", "couples_close"), (Localization.closer, "", "couples_closer"), (Localization.closest, "", "couples_closest")],
-                         [("", "", "")]]
+        let cardTypes = [[(Localization.simple, Localization.simpleDesc, "default_simple"), (Localization.family, Localization.familyDesc, "default_family")],
+                         [(Localization.close, Localization.closeDesc, "couples_close"), (Localization.closer, Localization.closerDesc, "couples_closer"), (Localization.closest, Localization.closestDesc, "couples_closest")],
+                         [(Localization.taboo, Localization.tabooDesc, "adult_taboo"), (Localization.sex, Localization.sexDesc, "adult_sex")]]
         
         for (index, cardPackName) in cardPacks.enumerated() {
-           addCardPack(packName: cardPackName, cardTypes: cardTypes[index])
+           addCardPack(packName: cardPackName, cardTypes: cardTypes[index], isAdult: index == 2)
         }
         addCardPack(packName: Localization.favorites, cardTypes: [(Localization.favorites, "", "favorites")], isFavorites: true, isSpecial: true)
-        addCardPack(packName: Localization.created, cardTypes: [(Localization.unsorted, "", "created")], save: true, isSpecial: true)
+        addCardPack(packName: Localization.created, cardTypes: [(Localization.unsorted, Localization.unsortedDesc, "created")], save: true, isSpecial: true)
     }
     
-    private func addCardPack(packName name: String, cardTypes: [(String, String, String)], save: Bool = false, isFavorites: Bool = false, isSpecial: Bool = false) {
+    private func addCardPack(packName name: String, cardTypes: [(String, String, String)], save: Bool = false, isFavorites: Bool = false, isSpecial: Bool = false, isAdult: Bool = false) {
         let userLanguage = Locale.preferredLanguages.first?.prefix(2) ?? "en"
         
         var cardPack = CardPack(id: UUID().uuidString, name: name)
@@ -81,6 +92,7 @@ final class ViewModel: ObservableObject {
             let fileName = "\(baseFileName)_\(userLanguage)"
             cardPack = addCardType(withPack: cardPack, withTypeName: cardTypeName, withText: description, fromFile: fileName, with: isSpecial ? baseFileName : "\(baseFileName)_en", save: save, isFavorites: isFavorites) ?? CardPack(id: UUID().uuidString, name: name)
         }
+        cardPack.isAdult = isAdult
         
         realmManager.add(cardPack)
     }

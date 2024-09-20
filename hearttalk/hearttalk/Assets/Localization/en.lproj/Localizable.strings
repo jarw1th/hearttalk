@@ -3,23 +3,49 @@
 
 "simple" = "Simple";
 
+"simpleDesc" = "Engage in light-hearted, meaningful conversations. A perfect starting point for anyone.";
+
 "couples" = "Couples";
 
 "close" = "Close";
 
+"closeDesc" = "This pack is a good choice for just started or planned relationship.";
+
 "closer" = "Closer";
+
+"closerDesc" = "This pack is a good choice for relationship that belongs less than a year or just started one.";
 
 "closest" = "Closest";
 
+"closestDesc" = "This pack is a good choice for relationship that belongs more than a year.";
+
 "18+" = "18+";
 
+"adultAlertTitle" = "Age Verification";
+
+"adultAlertMessage" = "You must be at least 18 years old to access this content. Please confirm your age.";
+
+"confirm" = "Confirm";
+
+"taboo" = "Taboo";
+
+"tabooDesc" = "Break the ice on forbidden topics with bold, unfiltered questions that challenge boundaries and open up daring conversations.";
+
+"sex" = "Sex";
+
+"sexDesc" = "Explore intimacy on a deeper level with candid questions focused on sexuality, desire, and personal connection in romantic relationships.";
+
 "family" = "Family";
+
+"familyDesc" = "Bring your family closer with questions designed to spark laughter, understanding, and deeper connections across generations.";
 
 "favorites" = "Favorites";
 
 "created" = "Created";
 
 "unsorted" = "Unsorted";
+
+"unsortedDesc" = "Your cards that are not sorted to packs.";
 
 "generateAction" = "Generate";
 

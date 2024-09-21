@@ -23,6 +23,7 @@ final class ViewModel: ObservableObject {
     }
     @Published var isCardFavorite: Bool = false
     @Published var favoriteType: CardType?
+    @Published var selectedSavingType: CardType?
     var appVersion: String {
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             return version
@@ -52,7 +53,7 @@ final class ViewModel: ObservableObject {
         }
     }
     
-    private let defaultCardTypes = [Localization.simple, Localization.family, Localization.taboo, Localization.sex, Localization.close, Localization.closer, Localization.closest]
+    private let defaultCardTypes = [Localization.favorites, Localization.simple, Localization.family, Localization.taboo, Localization.sex, Localization.close, Localization.closer, Localization.closest]
     private let hasImportedDataKey = "hasImportedData"
     private var createdPackId: String?
     private var createdTypeId: String?
@@ -165,6 +166,7 @@ final class ViewModel: ObservableObject {
         self.favoriteType = cardTypes.filter({ $0.name == Localization.favorites }).first
         self.createdPackId = cardPacks.filter({ $0.name == Localization.created }).first?.id
         self.createdTypeId = cardTypes.filter({ $0.name == Localization.unsorted }).first?.id
+        self.selectedSavingType = cardTypes.filter({ $0.name == Localization.unsorted }).first
     }
     
     func fetchAllCardPacks() {
@@ -220,14 +222,14 @@ final class ViewModel: ObservableObject {
     }
     
     func createCard(question: String) {
-        if let createdTypeId = createdTypeId,
-           let createdType = self.realmManager.getCardType(forId: createdTypeId) {
+        if let selectedSavingType = selectedSavingType,
+           let savingType = self.realmManager.getCardType(forId: selectedSavingType.id) {
             let newCard = Card()
             newCard.id = UUID().uuidString
             newCard.question = question
             
             self.realmManager.update {
-                createdType.cards.append(newCard)
+                savingType.cards.append(newCard)
             }
             
             DispatchQueue.main.async {

@@ -13,6 +13,8 @@ enum Localization {
     static let closer: String = NSLocalizedString("closer", comment: "")
     static let closerDesc: String = NSLocalizedString("closerDesc", comment: "")
     static let closest: String = NSLocalizedString("closest", comment: "")
+    static let to: String = NSLocalizedString("to", comment: "")
+    static let color: String = NSLocalizedString("color", comment: "")
     static let closestDesc: String = NSLocalizedString("closestDesc", comment: "")
     static let adult: String = NSLocalizedString("18+", comment: "")
     static let adultAlertTitle: String = NSLocalizedString("adultAlertTitle", comment: "")

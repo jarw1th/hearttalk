@@ -70,5 +70,6 @@ enum Localization {
     static let empty: String = NSLocalizedString("empty", comment: "")
     static let description: String = NSLocalizedString("description", comment: "")
     static let descriptionPlaceholder: String = NSLocalizedString("descriptionPlaceholder", comment: "")
+    static let notePlaceholder: String = NSLocalizedString("notePlaceholder", comment: "")
     
 }

@@ -1,13 +1,11 @@
 
 import SwiftUI
 
-struct CardView: View {
+struct NoteCardView: View {
     
     @EnvironmentObject var viewModel: ViewModel
     
     @Binding var isSwipeBack: Bool
-    @Binding var isShowCreateNote: Bool
-    @Binding var isShowNotes: Bool
     
     @State private var frontCardOffset: CGSize = .zero
     @State private var backCardOffset: CGSize = CGSize(width: 400, height: 0)
@@ -15,19 +13,16 @@ struct CardView: View {
     @State private var frontCardRotation: Double = 0
     @State private var cardWidth: CGFloat = 0
     
-    @State private var isShare: Bool = false
-    @State private var shareImage: UIImage?
-    
     var body: some View {
         ZStack {
-            if viewModel.cards.count > viewModel.cardIndex + 1 {
-                makeBackCardView(for: viewModel.cards[viewModel.cardIndex + 1])
+            if viewModel.notes.count > viewModel.noteIndex + 1 {
+                makeBackCardView(for: viewModel.notes[viewModel.noteIndex + 1])
                     .scaleEffect(backCardScale)
                     .offset(x: backCardOffset.width, y: backCardOffset.height)
                     .rotationEffect(.degrees(10))
                     .zIndex(0)
                 
-                makeCardView(for: viewModel.cards[viewModel.cardIndex])
+                makeCardView(for: viewModel.notes[viewModel.noteIndex])
                     .offset(x: frontCardOffset.width, y: frontCardOffset.height)
                     .rotationEffect(.degrees(frontCardRotation))
                     .zIndex(1)
@@ -80,8 +75,8 @@ struct CardView: View {
                                 }
                         }
                     )
-            } else if viewModel.cards.count == viewModel.cardIndex + 1 {
-                makeCardView(for: viewModel.cards[viewModel.cardIndex])
+            } else if viewModel.notes.count == viewModel.noteIndex + 1 {
+                makeCardView(for: viewModel.notes[viewModel.noteIndex])
                     .offset(x: frontCardOffset.width, y: frontCardOffset.height)
                     .rotationEffect(.degrees(frontCardRotation))
                     .zIndex(1)
@@ -138,9 +133,6 @@ struct CardView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .sheet(isPresented: $isShare) {
-            ActivityViewControllerRepresentableCenter(activityItems: [shareImage])
-        }
         .onChange(of: isSwipeBack) { value in
             if value {
                 swipeBack()
@@ -149,57 +141,16 @@ struct CardView: View {
         }
     }
     
-    private func makeCardView(for card: Card) -> some View {
+    private func makeCardView(for note: Note) -> some View {
         ZStack {
             VStack {
-                HStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
-                    Spacer()
-                    makeNotesButton()
-                    makeCreateNoteButton()
-                }
                 Spacer()
-            }
-            .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32)
-            .padding(.trailing, UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32)
-            VStack {
-                Spacer()
-                Text(card.question)
+                Text(note.text)
                     .font(.custom("PlayfairDisplay-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32))
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.lightBlack)
                     .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 48 : 64)
                 Spacer()
-            }
-            VStack {
-                Spacer()
-                HStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 64 : 80) {
-                    makeSpeakButton(card)
-                    makeShareButton(card)
-                    makeLikeButton(card)
-                }
-            }
-            .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32)
-            
-            if card == viewModel.cards[viewModel.cardIndex] && viewModel.isShowTip {
-                VStack {
-                    Spacer()
-                    ZStack {
-                        Image("tipBackground")
-                            .renderingMode(.template)
-                            .resizable()
-                            .foregroundStyle(.lightBlack)
-                            .frame(width: 160, height: 40)
-                        
-                        Text("Hold for your custom packs")
-                            .font(.custom("PlayfairDisplay-Regular", size: 10))
-                            .multilineTextAlignment(.leading)
-                            .foregroundStyle(.darkWhite)
-                            .padding(.horizontal, 16)
-                            .padding(.bottom, 10)
-                    }
-                }
-                .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 48 : 80)
-                .padding(.leading, UIDevice.current.userInterfaceIdiom == .phone ? 48 : 100)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -210,11 +161,11 @@ struct CardView: View {
         )
     }
     
-    private func makeBackCardView(for card: Card) -> some View {
+    private func makeBackCardView(for note: Note) -> some View {
         ZStack {
             VStack {
                 Spacer()
-                Text(card.question)
+                Text(note.text)
                     .font(.custom("PlayfairDisplay-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32))
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.lightBlack)
@@ -260,83 +211,8 @@ struct CardView: View {
         )
     }
     
-    private func makeLikeButton(_ card: Card) -> some View {
-        Button {
-            HapticManager.shared.triggerHapticFeedback(.light)
-            likeAction(card)
-        } label: {
-            Image(viewModel.isCardFavorite ? "liked" : "like")
-                .renderingMode(.template)
-                .resizable()
-                .foregroundStyle(.darkGreen)
-                .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32, height: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
-        }
-        .contextMenu {
-            ForEach(viewModel.myCardTypes, id: \.self) { myCardType in
-                Button {
-                    HapticManager.shared.triggerHapticFeedback(.light)
-                    viewModel.addCard(card, to: myCardType)
-                } label: {
-                    Text(myCardType.name)
-                }
-            }
-        }
-    }
-    
-    private func makeShareButton(_ card: Card) -> some View {
-        Button {
-            HapticManager.shared.triggerHapticFeedback(.light)
-            shareAction(card)
-        } label: {
-            Image("shareCard")
-                .renderingMode(.template)
-                .resizable()
-                .foregroundStyle(.darkGreen)
-                .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32, height: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
-        }
-    }
-    
-    private func makeCreateNoteButton() -> some View {
-        Button {
-            HapticManager.shared.triggerHapticFeedback(.light)
-            isShowCreateNote.toggle()
-        } label: {
-            Image("plusNote")
-                .renderingMode(.template)
-                .resizable()
-                .foregroundStyle(.darkGreen)
-                .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 40, height: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 40)
-        }
-    }
-    
-    private func makeNotesButton() -> some View {
-        Button {
-            HapticManager.shared.triggerHapticFeedback(.light)
-            isShowNotes.toggle()
-        } label: {
-            Image("notes")
-                .renderingMode(.template)
-                .resizable()
-                .foregroundStyle(.darkGreen)
-                .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 40, height: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 40)
-        }
-    }
-    
-    private func makeSpeakButton(_ card: Card) -> some View {
-        Button {
-            HapticManager.shared.triggerHapticFeedback(.light)
-            speakAction(card)
-        } label: {
-            Image("speaker")
-                .renderingMode(.template)
-                .resizable()
-                .foregroundStyle(.darkGreen)
-                .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32, height: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
-        }
-    }
-    
     private func moveToNextCard() {
-        viewModel.cardIndex = viewModel.cardIndex + 1
+        viewModel.noteIndex = viewModel.noteIndex + 1
     }
     
     private func resetCardPosition() {
@@ -347,21 +223,6 @@ struct CardView: View {
     private func moveCardRightPosition() {
         frontCardOffset = CGSize(width: cardWidth / 1.6, height: UIDevice.current.userInterfaceIdiom == .phone ? -24 : -36)
         frontCardRotation = Double(10)
-    }
-    
-    private func shareAction(_ card: Card) {
-        shareImage = viewModel.createCardImage(card.question)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            isShare.toggle()
-        }
-    }
-    
-    private func speakAction(_ card: Card) {
-        viewModel.speak(text: card.question)
-    }
-    
-    private func likeAction(_ card: Card) {
-        viewModel.addCardToFavorites(card)
     }
     
     private func swipeBack() {
@@ -381,7 +242,7 @@ struct CardView: View {
             }
         }
         
-        viewModel.cardIndex = viewModel.cardIndex - 1
+        viewModel.noteIndex = viewModel.noteIndex - 1
     }
     
 }

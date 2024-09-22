@@ -94,12 +94,23 @@ final class RealmManager {
         return cardType.cards
     }
     
+    func getNotes(forCardId cardId: String) -> List<Note>? {
+        guard let card = realm.object(ofType: Card.self, forPrimaryKey: cardId) else {
+            return nil
+        }
+        return card.notes
+    }
+    
     func getCardPack(forId id: String) -> CardPack? {
         return realm.object(ofType: CardPack.self, forPrimaryKey: id)
     }
     
     func getCardType(forId id: String) -> CardType? {
         return realm.object(ofType: CardType.self, forPrimaryKey: id)
+    }
+    
+    func getCard(forId id: String) -> Card? {
+        return realm.object(ofType: Card.self, forPrimaryKey: id)
     }
     
     func getCardType(forName name: String) -> CardType? {

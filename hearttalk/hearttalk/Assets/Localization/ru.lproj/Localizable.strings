@@ -130,3 +130,5 @@
 "description" = "Описание";
 
 "descriptionPlaceholder" = "Твой созданный набор.";
+
+"notePlaceholder" = "Напиши записку";

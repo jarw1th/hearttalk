@@ -16,11 +16,13 @@ final class ViewModel: ObservableObject {
     @Published var cardTypes: [CardType] = []
     @Published var cardPacks: [CardPack] = []
     @Published var cards: [Card] = []
+    @Published var notes: [Note] = []
     @Published var cardIndex: Int = 0 {
         didSet {
             updateCardFavoriteStatus()
         }
     }
+    @Published var noteIndex: Int = 0 
     @Published var isCardFavorite: Bool = false
     @Published var favoriteType: CardType?
     @Published var selectedSavingType: CardType?
@@ -193,6 +195,14 @@ final class ViewModel: ObservableObject {
         }
     }
     
+    func fetchNotes(forCardId cardId: String) {
+        if let notesList = self.realmManager.getNotes(forCardId: cardId) {
+            self.notes = Array(notesList)
+        } else {
+            self.notes = []
+        }
+    }
+    
     func createType(name: String, color: String, description: String, cardQuestions: [String]) {
         if let createdPackId = createdPackId,
            let createdPack = realmManager.getCardPack(forId: createdPackId) {
@@ -234,6 +244,24 @@ final class ViewModel: ObservableObject {
             
             DispatchQueue.main.async {
                 self.fetchAll()
+            }
+        }
+    }
+    
+    func createNote(text: String) {
+        if cardIndex < cards.count,
+           let card = self.realmManager.getCard(forId: cards[cardIndex].id),
+           let cardType = cards[cardIndex].parentCardType.first {
+            let newNote = Note()
+            newNote.id = UUID().uuidString
+            newNote.text = text
+            
+            self.realmManager.update {
+                card.notes.append(newNote)
+            }
+            
+            DispatchQueue.main.async {
+                self.fetchCards(forCardTypeId: cardType.id)
             }
         }
     }

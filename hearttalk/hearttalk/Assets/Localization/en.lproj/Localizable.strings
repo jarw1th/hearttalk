@@ -130,3 +130,5 @@
 "description" = "Description";
 
 "descriptionPlaceholder" = "Your created pack.";
+
+"notePlaceholder" = "Write your note";

@@ -22,6 +22,10 @@
 		2103FEBB2C9DF1ED0020D1AE /* adult_sex_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2103FEBA2C9DF1ED0020D1AE /* adult_sex_ru.txt */; };
 		2103FEBD2C9DF1FF0020D1AE /* adult_sex_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2103FEBC2C9DF1FF0020D1AE /* adult_sex_en.txt */; };
 		2103FEBF2C9EA0A80020D1AE /* ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2103FEBE2C9EA0A80020D1AE /* ColorPicker.swift */; };
+		2103FEC12CA0457A0020D1AE /* CreateNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2103FEC02CA0457A0020D1AE /* CreateNote.swift */; };
+		2103FEC32CA04D4C0020D1AE /* Notes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2103FEC22CA04D4C0020D1AE /* Notes.swift */; };
+		2103FEC52CA04E520020D1AE /* NoteCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2103FEC42CA04E520020D1AE /* NoteCard.swift */; };
+		2103FEC72CA0558D0020D1AE /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2103FEC62CA0558D0020D1AE /* TextView.swift */; };
 		21BDB3D42C899ADD0097F90E /* ProjectApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB3A42C899ADD0097F90E /* ProjectApp.swift */; };
 		21BDB3D52C899ADD0097F90E /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB3A52C899ADD0097F90E /* Localization.swift */; };
 		21BDB3D82C899ADD0097F90E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21BDB3AA2C899ADD0097F90E /* Assets.xcassets */; };
@@ -85,6 +89,10 @@
 		2103FEBA2C9DF1ED0020D1AE /* adult_sex_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = adult_sex_ru.txt; sourceTree = "<group>"; };
 		2103FEBC2C9DF1FF0020D1AE /* adult_sex_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = adult_sex_en.txt; sourceTree = "<group>"; };
 		2103FEBE2C9EA0A80020D1AE /* ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPicker.swift; sourceTree = "<group>"; };
+		2103FEC02CA0457A0020D1AE /* CreateNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNote.swift; sourceTree = "<group>"; };
+		2103FEC22CA04D4C0020D1AE /* Notes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notes.swift; sourceTree = "<group>"; };
+		2103FEC42CA04E520020D1AE /* NoteCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteCard.swift; sourceTree = "<group>"; };
+		2103FEC62CA0558D0020D1AE /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		21BDB3922C88E0180097F90E /* hearttalk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hearttalk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		21BDB3A42C899ADD0097F90E /* ProjectApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectApp.swift; sourceTree = "<group>"; };
 		21BDB3A52C899ADD0097F90E /* Localization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
@@ -296,10 +304,12 @@
 				21BDB4172C89CB970097F90E /* AboutListItem.swift */,
 				21BDB41B2C8A2F900097F90E /* FillField.swift */,
 				21BDB4242C8AE0390097F90E /* Card.swift */,
+				2103FEC42CA04E520020D1AE /* NoteCard.swift */,
 				21BDB43C2C8B61820097F90E /* WhatIsCard.swift */,
 				21BDB4262C8AFC0A0097F90E /* CardForShare.swift */,
 				2103FDD02C8B9EF10020D1AE /* PDF.swift */,
 				2103FEBE2C9EA0A80020D1AE /* ColorPicker.swift */,
+				2103FEC62CA0558D0020D1AE /* TextView.swift */,
 			);
 			path = Structs;
 			sourceTree = "<group>";
@@ -353,6 +363,8 @@
 				21BDB40F2C89C2B50097F90E /* Questions.swift */,
 				21BDB4152C89CA440097F90E /* AboutApp.swift */,
 				21BDB4192C8A2EA80097F90E /* CreateScreen.swift */,
+				2103FEC02CA0457A0020D1AE /* CreateNote.swift */,
+				2103FEC22CA04D4C0020D1AE /* Notes.swift */,
 				21BDB4302C8B1B160097F90E /* GenerateScreen.swift */,
 				21BDB43A2C8B61330097F90E /* WhatIsTheApp.swift */,
 				2103FDCE2C8B9ECA0020D1AE /* PDFScreen.swift */,
@@ -564,6 +576,7 @@
 				21BDB4372C8B1F6F0097F90E /* Vibration.swift in Sources */,
 				21BDB4102C89C2B50097F90E /* Questions.swift in Sources */,
 				2103FEBF2C9EA0A80020D1AE /* ColorPicker.swift in Sources */,
+				2103FEC72CA0558D0020D1AE /* TextView.swift in Sources */,
 				21BDB3F32C899ADD0097F90E /* LoadingScreen.swift in Sources */,
 				21BDB4272C8AFC0B0097F90E /* CardForShare.swift in Sources */,
 				21BDB4332C8B1D140097F90E /* OpenAI.swift in Sources */,
@@ -578,6 +591,7 @@
 				21BDB4252C8AE0390097F90E /* Card.swift in Sources */,
 				21BDB3FF2C89A1940097F90E /* NavigationBar.swift in Sources */,
 				21BDB4052C89B4A00097F90E /* Cards.swift in Sources */,
+				2103FEC32CA04D4C0020D1AE /* Notes.swift in Sources */,
 				21BDB42F2C8B195A0097F90E /* NetworkManager.swift in Sources */,
 				21BDB4352C8B1E300097F90E /* UIApplication+.swift in Sources */,
 				21BDB4122C89C7D40097F90E /* ListItem.swift in Sources */,
@@ -585,7 +599,9 @@
 				21BDB3D42C899ADD0097F90E /* ProjectApp.swift in Sources */,
 				21BDB3DD2C899ADD0097F90E /* RequestManager.swift in Sources */,
 				21BDB4032C89B42D0097F90E /* RealmManager.swift in Sources */,
+				2103FEC52CA04E520020D1AE /* NoteCard.swift in Sources */,
 				21BDB41F2C8A33540097F90E /* CustomRoundedRectangle.swift in Sources */,
+				2103FEC12CA0457A0020D1AE /* CreateNote.swift in Sources */,
 				21BDB42D2C8B0B4A0097F90E /* ActivityView.swift in Sources */,
 				21BDB3F12C899ADD0097F90E /* HomeScreen.swift in Sources */,
 				21BDB3D52C899ADD0097F90E /* Localization.swift in Sources */,

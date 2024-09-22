@@ -11,6 +11,8 @@ struct Questions: View {
     @State private var height: CGFloat = 0
     
     @State private var isSwipeBack: Bool = false
+    @State private var isShowCreateNote: Bool = false
+    @State private var isShowNotes: Bool = false
     
     var body: some View {
         makeContent()
@@ -22,6 +24,14 @@ struct Questions: View {
             }
             .onTapGesture {
                 viewModel.isShowTip = false
+            }
+            .sheet(isPresented: $isShowCreateNote) {
+                CreateNote()
+                    .environmentObject(viewModel)
+            }
+            .sheet(isPresented: $isShowNotes) {
+                Notes(card: viewModel.cards[viewModel.cardIndex])
+                    .environmentObject(viewModel)
             }
     }
     
@@ -80,7 +90,7 @@ struct Questions: View {
             .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 8 : 24)
             .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 70 : 120)
             
-            CardView(isSwipeBack: $isSwipeBack)
+            CardView(isSwipeBack: $isSwipeBack, isShowCreateNote: $isShowCreateNote, isShowNotes: $isShowNotes)
                 .environmentObject(viewModel)
                 .frame(height: height)
         }

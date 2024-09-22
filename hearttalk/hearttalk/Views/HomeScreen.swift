@@ -9,7 +9,6 @@ struct HomeScreen: View {
     @State private var isShowSettings: Bool = false
     @State private var isShowCreateCard: Bool = false
     @State private var isShowCreatePack: Bool = false
-    @State private var isShowGenerate: Bool = false
     @State private var isShowAgeAlert: Bool = false
     
     @State private var selectedCardPack: CardPack?
@@ -30,10 +29,6 @@ struct HomeScreen: View {
         }
         .sheet(isPresented: $isShowCreatePack) {
             CreateScreen(createScreenType: .pack)
-                .environmentObject(viewModel)
-        }
-        .sheet(isPresented: $isShowGenerate) {
-            GenerateScreen()
                 .environmentObject(viewModel)
         }
         .alert(isPresented: $isShowAgeAlert) {
@@ -131,21 +126,6 @@ struct HomeScreen: View {
                             isShowCreatePack.toggle()
                         case .card:
                             isShowCreateCard.toggle()
-                        }
-                    }
-                    if requestManager.checkInternetConnectivity() {
-                        OnlineHomeCard() { type in
-                            switch type {
-                            case .create:
-                                print()
-                            case .join:
-                                print()
-                            }
-                        }
-                        GenerateHomeCard() {
-                            if requestManager.checkInternetConnectivity() {
-                                isShowGenerate.toggle()
-                            }
                         }
                     }
                 }

@@ -10,7 +10,6 @@ final class ViewModel: ObservableObject {
     static let shared = ViewModel()
     
     private var realmManager: RealmManager = RealmManager()
-    private var networkManager: NetworkManager = NetworkManager()
     
     @Published var myCardTypes: [CardType] = []
     @Published var cardTypes: [CardType] = []
@@ -327,14 +326,6 @@ final class ViewModel: ObservableObject {
 
         let synthesizer = AVSpeechSynthesizer()
         synthesizer.speak(utterance)
-    }
-    
-    func createQuestionAI(prompt: String) async -> String {
-        do {
-            return try await networkManager.createQuestion(prompt: prompt)
-        } catch {
-            return ""
-        }
     }
     
     func clearData() {

@@ -54,9 +54,6 @@
 		21BDB4272C8AFC0B0097F90E /* CardForShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB4262C8AFC0A0097F90E /* CardForShare.swift */; };
 		21BDB42B2C8AFC4B0097F90E /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB42A2C8AFC4B0097F90E /* View+.swift */; };
 		21BDB42D2C8B0B4A0097F90E /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB42C2C8B0B4A0097F90E /* ActivityView.swift */; };
-		21BDB42F2C8B195A0097F90E /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB42E2C8B195A0097F90E /* NetworkManager.swift */; };
-		21BDB4312C8B1B160097F90E /* GenerateScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB4302C8B1B160097F90E /* GenerateScreen.swift */; };
-		21BDB4332C8B1D140097F90E /* OpenAI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB4322C8B1D140097F90E /* OpenAI.swift */; };
 		21BDB4352C8B1E300097F90E /* UIApplication+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB4342C8B1E300097F90E /* UIApplication+.swift */; };
 		21BDB4372C8B1F6F0097F90E /* Vibration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB4362C8B1F6F0097F90E /* Vibration.swift */; };
 		21BDB43B2C8B61330097F90E /* WhatIsTheApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB43A2C8B61330097F90E /* WhatIsTheApp.swift */; };
@@ -119,9 +116,6 @@
 		21BDB4262C8AFC0A0097F90E /* CardForShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardForShare.swift; sourceTree = "<group>"; };
 		21BDB42A2C8AFC4B0097F90E /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		21BDB42C2C8B0B4A0097F90E /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
-		21BDB42E2C8B195A0097F90E /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
-		21BDB4302C8B1B160097F90E /* GenerateScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateScreen.swift; sourceTree = "<group>"; };
-		21BDB4322C8B1D140097F90E /* OpenAI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAI.swift; sourceTree = "<group>"; };
 		21BDB4342C8B1E300097F90E /* UIApplication+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+.swift"; sourceTree = "<group>"; };
 		21BDB4362C8B1F6F0097F90E /* Vibration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vibration.swift; sourceTree = "<group>"; };
 		21BDB43A2C8B61330097F90E /* WhatIsTheApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsTheApp.swift; sourceTree = "<group>"; };
@@ -280,7 +274,6 @@
 			children = (
 				21BDB3B02C899ADD0097F90E /* RequestManager.swift */,
 				21BDB4022C89B42D0097F90E /* RealmManager.swift */,
-				21BDB42E2C8B195A0097F90E /* NetworkManager.swift */,
 				21BDB3B12C899ADD0097F90E /* ViewModel.swift */,
 			);
 			path = ViewModels;
@@ -339,7 +332,6 @@
 			isa = PBXGroup;
 			children = (
 				21BDB4042C89B4A00097F90E /* Cards.swift */,
-				21BDB4322C8B1D140097F90E /* OpenAI.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -353,7 +345,6 @@
 				21BDB40F2C89C2B50097F90E /* Questions.swift */,
 				21BDB4152C89CA440097F90E /* AboutApp.swift */,
 				21BDB4192C8A2EA80097F90E /* CreateScreen.swift */,
-				21BDB4302C8B1B160097F90E /* GenerateScreen.swift */,
 				21BDB43A2C8B61330097F90E /* WhatIsTheApp.swift */,
 				2103FDCE2C8B9ECA0020D1AE /* PDFScreen.swift */,
 			);
@@ -566,7 +557,6 @@
 				2103FEBF2C9EA0A80020D1AE /* ColorPicker.swift in Sources */,
 				21BDB3F32C899ADD0097F90E /* LoadingScreen.swift in Sources */,
 				21BDB4272C8AFC0B0097F90E /* CardForShare.swift in Sources */,
-				21BDB4332C8B1D140097F90E /* OpenAI.swift in Sources */,
 				21BDB4072C89B8E20097F90E /* Color+.swift in Sources */,
 				21BDB42B2C8AFC4B0097F90E /* View+.swift in Sources */,
 				21BDB3EA2C899ADD0097F90E /* Enums.swift in Sources */,
@@ -578,7 +568,6 @@
 				21BDB4252C8AE0390097F90E /* Card.swift in Sources */,
 				21BDB3FF2C89A1940097F90E /* NavigationBar.swift in Sources */,
 				21BDB4052C89B4A00097F90E /* Cards.swift in Sources */,
-				21BDB42F2C8B195A0097F90E /* NetworkManager.swift in Sources */,
 				21BDB4352C8B1E300097F90E /* UIApplication+.swift in Sources */,
 				21BDB4122C89C7D40097F90E /* ListItem.swift in Sources */,
 				21BDB4162C89CA440097F90E /* AboutApp.swift in Sources */,
@@ -591,7 +580,6 @@
 				21BDB3D52C899ADD0097F90E /* Localization.swift in Sources */,
 				21BDB43D2C8B61820097F90E /* WhatIsCard.swift in Sources */,
 				21BDB43B2C8B61330097F90E /* WhatIsTheApp.swift in Sources */,
-				21BDB4312C8B1B160097F90E /* GenerateScreen.swift in Sources */,
 				21BDB41A2C8A2EA80097F90E /* CreateScreen.swift in Sources */,
 				2103FDD12C8B9EF10020D1AE /* PDF.swift in Sources */,
 				2103FEA52C9C1F3E0020D1AE /* PacksScreen.swift in Sources */,
@@ -760,7 +748,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = ruslanparastaev.hearttalk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -797,7 +785,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = ruslanparastaev.hearttalk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

@@ -216,6 +216,36 @@ struct CardView: View {
                 .fill(.darkWhite)
                 .shadow(color: .shadow, radius: 5)
         )
+        .simultaneousGesture(
+            TapGesture()
+                .onEnded {
+                    HapticManager.shared.triggerHapticFeedback(.light)
+                    
+                    withAnimation(.easeInOut) {
+                        frontCardOffset = CGSize(width: frontCardOffset.width - 50, height: frontCardOffset.height)
+                        frontCardRotation = Double(50 / 20)
+                    
+                        backCardOffset = CGSize(width: 50 + (cardWidth / 2), height: backCardOffset.height)
+                    }
+                    
+                    withAnimation(.easeInOut) {
+                        frontCardOffset = CGSize(width: frontCardOffset.width > 0 ? 1000 : -1000, height: frontCardOffset.height)
+                        frontCardRotation = Double(frontCardOffset.width / 20)
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        moveCardRightPosition()
+                        moveToNextCard()
+                        withAnimation(.easeInOut) {
+                            backCardOffset = .zero
+                            resetCardPosition()
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            backCardOffset = CGSize(width: cardWidth / 1.6, height: UIDevice.current.userInterfaceIdiom == .phone ? -24 : -36)
+                        }
+                    }
+                }
+        )
     }
     
     private func makeLikeButton(_ card: Card) -> some View {

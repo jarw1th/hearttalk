@@ -114,7 +114,7 @@ final class ViewModel: ObservableObject {
     }
     
     private func addCardPack(packName name: String, cardTypes: [(String, String, String)], save: Bool = false, isFavorites: Bool = false, isSpecial: Bool = false, isAdult: Bool = false) {
-        let userLanguage = Locale.preferredLanguages.first?.prefix(2) ?? "en"
+        let userLanguage = UserDefaults.standard.string(forKey: "AppleLanguage") ?? "en"
         
         var cardPack = CardPack(id: UUID().uuidString, name: name)
         for (cardTypeName, description, baseFileName) in cardTypes {

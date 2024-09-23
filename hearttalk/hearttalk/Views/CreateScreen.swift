@@ -64,6 +64,7 @@ struct CreateScreen: View {
         Button {
             if checkText() {
                 HapticManager.shared.triggerHapticFeedback(.light)
+                SoundManager.shared.sound(.click1)
                 createAction()
                 presentationMode.wrappedValue.dismiss()
             }
@@ -80,6 +81,7 @@ struct CreateScreen: View {
     private func makeBackButton() -> some View {
         Button {
             HapticManager.shared.triggerHapticFeedback(.light)
+            SoundManager.shared.sound(.click1)
             presentationMode.wrappedValue.dismiss()
         } label: {
             Image("cross")
@@ -93,6 +95,7 @@ struct CreateScreen: View {
     private func makePackButton() -> some View {
         Button {
             HapticManager.shared.triggerHapticFeedback(.light)
+            SoundManager.shared.sound(.click1)
             isShowActionSheet.toggle()
         } label: {
             HStack {

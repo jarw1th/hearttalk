@@ -143,6 +143,8 @@
 
 "sounds" = "Sounds";
 
+"dailyCard" = "Daily card";
+
 "packActionSheetTitle" = "Select a pack";
 
 "packActionSheetMessage" = "This card will be added to selected pack.";

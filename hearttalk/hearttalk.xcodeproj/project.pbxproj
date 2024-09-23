@@ -29,6 +29,9 @@
 		21835FAD2CA13F96002A17E9 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21835FAC2CA13F96002A17E9 /* Settings.swift */; };
 		21835FAF2CA144F6002A17E9 /* SettingsListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21835FAE2CA144F6002A17E9 /* SettingsListItem.swift */; };
 		21835FB32CA1545A002A17E9 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21835FB22CA1545A002A17E9 /* String+.swift */; };
+		21835FB52CA16B57002A17E9 /* Sound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21835FB42CA16B57002A17E9 /* Sound.swift */; };
+		21835FB82CA16C60002A17E9 /* CardSwipe.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 21835FB72CA16C60002A17E9 /* CardSwipe.mp3 */; };
+		21835FBA2CA16E24002A17E9 /* Click1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 21835FB92CA16E24002A17E9 /* Click1.mp3 */; };
 		21BDB3D42C899ADD0097F90E /* ProjectApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB3A42C899ADD0097F90E /* ProjectApp.swift */; };
 		21BDB3D52C899ADD0097F90E /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB3A52C899ADD0097F90E /* Localization.swift */; };
 		21BDB3D82C899ADD0097F90E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21BDB3AA2C899ADD0097F90E /* Assets.xcassets */; };
@@ -99,6 +102,9 @@
 		21835FAC2CA13F96002A17E9 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		21835FAE2CA144F6002A17E9 /* SettingsListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsListItem.swift; sourceTree = "<group>"; };
 		21835FB22CA1545A002A17E9 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
+		21835FB42CA16B57002A17E9 /* Sound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sound.swift; sourceTree = "<group>"; };
+		21835FB72CA16C60002A17E9 /* CardSwipe.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = CardSwipe.mp3; sourceTree = "<group>"; };
+		21835FB92CA16E24002A17E9 /* Click1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Click1.mp3; sourceTree = "<group>"; };
 		21BDB3922C88E0180097F90E /* hearttalk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hearttalk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		21BDB3A42C899ADD0097F90E /* ProjectApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectApp.swift; sourceTree = "<group>"; };
 		21BDB3A52C899ADD0097F90E /* Localization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
@@ -235,6 +241,15 @@
 			path = Adult;
 			sourceTree = "<group>";
 		};
+		21835FB62CA16C50002A17E9 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				21835FB92CA16E24002A17E9 /* Click1.mp3 */,
+				21835FB72CA16C60002A17E9 /* CardSwipe.mp3 */,
+			);
+			path = Sounds;
+			sourceTree = "<group>";
+		};
 		21BDB3892C88E0180097F90E = {
 			isa = PBXGroup;
 			children = (
@@ -283,6 +298,7 @@
 				21BDB4442C8B69520097F90E /* Localization */,
 				2103FDD22C8B9F9E0020D1AE /* PDF */,
 				21BDB4082C89B9940097F90E /* TextContent */,
+				21835FB62CA16C50002A17E9 /* Sounds */,
 				21BDB3A72C899ADD0097F90E /* Fonts */,
 				21BDB3AA2C899ADD0097F90E /* Assets.xcassets */,
 			);
@@ -336,6 +352,7 @@
 				21BDB42C2C8B0B4A0097F90E /* ActivityView.swift */,
 				21BDB4342C8B1E300097F90E /* UIApplication+.swift */,
 				21BDB4362C8B1F6F0097F90E /* Vibration.swift */,
+				21835FB42CA16B57002A17E9 /* Sound.swift */,
 				21835FB22CA1545A002A17E9 /* String+.swift */,
 			);
 			path = UIKit;
@@ -510,10 +527,12 @@
 				2103FDD82C8BA2090020D1AE /* PrivacyPolicy.pdf in Resources */,
 				2103FEB92C9DEF990020D1AE /* adult_taboo_en.txt in Resources */,
 				21BDB40D2C89C1200097F90E /* couples_close_en.txt in Resources */,
+				21835FBA2CA16E24002A17E9 /* Click1.mp3 in Resources */,
 				21BDB40E2C89C1200097F90E /* default_family_en.txt in Resources */,
 				21BDB40A2C89B9D30097F90E /* default_simple_en.txt in Resources */,
 				21BDB4432C8B664D0097F90E /* couples_closest_ru.txt in Resources */,
 				2103FEBD2C9DF1FF0020D1AE /* adult_sex_en.txt in Resources */,
+				21835FB82CA16C60002A17E9 /* CardSwipe.mp3 in Resources */,
 				2103FEAB2C9C35E90020D1AE /* default_family_ru.txt in Resources */,
 				21BDB4232C8A4DAB0097F90E /* created.txt in Resources */,
 				2103FEAF2C9C37290020D1AE /* couples_closest_en.txt in Resources */,
@@ -618,6 +637,7 @@
 				21BDB43D2C8B61820097F90E /* WhatIsCard.swift in Sources */,
 				21BDB43B2C8B61330097F90E /* WhatIsTheApp.swift in Sources */,
 				21835FAD2CA13F96002A17E9 /* Settings.swift in Sources */,
+				21835FB52CA16B57002A17E9 /* Sound.swift in Sources */,
 				21BDB4312C8B1B160097F90E /* GenerateScreen.swift in Sources */,
 				21BDB41A2C8A2EA80097F90E /* CreateScreen.swift in Sources */,
 				2103FDD12C8B9EF10020D1AE /* PDF.swift in Sources */,

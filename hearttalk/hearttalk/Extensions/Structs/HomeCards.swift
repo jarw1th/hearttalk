@@ -75,6 +75,7 @@ struct AddHomeCard: View {
     private func makePlus() -> some View {
         Button {
             HapticManager.shared.triggerHapticFeedback(.light)
+            SoundManager.shared.sound(.click1)
             isOpened.toggle()
         } label: {
             ZStack {
@@ -110,6 +111,7 @@ struct AddHomeCard: View {
     private func makeCross() -> some View {
         Button {
             HapticManager.shared.triggerHapticFeedback(.light)
+            SoundManager.shared.sound(.click1)
             isOpened.toggle()
         } label: {
             VStack {
@@ -123,6 +125,7 @@ struct AddHomeCard: View {
     private func makePack() -> some View {
         Button {
             HapticManager.shared.triggerHapticFeedback(.light)
+            SoundManager.shared.sound(.click1)
             tapAction(.pack)
             isOpened.toggle()
         } label: {
@@ -181,6 +184,7 @@ struct GenerateHomeCard: View {
     private func makeContent() -> some View {
         Button {
             HapticManager.shared.triggerHapticFeedback(.light)
+            SoundManager.shared.sound(.click1)
             tapAction()
         } label: {
             ZStack {

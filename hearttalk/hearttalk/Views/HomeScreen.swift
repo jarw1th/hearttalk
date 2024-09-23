@@ -72,6 +72,7 @@ struct HomeScreen: View {
                             } else {
                                 if cardPack.cardTypes.count != 0 {
                                     HapticManager.shared.triggerHapticFeedback(.light)
+                                    SoundManager.shared.sound(.click1)
                                     selectedCardPack = cardPack
                                 }
                             }
@@ -101,6 +102,7 @@ struct HomeScreen: View {
                 if let favoriteType = viewModel.favoriteType {
                     Button(action: {
                         HapticManager.shared.triggerHapticFeedback(.light)
+                        SoundManager.shared.sound(.click1)
                         selectedCardType = favoriteType
                     }) {
                         HomeCard(HomeCardProperties(color: Color(hex: favoriteType.color),

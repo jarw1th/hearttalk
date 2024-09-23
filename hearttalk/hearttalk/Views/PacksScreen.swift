@@ -52,6 +52,7 @@ struct PacksScreen: View {
                     ForEach(viewModel.cardTypes) { cardType in
                         Button(action: {
                             HapticManager.shared.triggerHapticFeedback(.light)
+                            SoundManager.shared.sound(.click1)
                             selectedCardType = cardType
                         }) {
                             HomePack(HomeCardProperties(color: Color(hex: cardType.color),
@@ -91,6 +92,7 @@ struct PacksScreen: View {
     private func makeBackButton() -> some View {
         Button {
             HapticManager.shared.triggerHapticFeedback(.light)
+            SoundManager.shared.sound(.click1)
             presentationMode.wrappedValue.dismiss()
         } label: {
             Text(Localization.goBack)

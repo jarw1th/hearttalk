@@ -31,6 +31,7 @@ struct WhatIsTheApp: View {
                         if index != 0 {
                             Button {
                                 HapticManager.shared.triggerHapticFeedback(.soft)
+                                SoundManager.shared.sound(.card)
                                 isSwipeBack.toggle()
                             } label: {
                                 Image("swipeBack")
@@ -66,6 +67,7 @@ struct WhatIsTheApp: View {
     private func makeBackButton() -> some View {
         Button {
             HapticManager.shared.triggerHapticFeedback(.light)
+            SoundManager.shared.sound(.click1)
             presentationMode.wrappedValue.dismiss()
         } label: {
             Text(Localization.goBack)

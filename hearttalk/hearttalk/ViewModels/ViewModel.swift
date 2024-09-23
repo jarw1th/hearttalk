@@ -76,6 +76,17 @@ final class ViewModel: ObservableObject {
             UserDefaults.standard.set(newValue, forKey: "isSounds")
         }
     }
+    var isDailyCard: Bool {
+        get {
+            if UserDefaults.standard.object(forKey: "isDailyCard") == nil {
+                return true
+            }
+            return UserDefaults.standard.bool(forKey: "isDailyCard")
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "isDailyCard")
+        }
+    }
     var language: String {
         get {
             return UserDefaults.standard.string(forKey: "AppleLanguage") ?? "en"

@@ -44,6 +44,7 @@ struct WhatIsCardView: View {
                             .onEnded { gesture in
                                 if frontCardOffset.width < -150 {
                                     HapticManager.shared.triggerHapticFeedback(.soft)
+                                    SoundManager.shared.sound(.card)
                                     
                                     withAnimation(.easeInOut) {
                                         frontCardOffset = CGSize(width: frontCardOffset.width > 0 ? 1000 : -1000, height: frontCardOffset.height)
@@ -94,6 +95,7 @@ struct WhatIsCardView: View {
                             .onEnded { gesture in
                                 if frontCardOffset.width < -150 {
                                     HapticManager.shared.triggerHapticFeedback(.soft)
+                                    SoundManager.shared.sound(.card)
                                     
                                     withAnimation(.easeInOut) {
                                         frontCardOffset = CGSize(width: frontCardOffset.width > 0 ? 1000 : -1000, height: frontCardOffset.height)

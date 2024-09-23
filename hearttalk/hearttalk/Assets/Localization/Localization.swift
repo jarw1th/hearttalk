@@ -80,6 +80,6 @@ enum Localization {
     static let packActionSheetMessage: String = .localized("packActionSheetMessage", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     static let languageActionSheetTitle: String = .localized("languageActionSheetTitle", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     static let languageActionSheetMessage: String = .localized("languageActionSheetMessage", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
-    
+    static let dailyCard: String = .localized("dailyCard", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     
 }

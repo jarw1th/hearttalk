@@ -12,6 +12,7 @@ struct Settings: View {
     @State private var isShowLanguage: Bool = false
     
     @State private var isVibrations: Bool = false
+    @State private var isDailyCard: Bool = false
     @State private var isSounds: Bool = false
     
     var body: some View {
@@ -21,12 +22,16 @@ struct Settings: View {
             .onAppear {
                 isVibrations = viewModel.isVibrations
                 isSounds = viewModel.isSounds
+                isDailyCard = viewModel.isDailyCard
             }
             .onChange(of: isVibrations) { new in
                 viewModel.isVibrations = new
             }
             .onChange(of: isSounds) { new in
                 viewModel.isSounds = new
+            }
+            .onChange(of: isDailyCard) { new in
+                viewModel.isDailyCard = new
             }
             .alert(isPresented: $isClearAlert) {
                 Alert(title: Text(Localization.deleting), primaryButton: .destructive(Text(Localization.delete), action: {
@@ -73,6 +78,8 @@ struct Settings: View {
                         SettingsToggler(text: settingsType.text(), isOn: $isVibrations)
                     case .sounds:
                         SettingsToggler(text: settingsType.text(), isOn: $isSounds)
+                    case .dailyCard:
+                        SettingsToggler(text: settingsType.text(), isOn: $isDailyCard)
                     case .language:
                         SettingsListItem(imageName: settingsType.imageName(), text: settingsType.text(), isSpecial: settingsType.isSpecial(), action: languageAction)
                     case .clear:
@@ -86,6 +93,7 @@ struct Settings: View {
     private func makeBackButton() -> some View {
         Button {
             HapticManager.shared.triggerHapticFeedback(.light)
+            SoundManager.shared.sound(.click1)
             presentationMode.wrappedValue.dismiss()
         } label: {
             Text(Localization.goBack)
@@ -100,6 +108,7 @@ struct Settings: View {
     private func makeCloseButton() -> some View {
         Button {
             HapticManager.shared.triggerHapticFeedback(.light)
+            SoundManager.shared.sound(.click1)
             isPresented.toggle()
         } label: {
             Image("cross")

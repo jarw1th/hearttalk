@@ -15,6 +15,7 @@ struct AboutListItem: View {
     private func makeContent() -> some View {
         Button {
             HapticManager.shared.triggerHapticFeedback(.light)
+            SoundManager.shared.sound(.click1)
             action()
         } label: {
             HStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32) {

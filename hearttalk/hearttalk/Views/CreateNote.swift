@@ -41,6 +41,7 @@ struct CreateNote: View {
         Button {
             if checkText() {
                 HapticManager.shared.triggerHapticFeedback(.light)
+                SoundManager.shared.sound(.click1)
                 createAction()
                 presentationMode.wrappedValue.dismiss()
             }
@@ -56,6 +57,7 @@ struct CreateNote: View {
     private func makeBackButton() -> some View {
         Button {
             HapticManager.shared.triggerHapticFeedback(.light)
+            SoundManager.shared.sound(.click1)
             presentationMode.wrappedValue.dismiss()
         } label: {
             Image("cross")

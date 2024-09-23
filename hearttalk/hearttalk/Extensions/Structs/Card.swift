@@ -44,6 +44,7 @@ struct CardView: View {
                             .onEnded { gesture in
                                 if frontCardOffset.width < -150 {
                                     HapticManager.shared.triggerHapticFeedback(.soft)
+                                    SoundManager.shared.sound(.card)
                                     
                                     withAnimation(.easeInOut) {
                                         frontCardOffset = CGSize(width: frontCardOffset.width > 0 ? 1000 : -1000, height: frontCardOffset.height)
@@ -94,6 +95,7 @@ struct CardView: View {
                             .onEnded { gesture in
                                 if frontCardOffset.width < -150 {
                                     HapticManager.shared.triggerHapticFeedback(.soft)
+                                    SoundManager.shared.sound(.card)
                                     
                                     withAnimation(.easeInOut) {
                                         frontCardOffset = CGSize(width: frontCardOffset.width > 0 ? 1000 : -1000, height: frontCardOffset.height)
@@ -234,6 +236,7 @@ struct CardView: View {
             TapGesture()
                 .onEnded {
                     HapticManager.shared.triggerHapticFeedback(.light)
+                    SoundManager.shared.sound(.card)
                     
                     withAnimation(.easeInOut) {
                         frontCardOffset = CGSize(width: frontCardOffset.width - 50, height: frontCardOffset.height)
@@ -265,6 +268,7 @@ struct CardView: View {
     private func makeLikeButton(_ card: Card) -> some View {
         Button {
             HapticManager.shared.triggerHapticFeedback(.light)
+            SoundManager.shared.sound(.click1)
             likeAction(card)
         } label: {
             Image(viewModel.isCardFavorite ? "liked" : "like")
@@ -277,6 +281,7 @@ struct CardView: View {
             ForEach(viewModel.myCardTypes, id: \.self) { myCardType in
                 Button {
                     HapticManager.shared.triggerHapticFeedback(.light)
+                    SoundManager.shared.sound(.click1)
                     viewModel.addCard(card, to: myCardType)
                 } label: {
                     Text(myCardType.name)
@@ -288,6 +293,7 @@ struct CardView: View {
     private func makeShareButton(_ card: Card) -> some View {
         Button {
             HapticManager.shared.triggerHapticFeedback(.light)
+            SoundManager.shared.sound(.click1)
             shareAction(card)
         } label: {
             Image("shareCard")
@@ -301,6 +307,7 @@ struct CardView: View {
     private func makeCreateNoteButton() -> some View {
         Button {
             HapticManager.shared.triggerHapticFeedback(.light)
+            SoundManager.shared.sound(.click1)
             isShowCreateNote.toggle()
         } label: {
             Image("plusNote")
@@ -314,6 +321,7 @@ struct CardView: View {
     private func makeNotesButton() -> some View {
         Button {
             HapticManager.shared.triggerHapticFeedback(.light)
+            SoundManager.shared.sound(.click1)
             isShowNotes.toggle()
         } label: {
             Image("notes")
@@ -327,6 +335,7 @@ struct CardView: View {
     private func makeSpeakButton(_ card: Card) -> some View {
         Button {
             HapticManager.shared.triggerHapticFeedback(.light)
+            SoundManager.shared.sound(.click1)
             speakAction(card)
         } label: {
             Image("speaker")

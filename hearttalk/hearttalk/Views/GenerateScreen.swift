@@ -44,6 +44,7 @@ struct GenerateScreen: View {
         Button {
             if requestManager.checkInternetConnectivity() {
                 HapticManager.shared.triggerHapticFeedback(.light)
+                SoundManager.shared.sound(.click1)
                 generateAction()
             }
         } label: {
@@ -59,6 +60,7 @@ struct GenerateScreen: View {
     private func makeBackButton() -> some View {
         Button {
             HapticManager.shared.triggerHapticFeedback(.light)
+            SoundManager.shared.sound(.click1)
             presentationMode.wrappedValue.dismiss()
         } label: {
             Image("cross")

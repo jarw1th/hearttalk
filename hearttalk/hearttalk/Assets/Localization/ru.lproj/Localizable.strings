@@ -143,6 +143,8 @@
 
 "sounds" = "Звуки";
 
+"dailyCard" = "Ежедневная карточка";
+
 "packActionSheetTitle" = "Выберите набор";
 
 "packActionSheetMessage" = "Эта карточка будет добавлена в данный набор.";

@@ -39,6 +39,7 @@ struct NoteCardView: View {
                             .onEnded { gesture in
                                 if frontCardOffset.width < -150 {
                                     HapticManager.shared.triggerHapticFeedback(.soft)
+                                    SoundManager.shared.sound(.card)
                                     
                                     withAnimation(.easeInOut) {
                                         frontCardOffset = CGSize(width: frontCardOffset.width > 0 ? 1000 : -1000, height: frontCardOffset.height)
@@ -89,6 +90,7 @@ struct NoteCardView: View {
                             .onEnded { gesture in
                                 if frontCardOffset.width < -150 {
                                     HapticManager.shared.triggerHapticFeedback(.soft)
+                                    SoundManager.shared.sound(.card)
                                     
                                     withAnimation(.easeInOut) {
                                         frontCardOffset = CGSize(width: frontCardOffset.width > 0 ? 1000 : -1000, height: frontCardOffset.height)
@@ -183,6 +185,7 @@ struct NoteCardView: View {
             TapGesture()
                 .onEnded {
                     HapticManager.shared.triggerHapticFeedback(.light)
+                    SoundManager.shared.sound(.card)
                     
                     withAnimation(.easeInOut) {
                         frontCardOffset = CGSize(width: frontCardOffset.width - 50, height: frontCardOffset.height)

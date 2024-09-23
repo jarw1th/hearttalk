@@ -37,6 +37,7 @@ struct ColorPicker: View {
     private func makeRectangle(_ color: Color) -> some View {
         Button {
             HapticManager.shared.triggerHapticFeedback(.light)
+            SoundManager.shared.sound(.click1)
             self.color = color
         } label: {
             RoundedRectangle(cornerRadius: 20)

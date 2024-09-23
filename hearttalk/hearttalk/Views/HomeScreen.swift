@@ -134,14 +134,6 @@ struct HomeScreen: View {
                         }
                     }
                     if requestManager.checkInternetConnectivity() {
-                        OnlineHomeCard() { type in
-                            switch type {
-                            case .create:
-                                print()
-                            case .join:
-                                print()
-                            }
-                        }
                         GenerateHomeCard() {
                             if requestManager.checkInternetConnectivity() {
                                 isShowGenerate.toggle()

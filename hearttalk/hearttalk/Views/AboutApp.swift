@@ -7,30 +7,32 @@ struct AboutApp: View {
     @Environment(\.presentationMode) var presentationMode
     
     @State private var isShareApp: Bool = false
-    @State private var isClearAlert: Bool = false
+    @State private var isShowSettings: Bool = false
     @State private var isShowWhatIs: Bool = false
     @State private var isShowPDF: Bool = false
     
     @State private var pdftype: PDFType = .privacy
     
     var body: some View {
-        makeContent()
-            .background(.lightBlack)
-            .edgesIgnoringSafeArea(.bottom)
-            .sheet(isPresented: $isShareApp) {
-                ActivityViewControllerRepresentableCenter(activityItems: [viewModel.shareApp()])
-            }
-            .fullScreenCover(isPresented: $isShowWhatIs) {
-                WhatIsTheApp()
-            }
-            .fullScreenCover(isPresented: $isShowPDF) {
-                PDFScreen(pdfType: pdftype)
-            }
-            .alert(isPresented: $isClearAlert) {
-                Alert(title: Text(Localization.deleting), primaryButton: .destructive(Text(Localization.delete), action: {
-                    viewModel.clearData()
-                }), secondaryButton: .cancel(Text(Localization.cancel), action: {}))
-            }
+        NavigationView {
+            makeContent()
+                .background(.lightBlack)
+                .edgesIgnoringSafeArea(.bottom)
+                .sheet(isPresented: $isShareApp) {
+                    ActivityViewControllerRepresentableCenter(activityItems: [viewModel.shareApp()])
+                }
+                .fullScreenCover(isPresented: $isShowWhatIs) {
+                    WhatIsTheApp()
+                }
+                .fullScreenCover(isPresented: $isShowPDF) {
+                    PDFScreen(pdfType: pdftype)
+                }
+//                .alert(isPresented: $isClearAlert) {
+//                    Alert(title: Text(Localization.deleting), primaryButton: .destructive(Text(Localization.delete), action: {
+//                        viewModel.clearData()
+//                    }), secondaryButton: .cancel(Text(Localization.cancel), action: {}))
+//                }
+        }
     }
     
     private func makeContent() -> some View {
@@ -56,6 +58,14 @@ struct AboutApp: View {
                         .foregroundStyle(.darkWhite)
                         .opacity(0.66)
                 }
+            }
+            NavigationLink(
+                destination: Settings(isPresented: $isShowSettings)
+                    .environmentObject(viewModel)
+                    .navigationBarHidden(true),
+                isActive: $isShowSettings
+            ) {
+                EmptyView()
             }
         }
         .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32)
@@ -88,8 +98,8 @@ struct AboutApp: View {
                         shareAction()
                     case .review:
                         reviewAction()
-                    case .clear:
-                        clearAction()
+                    case .settings:
+                        settingsAction()
                     case .whatis:
                         whatIsAction()
                     case .contact:
@@ -125,8 +135,8 @@ struct AboutApp: View {
         viewModel.requestReview()
     }
     
-    private func clearAction() {
-        isClearAlert.toggle()
+    private func settingsAction() {
+        isShowSettings.toggle()
     }
     
     private func whatIsAction() {

@@ -54,24 +54,50 @@ final class ViewModel: ObservableObject {
             UserDefaults.standard.set(newValue, forKey: "isShowAgeAlert")
         }
     }
+    var isVibrations: Bool {
+        get {
+            if UserDefaults.standard.object(forKey: "isVibrations") == nil {
+                return true
+            }
+            return UserDefaults.standard.bool(forKey: "isVibrations")
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "isVibrations")
+        }
+    }
+    var isSounds: Bool {
+        get {
+            if UserDefaults.standard.object(forKey: "isSounds") == nil {
+                return true
+            }
+            return UserDefaults.standard.bool(forKey: "isSounds")
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "isSounds")
+        }
+    }
+    var language: String {
+        get {
+            return UserDefaults.standard.string(forKey: "AppleLanguage") ?? "en"
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "AppleLanguage")
+            clearData()
+        }
+    }
     
     private let defaultCardTypes = [Localization.favorites, Localization.simple, Localization.family, Localization.taboo, Localization.sex, Localization.close, Localization.closer, Localization.closest]
+    private let reloadablePacksId: [String] = []
     private let hasImportedDataKey = "hasImportedData"
     private var createdPackId: String?
     private var createdTypeId: String?
     
     init() {
-        let userLanguage = Locale.preferredLanguages.first?.prefix(2) ?? "en"
-        if UserDefaults.standard.string(forKey: "selectedLanguage") ?? "en" == userLanguage {
-            if !UserDefaults.standard.bool(forKey: hasImportedDataKey) {
-                parseCardTypesFromFile()
-                UserDefaults.standard.set(true, forKey: hasImportedDataKey)
-            }
-            fetchAll()
-        } else {
-            clearData()
-            UserDefaults.standard.set(userLanguage, forKey: "selectedLanguage")
+        if !UserDefaults.standard.bool(forKey: hasImportedDataKey) {
+            parseCardTypesFromFile()
+            UserDefaults.standard.set(true, forKey: hasImportedDataKey)
         }
+        fetchAll()
     }
     
     private func parseCardTypesFromFile() {

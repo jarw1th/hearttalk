@@ -27,7 +27,7 @@ enum QuestionMode {
 
 enum AboutAppType: CaseIterable {
     
-    case whatis, share, review, terms, privacy, contact, clear
+    case whatis, share, review, terms, privacy, contact, settings
     
     func imageName() -> String {
         switch self {
@@ -43,8 +43,8 @@ enum AboutAppType: CaseIterable {
             return "privacy"
         case .contact:
             return "contact"
-        case .clear:
-            return "trash"
+        case .settings:
+            return "settings"
         }
     }
     
@@ -62,6 +62,52 @@ enum AboutAppType: CaseIterable {
             return Localization.privacy
         case .contact:
             return Localization.contact
+        case .settings:
+            return Localization.settings
+        }
+    }
+    
+    func isSpecial() -> Bool {
+        switch self {
+        case .settings:
+            return true
+        default:
+            return false
+        }
+    }
+    
+}
+
+enum SettingsType: CaseIterable {
+    
+    case vibrations, sounds, language, clear
+    
+    func imageName() -> String {
+        switch self {
+        case .vibrations:
+            return ""
+        case .sounds:
+            return ""
+        case .language:
+            return "language"
+        case .clear:
+            return "trash"
+        }
+    }
+    
+    func text() -> String {
+        switch self {
+        case .vibrations:
+            return Localization.vibrations
+        case .sounds:
+            return Localization.sounds
+        case .language:
+            let locale = Locale.current
+            if let languageCode = UserDefaults.standard.string(forKey: "AppleLanguage"),
+               let language = locale.localizedString(forLanguageCode: languageCode) {
+                return language.capitalized
+            }
+            return "English"
         case .clear:
             return Localization.clear
         }
@@ -112,21 +158,6 @@ enum PDFType {
             return Bundle.main.url(forResource: "TermsOfUse", withExtension: "pdf")
         case .privacy:
             return Bundle.main.url(forResource: "PrivacyPolicy", withExtension: "pdf")
-        }
-    }
-    
-}
-
-enum OnlineScreenType {
-    
-    case create, join
-    
-    func header() -> String {
-        switch self {
-        case .create:
-            return "Create room"
-        case .join:
-            return "Join room"
         }
     }
     

@@ -24,8 +24,8 @@ struct CreateScreen: View {
             .edgesIgnoringSafeArea(.bottom)
             .actionSheet(isPresented: $isShowActionSheet) {
                 ActionSheet(
-                    title: Text("Select a pack"),
-                    message: Text("This card will be added to selected pack."),
+                    title: Text(Localization.packActionSheetTitle),
+                    message: Text(Localization.packActionSheetMessage),
                     buttons: makeActionSheetButtons()
                 )
             }

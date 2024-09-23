@@ -105,6 +105,10 @@ final class RealmManager {
         return realm.object(ofType: CardPack.self, forPrimaryKey: id)
     }
     
+    func getCardPack(forName name: String) -> CardPack? {
+        return realm.objects(CardPack.self).filter("name == %@", name).first
+    }
+    
     func getCardType(forId id: String) -> CardType? {
         return realm.object(ofType: CardType.self, forPrimaryKey: id)
     }

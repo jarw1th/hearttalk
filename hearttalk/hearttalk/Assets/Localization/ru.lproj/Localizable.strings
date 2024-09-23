@@ -136,3 +136,17 @@
 "notes" = "Записки";
 
 "createNote" = "Создать запуску";
+
+"settings" = "Настройки";
+
+"vibrations" = "Вибрации";
+
+"sounds" = "Звуки";
+
+"packActionSheetTitle" = "Выберите набор";
+
+"packActionSheetMessage" = "Эта карточка будет добавлена в данный набор.";
+
+"languageActionSheetTitle" = "Выберите язык";
+
+"languageActionSheetMessage" = "Мы удалим все данные!";

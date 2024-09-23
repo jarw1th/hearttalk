@@ -136,3 +136,17 @@
 "notes" = "Notes";
 
 "createNote" = "Create note";
+
+"settings" = "Settings";
+
+"vibrations" = "Vibrations";
+
+"sounds" = "Sounds";
+
+"packActionSheetTitle" = "Select a pack";
+
+"packActionSheetMessage" = "This card will be added to selected pack.";
+
+"languageActionSheetTitle" = "Select language";
+
+"languageActionSheetMessage" = "We will delete all data!";

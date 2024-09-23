@@ -18,12 +18,19 @@ struct CreateNote: View {
     }
     
     private func makeContent() -> some View {
-        VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48) {
+        VStack {
             HStack {
                 Spacer()
                 makeBackButton()
             }
-            makeCard()
+            VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48) {
+                Text(Localization.createNote)
+                    .font(.custom("PlayfairDisplay-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48))
+                    .multilineTextAlignment(.leading)
+                    .foregroundStyle(.darkWhite)
+                    .frame(maxWidth: .infinity)
+                makeCard()
+            }
         }
         .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32)
         .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 70 : 120)

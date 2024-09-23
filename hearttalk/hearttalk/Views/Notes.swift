@@ -24,7 +24,7 @@ struct Notes: View {
     }
     
     private func makeContent() -> some View {
-        VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48) {
+        VStack {
             HStack {
                 if viewModel.noteIndex != 0 {
                     Button {
@@ -35,7 +35,7 @@ struct Notes: View {
                             .renderingMode(.template)
                             .resizable()
                             .foregroundStyle(.darkWhite)
-                            .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32, height: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
+                            .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48, height: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48)
                     }
                 }
                 Spacer()
@@ -43,8 +43,16 @@ struct Notes: View {
             }
             .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
             
-            NoteCardView(isSwipeBack: $isSwipeBack)
-                .environmentObject(viewModel)
+            VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48) {
+                Text(Localization.notes)
+                    .font(.custom("PlayfairDisplay-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48))
+                    .multilineTextAlignment(.leading)
+                    .foregroundStyle(.darkWhite)
+                    .frame(maxWidth: .infinity)
+                
+                NoteCardView(isSwipeBack: $isSwipeBack)
+                    .environmentObject(viewModel)
+            }
         }
         .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32)
         .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 70 : 120)

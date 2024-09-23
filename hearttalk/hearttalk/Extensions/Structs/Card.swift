@@ -154,7 +154,9 @@ struct CardView: View {
             VStack {
                 HStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
                     Spacer()
-                    makeNotesButton()
+                    if viewModel.cards[viewModel.cardIndex].notes.count != 0 {
+                        makeNotesButton()
+                    }
                     makeCreateNoteButton()
                 }
                 Spacer()

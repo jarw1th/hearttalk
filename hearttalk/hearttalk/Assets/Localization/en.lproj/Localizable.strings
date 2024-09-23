@@ -132,3 +132,7 @@
 "descriptionPlaceholder" = "Your created pack.";
 
 "notePlaceholder" = "Write your note";
+
+"notes" = "Notes";
+
+"createNote" = "Create note";

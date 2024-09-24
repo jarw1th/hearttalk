@@ -10,6 +10,7 @@ struct AboutApp: View {
     @State private var isShowSettings: Bool = false
     @State private var isShowWhatIs: Bool = false
     @State private var isShowPDF: Bool = false
+    @State private var isShowContacts: Bool = false
     
     @State private var pdftype: PDFType = .privacy
     
@@ -27,11 +28,12 @@ struct AboutApp: View {
                 .fullScreenCover(isPresented: $isShowPDF) {
                     PDFScreen(pdfType: pdftype)
                 }
-//                .alert(isPresented: $isClearAlert) {
-//                    Alert(title: Text(Localization.deleting), primaryButton: .destructive(Text(Localization.delete), action: {
-//                        viewModel.clearData()
-//                    }), secondaryButton: .cancel(Text(Localization.cancel), action: {}))
-//                }
+                .actionSheet(isPresented: $isShowContacts) {
+                    ActionSheet(
+                        title: Text(""),
+                        buttons: makeActionSheetButtons()
+                    )
+                }
         }
     }
     
@@ -145,14 +147,7 @@ struct AboutApp: View {
     }
     
     private func contactAction() {
-        let email = "mailto:help.hearttalk@gmail.com"
-        if let url = URL(string: email) {
-            if UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url)
-            } else {
-                print("Can't open Gmail")
-            }
-        }
+        isShowContacts.toggle()
     }
     
     private func termsAction() {
@@ -163,6 +158,37 @@ struct AboutApp: View {
     private func privacyAction() {
         pdftype = .privacy
         isShowPDF.toggle()
+    }
+    
+    private func makeActionSheetButtons() -> [ActionSheet.Button]  {
+        var buttons: [ActionSheet.Button] = []
+        
+        let telegramButton = ActionSheet.Button.default(Text("Telegram"), action: {
+            let tg = "https://t.me/hearttalk_app"
+            if let url = URL(string: tg) {
+                if UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url)
+                }
+            }
+        })
+        buttons.append(telegramButton)
+        
+        let emailButton = ActionSheet.Button.default(Text("Mail"), action: {
+            let email = "mailto:help.hearttalk@gmail.com"
+            if let url = URL(string: email) {
+                if UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url)
+                } else {
+                    print("Can't open Gmail")
+                }
+            }
+        })
+        buttons.append(emailButton)
+                                                        
+        let button = ActionSheet.Button.cancel(Text(Localization.cancel))
+        buttons.append(button)
+        
+        return buttons
     }
     
 }

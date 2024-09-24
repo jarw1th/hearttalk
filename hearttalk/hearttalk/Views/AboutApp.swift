@@ -173,6 +173,16 @@ struct AboutApp: View {
         })
         buttons.append(telegramButton)
         
+        let instButton = ActionSheet.Button.default(Text("Instagram"), action: {
+            let inst = "https://instagram.com/hearttalk_app_\(viewModel.language)"
+            if let url = URL(string: inst) {
+                if UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url)
+                }
+            }
+        })
+        buttons.append(instButton)
+        
         let emailButton = ActionSheet.Button.default(Text("Mail"), action: {
             let email = "mailto:help.hearttalk@gmail.com"
             if let url = URL(string: email) {

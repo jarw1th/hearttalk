@@ -14,6 +14,7 @@ struct Settings: View {
     @State private var isVibrations: Bool = false
     @State private var isDailyCard: Bool = false
     @State private var isSounds: Bool = false
+    @State private var isDarkMode: Bool = false
     
     var body: some View {
         makeContent()
@@ -23,6 +24,7 @@ struct Settings: View {
                 isVibrations = viewModel.isVibrations
                 isSounds = viewModel.isSounds
                 isDailyCard = viewModel.isDailyCard
+                isDarkMode = viewModel.isDarkMode
             }
             .onChange(of: isVibrations) { new in
                 viewModel.isVibrations = new
@@ -32,6 +34,9 @@ struct Settings: View {
             }
             .onChange(of: isDailyCard) { new in
                 viewModel.isDailyCard = new
+            }
+            .onChange(of: isDarkMode) { new in
+                viewModel.isDarkMode = new
             }
             .alert(isPresented: $isClearAlert) {
                 Alert(title: Text(Localization.deleting), primaryButton: .destructive(Text(Localization.delete), action: {
@@ -80,6 +85,8 @@ struct Settings: View {
                         SettingsToggler(text: settingsType.text(), isOn: $isSounds)
                     case .dailyCard:
                         SettingsToggler(text: settingsType.text(), isOn: $isDailyCard)
+                    case .theme:
+                        SettingsToggler(text: settingsType.text(), isOn: $isDarkMode)
                     case .language:
                         SettingsListItem(imageName: settingsType.imageName(), text: settingsType.text(), isSpecial: settingsType.isSpecial(), action: languageAction)
                     case .clear:

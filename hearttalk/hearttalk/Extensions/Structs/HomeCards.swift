@@ -172,36 +172,3 @@ struct AddHomeCard: View {
     }
     
 }
-
-struct GenerateHomeCard: View {
-    
-    let tapAction: () -> Void
-    
-    var body: some View {
-        makeContent()
-    }
-    
-    private func makeContent() -> some View {
-        Button {
-            HapticManager.shared.triggerHapticFeedback(.light)
-            SoundManager.shared.sound(.click1)
-            tapAction()
-        } label: {
-            ZStack {
-                RoundedRectangle(cornerRadius: 20)
-                    .stroke(.lightGray, lineWidth: 2)
-                
-                VStack {
-                    Text(Localization.generateAction)
-                        .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32))
-                        .multilineTextAlignment(.center)
-                        .foregroundStyle(.lightGray)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                }
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: 160)
-        }
-    }
-    
-}

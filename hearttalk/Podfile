@@ -9,7 +9,6 @@ target 'hearttalk' do
 
   # Pods for hearttalk
   pod 'RealmSwift'
-  pod 'Alamofire'
 
 end
 

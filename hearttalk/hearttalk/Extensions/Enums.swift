@@ -80,7 +80,7 @@ enum AboutAppType: CaseIterable {
 
 enum SettingsType: CaseIterable {
     
-    case vibrations, sounds, dailyCard, language, clear
+    case vibrations, sounds, dailyCard, theme, language, clear
     
     func imageName() -> String {
         switch self {
@@ -89,6 +89,8 @@ enum SettingsType: CaseIterable {
         case .sounds:
             return ""
         case .dailyCard:
+            return ""
+        case .theme:
             return ""
         case .language:
             return "language"
@@ -105,6 +107,8 @@ enum SettingsType: CaseIterable {
             return Localization.sounds
         case .dailyCard:
             return Localization.dailyCard
+        case .theme:
+            return Localization.darkMode
         case .language:
             let locale = Locale.current
             if let languageCode = UserDefaults.standard.string(forKey: "AppleLanguage"),

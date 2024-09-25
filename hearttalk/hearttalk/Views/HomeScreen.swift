@@ -9,7 +9,6 @@ struct HomeScreen: View {
     @State private var isShowSettings: Bool = false
     @State private var isShowCreateCard: Bool = false
     @State private var isShowCreatePack: Bool = false
-    @State private var isShowGenerate: Bool = false
     @State private var isShowAgeAlert: Bool = false
     @State private var isShowDailyCard: Bool = false
     
@@ -31,10 +30,6 @@ struct HomeScreen: View {
         }
         .sheet(isPresented: $isShowCreatePack) {
             CreateScreen(createScreenType: .pack)
-                .environmentObject(viewModel)
-        }
-        .sheet(isPresented: $isShowGenerate) {
-            GenerateScreen()
                 .environmentObject(viewModel)
         }
         .fullScreenCover(isPresented: $isShowDailyCard) {
@@ -141,21 +136,12 @@ struct HomeScreen: View {
                     }
                 }
                 
-                LazyVStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
-                    AddHomeCard() { type in
-                        switch type {
-                        case .pack:
-                            isShowCreatePack.toggle()
-                        case .card:
-                            isShowCreateCard.toggle()
-                        }
-                    }
-                    if requestManager.checkInternetConnectivity() {
-                        GenerateHomeCard() {
-                            if requestManager.checkInternetConnectivity() {
-                                isShowGenerate.toggle()
-                            }
-                        }
+                AddHomeCard() { type in
+                    switch type {
+                    case .pack:
+                        isShowCreatePack.toggle()
+                    case .card:
+                        isShowCreateCard.toggle()
                     }
                 }
             }

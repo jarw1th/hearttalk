@@ -10,7 +10,6 @@ final class ViewModel: ObservableObject {
     static let shared = ViewModel()
     
     private var realmManager: RealmManager = RealmManager()
-//    private var networkManager: NetworkManager = NetworkManager()
     
     @Published var myCardTypes: [CardType] = []
     @Published var cardTypes: [CardType] = []
@@ -70,7 +69,7 @@ final class ViewModel: ObservableObject {
     var isSounds: Bool {
         get {
             if UserDefaults.standard.object(forKey: "isSounds") == nil {
-                return true
+                return false
             }
             return UserDefaults.standard.bool(forKey: "isSounds")
         }
@@ -100,6 +99,17 @@ final class ViewModel: ObservableObject {
                     self.clearData()
                 }
             }
+        }
+    }
+    var isDarkMode: Bool {
+        get {
+            if UserDefaults.standard.object(forKey: "isDarkMode") == nil {
+                return true
+            }
+            return UserDefaults.standard.bool(forKey: "isDarkMode")
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "isDarkMode")
         }
     }
     
@@ -399,15 +409,6 @@ final class ViewModel: ObservableObject {
 
         let synthesizer = AVSpeechSynthesizer()
         synthesizer.speak(utterance)
-    }
-    
-    func createQuestionAI(prompt: String) async -> String {
-        do {
-            return ""
-//            return try await networkManager.createQuestion(prompt: prompt)
-        } catch {
-            return ""
-        }
     }
     
     func clearData() {

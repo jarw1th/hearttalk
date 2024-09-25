@@ -13,6 +13,7 @@ struct LoadingScreen: View {
         makeContent()
             .background(.lightBlack)
             .ignoresSafeArea()
+            .preferredColorScheme(viewModel.isDarkMode ? .dark : .light)
     }
     
     private func makeContent() -> some View {

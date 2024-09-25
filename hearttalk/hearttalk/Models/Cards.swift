@@ -63,3 +63,18 @@ class Note: Object, Identifiable {
     }
     
 }
+
+class DailyCard: Object, Identifiable {
+    
+    @Persisted(primaryKey: true) var id: String
+    @Persisted var question: String
+    @Persisted var cardId: String
+    @Persisted var date: Date
+    
+    convenience init(id: String, question: String) {
+        self.init()
+        self.id = id
+        self.question = question
+    }
+    
+}

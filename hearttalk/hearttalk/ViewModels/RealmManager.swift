@@ -1,3 +1,4 @@
+
 import Foundation
 import RealmSwift
 
@@ -7,6 +8,12 @@ final class RealmManager {
     
     init() {
         do {
+            let config = Realm.Configuration(
+                fileURL: FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.ruslanparastaev.hearttalk")?.appendingPathComponent("default.realm"),
+                schemaVersion: 1,
+                migrationBlock: { _, _ in }
+            )
+            Realm.Configuration.defaultConfiguration = config
             realm = try Realm()
         } catch let error {
             fatalError("Unable to initialize Realm: \(error.localizedDescription)")

@@ -32,6 +32,19 @@
 		21835FB52CA16B57002A17E9 /* Sound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21835FB42CA16B57002A17E9 /* Sound.swift */; };
 		21835FB82CA16C60002A17E9 /* CardSwipe.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 21835FB72CA16C60002A17E9 /* CardSwipe.mp3 */; };
 		21835FBA2CA16E24002A17E9 /* Click1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 21835FB92CA16E24002A17E9 /* Click1.mp3 */; };
+		21835FC12CA3002E002A17E9 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21835FC02CA3002E002A17E9 /* WidgetKit.framework */; };
+		21835FC32CA3002E002A17E9 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21835FC22CA3002E002A17E9 /* SwiftUI.framework */; };
+		21835FC62CA3002E002A17E9 /* hearttalkWidgetExtensionBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21835FC52CA3002E002A17E9 /* hearttalkWidgetExtensionBundle.swift */; };
+		21835FCC2CA30030002A17E9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21835FCB2CA30030002A17E9 /* Assets.xcassets */; };
+		21835FD02CA30030002A17E9 /* hearttalkWidgetExtensionExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 21835FBF2CA3002E002A17E9 /* hearttalkWidgetExtensionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		21835FD72CA3008E002A17E9 /* AddCardWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21835FD62CA3008E002A17E9 /* AddCardWidget.swift */; };
+		21835FDA2CA30B85002A17E9 /* DailyCardWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21835FD92CA30B85002A17E9 /* DailyCardWidget.swift */; };
+		21835FDB2CA30CCE002A17E9 /* PlayfairDisplay-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21BDB3F82C899E970097F90E /* PlayfairDisplay-Regular.ttf */; };
+		21835FDC2CA30CEC002A17E9 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB3A52C899ADD0097F90E /* Localization.swift */; };
+		21835FDE2CA3109C002A17E9 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB4022C89B42D0097F90E /* RealmManager.swift */; };
+		21A18B832CA319DF00D0EB6B /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21835FB22CA1545A002A17E9 /* String+.swift */; };
+		21A18B842CA319ED00D0EB6B /* Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB4042C89B4A00097F90E /* Cards.swift */; };
+		21A18B872CA3F14C00D0EB6B /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB42A2C8AFC4B0097F90E /* View+.swift */; };
 		21BDB3D42C899ADD0097F90E /* ProjectApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB3A42C899ADD0097F90E /* ProjectApp.swift */; };
 		21BDB3D52C899ADD0097F90E /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB3A52C899ADD0097F90E /* Localization.swift */; };
 		21BDB3D82C899ADD0097F90E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21BDB3AA2C899ADD0097F90E /* Assets.xcassets */; };
@@ -76,9 +89,35 @@
 		21BDB4432C8B664D0097F90E /* couples_closest_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 21BDB4422C8B664D0097F90E /* couples_closest_ru.txt */; };
 		21BDB4472C8B69630097F90E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 21BDB4452C8B69630097F90E /* Localizable.strings */; };
 		27203AAEFEE5F8D249BCCBB5 /* Pods_hearttalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F04D0D3CFAA742CBEF7DDEB /* Pods_hearttalk.framework */; };
+		DC053A994C992465AD2BF698 /* Pods_hearttalkWidgetExtensionExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 018A66986B786D8101FFA613 /* Pods_hearttalkWidgetExtensionExtension.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		21835FCE2CA30030002A17E9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 21BDB38A2C88E0180097F90E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 21835FBE2CA3002E002A17E9;
+			remoteInfo = hearttalkWidgetExtensionExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		21835FD42CA30030002A17E9 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				21835FD02CA30030002A17E9 /* hearttalkWidgetExtensionExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		018A66986B786D8101FFA613 /* Pods_hearttalkWidgetExtensionExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_hearttalkWidgetExtensionExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		11F8054245486A51C275701B /* Pods-hearttalk.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hearttalk.debug.xcconfig"; path = "Target Support Files/Pods-hearttalk/Pods-hearttalk.debug.xcconfig"; sourceTree = "<group>"; };
 		2103FDCE2C8B9ECA0020D1AE /* PDFScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFScreen.swift; sourceTree = "<group>"; };
 		2103FDD02C8B9EF10020D1AE /* PDF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDF.swift; sourceTree = "<group>"; };
@@ -105,6 +144,16 @@
 		21835FB42CA16B57002A17E9 /* Sound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sound.swift; sourceTree = "<group>"; };
 		21835FB72CA16C60002A17E9 /* CardSwipe.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = CardSwipe.mp3; sourceTree = "<group>"; };
 		21835FB92CA16E24002A17E9 /* Click1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Click1.mp3; sourceTree = "<group>"; };
+		21835FBF2CA3002E002A17E9 /* hearttalkWidgetExtensionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = hearttalkWidgetExtensionExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		21835FC02CA3002E002A17E9 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		21835FC22CA3002E002A17E9 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		21835FC52CA3002E002A17E9 /* hearttalkWidgetExtensionBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hearttalkWidgetExtensionBundle.swift; sourceTree = "<group>"; };
+		21835FCB2CA30030002A17E9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		21835FCD2CA30030002A17E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		21835FD62CA3008E002A17E9 /* AddCardWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCardWidget.swift; sourceTree = "<group>"; };
+		21835FD92CA30B85002A17E9 /* DailyCardWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCardWidget.swift; sourceTree = "<group>"; };
+		21A18B852CA323A200D0EB6B /* hearttalk.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = hearttalk.entitlements; sourceTree = "<group>"; };
+		21A18B862CA323BD00D0EB6B /* hearttalkWidgetExtensionExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = hearttalkWidgetExtensionExtension.entitlements; sourceTree = "<group>"; };
 		21BDB3922C88E0180097F90E /* hearttalk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hearttalk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		21BDB3A42C899ADD0097F90E /* ProjectApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectApp.swift; sourceTree = "<group>"; };
 		21BDB3A52C899ADD0097F90E /* Localization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
@@ -152,10 +201,22 @@
 		21BDB4462C8B69630097F90E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		21BDB4482C8B696A0097F90E /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7F04D0D3CFAA742CBEF7DDEB /* Pods_hearttalk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_hearttalk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E46BEC5504BE82D606C22EB /* Pods-hearttalkWidgetExtensionExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hearttalkWidgetExtensionExtension.release.xcconfig"; path = "Target Support Files/Pods-hearttalkWidgetExtensionExtension/Pods-hearttalkWidgetExtensionExtension.release.xcconfig"; sourceTree = "<group>"; };
 		F1B06A95D27A6D9B24797D32 /* Pods-hearttalk.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hearttalk.release.xcconfig"; path = "Target Support Files/Pods-hearttalk/Pods-hearttalk.release.xcconfig"; sourceTree = "<group>"; };
+		F8E8BD01C39DB58DFAFB74AD /* Pods-hearttalkWidgetExtensionExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hearttalkWidgetExtensionExtension.debug.xcconfig"; path = "Target Support Files/Pods-hearttalkWidgetExtensionExtension/Pods-hearttalkWidgetExtensionExtension.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		21835FBC2CA3002E002A17E9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21835FC32CA3002E002A17E9 /* SwiftUI.framework in Frameworks */,
+				21835FC12CA3002E002A17E9 /* WidgetKit.framework in Frameworks */,
+				DC053A994C992465AD2BF698 /* Pods_hearttalkWidgetExtensionExtension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		21BDB38F2C88E0180097F90E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -172,6 +233,8 @@
 			children = (
 				11F8054245486A51C275701B /* Pods-hearttalk.debug.xcconfig */,
 				F1B06A95D27A6D9B24797D32 /* Pods-hearttalk.release.xcconfig */,
+				F8E8BD01C39DB58DFAFB74AD /* Pods-hearttalkWidgetExtensionExtension.debug.xcconfig */,
+				8E46BEC5504BE82D606C22EB /* Pods-hearttalkWidgetExtensionExtension.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -250,10 +313,32 @@
 			path = Sounds;
 			sourceTree = "<group>";
 		};
+		21835FC42CA3002E002A17E9 /* hearttalkWidgetExtension */ = {
+			isa = PBXGroup;
+			children = (
+				21835FD52CA3005C002A17E9 /* Widgets */,
+				21835FC52CA3002E002A17E9 /* hearttalkWidgetExtensionBundle.swift */,
+				21835FCB2CA30030002A17E9 /* Assets.xcassets */,
+				21835FCD2CA30030002A17E9 /* Info.plist */,
+			);
+			path = hearttalkWidgetExtension;
+			sourceTree = "<group>";
+		};
+		21835FD52CA3005C002A17E9 /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				21835FD62CA3008E002A17E9 /* AddCardWidget.swift */,
+				21835FD92CA30B85002A17E9 /* DailyCardWidget.swift */,
+			);
+			path = Widgets;
+			sourceTree = "<group>";
+		};
 		21BDB3892C88E0180097F90E = {
 			isa = PBXGroup;
 			children = (
+				21A18B862CA323BD00D0EB6B /* hearttalkWidgetExtensionExtension.entitlements */,
 				21BDB3942C88E0180097F90E /* hearttalk */,
+				21835FC42CA3002E002A17E9 /* hearttalkWidgetExtension */,
 				21BDB3932C88E0180097F90E /* Products */,
 				1AF8A86639B2CE8FEFC5B808 /* Pods */,
 				7E650386A8608DAEA832AA7B /* Frameworks */,
@@ -264,6 +349,7 @@
 			isa = PBXGroup;
 			children = (
 				21BDB3922C88E0180097F90E /* hearttalk.app */,
+				21835FBF2CA3002E002A17E9 /* hearttalkWidgetExtensionExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -271,6 +357,7 @@
 		21BDB3942C88E0180097F90E /* hearttalk */ = {
 			isa = PBXGroup;
 			children = (
+				21A18B852CA323A200D0EB6B /* hearttalk.entitlements */,
 				21BDB3FC2C89A0220097F90E /* Preview Content */,
 				21BDB3FA2C899ED50097F90E /* Info.plist */,
 				21BDB3AB2C899ADD0097F90E /* Assets */,
@@ -458,6 +545,9 @@
 			isa = PBXGroup;
 			children = (
 				7F04D0D3CFAA742CBEF7DDEB /* Pods_hearttalk.framework */,
+				21835FC02CA3002E002A17E9 /* WidgetKit.framework */,
+				21835FC22CA3002E002A17E9 /* SwiftUI.framework */,
+				018A66986B786D8101FFA613 /* Pods_hearttalkWidgetExtensionExtension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -465,6 +555,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		21835FBE2CA3002E002A17E9 /* hearttalkWidgetExtensionExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 21835FD12CA30030002A17E9 /* Build configuration list for PBXNativeTarget "hearttalkWidgetExtensionExtension" */;
+			buildPhases = (
+				E09788E8A4A885BE2C014755 /* [CP] Check Pods Manifest.lock */,
+				21835FBB2CA3002E002A17E9 /* Sources */,
+				21835FBC2CA3002E002A17E9 /* Frameworks */,
+				21835FBD2CA3002E002A17E9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = hearttalkWidgetExtensionExtension;
+			productName = hearttalkWidgetExtensionExtension;
+			productReference = 21835FBF2CA3002E002A17E9 /* hearttalkWidgetExtensionExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		21BDB3912C88E0180097F90E /* hearttalk */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 21BDB3A02C88E01A0097F90E /* Build configuration list for PBXNativeTarget "hearttalk" */;
@@ -474,10 +582,12 @@
 				21BDB38F2C88E0180097F90E /* Frameworks */,
 				21BDB3902C88E0180097F90E /* Resources */,
 				A254E21A2EF0A44458BA721D /* [CP] Embed Pods Frameworks */,
+				21835FD42CA30030002A17E9 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				21835FCF2CA30030002A17E9 /* PBXTargetDependency */,
 			);
 			name = hearttalk;
 			productName = hearttalk;
@@ -494,6 +604,9 @@
 				LastSwiftUpdateCheck = 1530;
 				LastUpgradeCheck = 1530;
 				TargetAttributes = {
+					21835FBE2CA3002E002A17E9 = {
+						CreatedOnToolsVersion = 15.3;
+					};
 					21BDB3912C88E0180097F90E = {
 						CreatedOnToolsVersion = 15.3;
 						LastSwiftMigration = 1530;
@@ -515,11 +628,21 @@
 			projectRoot = "";
 			targets = (
 				21BDB3912C88E0180097F90E /* hearttalk */,
+				21835FBE2CA3002E002A17E9 /* hearttalkWidgetExtensionExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		21835FBD2CA3002E002A17E9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21835FDB2CA30CCE002A17E9 /* PlayfairDisplay-Regular.ttf in Resources */,
+				21835FCC2CA30030002A17E9 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		21BDB3902C88E0180097F90E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -594,9 +717,46 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-hearttalk/Pods-hearttalk-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		E09788E8A4A885BE2C014755 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-hearttalkWidgetExtensionExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		21835FBB2CA3002E002A17E9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21835FD72CA3008E002A17E9 /* AddCardWidget.swift in Sources */,
+				21835FC62CA3002E002A17E9 /* hearttalkWidgetExtensionBundle.swift in Sources */,
+				21835FDC2CA30CEC002A17E9 /* Localization.swift in Sources */,
+				21A18B842CA319ED00D0EB6B /* Cards.swift in Sources */,
+				21A18B872CA3F14C00D0EB6B /* View+.swift in Sources */,
+				21835FDA2CA30B85002A17E9 /* DailyCardWidget.swift in Sources */,
+				21A18B832CA319DF00D0EB6B /* String+.swift in Sources */,
+				21835FDE2CA3109C002A17E9 /* RealmManager.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		21BDB38E2C88E0180097F90E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -649,6 +809,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		21835FCF2CA30030002A17E9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 21835FBE2CA3002E002A17E9 /* hearttalkWidgetExtensionExtension */;
+			targetProxy = 21835FCE2CA30030002A17E9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		21BDB4452C8B69630097F90E /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
@@ -662,6 +830,64 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		21835FD22CA30030002A17E9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F8E8BD01C39DB58DFAFB74AD /* Pods-hearttalkWidgetExtensionExtension.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = hearttalkWidgetExtensionExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = QN6RC23FCQ;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = hearttalkWidgetExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = hearttalkWidgetExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ruslanparastaev.hearttalk.hearttalkWidgetExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		21835FD32CA30030002A17E9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8E46BEC5504BE82D606C22EB /* Pods-hearttalkWidgetExtensionExtension.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = hearttalkWidgetExtensionExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = QN6RC23FCQ;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = hearttalkWidgetExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = hearttalkWidgetExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ruslanparastaev.hearttalk.hearttalkWidgetExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		21BDB39E2C88E01A0097F90E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -714,7 +940,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -771,7 +997,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -785,9 +1011,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 11F8054245486A51C275701B /* Pods-hearttalk.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = hearttalk/hearttalk.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"hearttalk/Preview Content\"";
@@ -822,9 +1050,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F1B06A95D27A6D9B24797D32 /* Pods-hearttalk.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = hearttalk/hearttalk.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"hearttalk/Preview Content\"";
@@ -857,6 +1087,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		21835FD12CA30030002A17E9 /* Build configuration list for PBXNativeTarget "hearttalkWidgetExtensionExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				21835FD22CA30030002A17E9 /* Debug */,
+				21835FD32CA30030002A17E9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		21BDB38D2C88E0180097F90E /* Build configuration list for PBXProject "hearttalk" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

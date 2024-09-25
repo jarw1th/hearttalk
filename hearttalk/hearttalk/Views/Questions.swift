@@ -6,21 +6,32 @@ struct Questions: View {
     @EnvironmentObject var viewModel: ViewModel
     @Environment(\.presentationMode) var presentationMode
     let cardType: CardType?
+    let card: Card?
     
     @State private var questionMode: QuestionMode = .cards
-    @State private var height: CGFloat = 0
     
     @State private var isSwipeBack: Bool = false
     @State private var isShowCreateNote: Bool = false
     @State private var isShowNotes: Bool = false
+    
+    init(cardType: CardType? = nil, card: Card? = nil) {
+        self.cardType = cardType
+        self.card = card
+    }
     
     var body: some View {
         makeContent()
             .background(.lightBlack)
             .edgesIgnoringSafeArea(.bottom)
             .onAppear {
-                viewModel.fetchCards(forCardTypeId: cardType?.id ?? "")
-                viewModel.cardIndex = 0
+                if let card = card {
+                    let cardType = card.parentCardType.first
+                    viewModel.fetchCards(forCardTypeId: cardType?.id ?? "")
+                    viewModel.cardIndex = viewModel.cards.firstIndex(of: card) ?? 0
+                } else {
+                    viewModel.fetchCards(forCardTypeId: cardType?.id ?? "")
+                    viewModel.cardIndex = 0
+                }
             }
             .onTapGesture {
                 viewModel.isShowTip = false
@@ -78,22 +89,14 @@ struct Questions: View {
                 }
                 .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
                 Spacer()
-                    .background(
-                        GeometryReader { reader in
-                            Color.clear
-                                .onAppear {
-                                    height = reader.size.height
-                                }
-                        }
-                    )
-                makeBackButton()
+                ZStack(alignment: .bottom) {
+                    CardView(isSwipeBack: $isSwipeBack, isShowCreateNote: $isShowCreateNote, isShowNotes: $isShowNotes)
+                        .environmentObject(viewModel)
+                    makeBackButton()
+                }
             }
             .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 8 : 24)
             .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 70 : 120)
-            
-            CardView(isSwipeBack: $isSwipeBack, isShowCreateNote: $isShowCreateNote, isShowNotes: $isShowNotes)
-                .environmentObject(viewModel)
-                .frame(height: height)
         }
     }
     

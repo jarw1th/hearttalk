@@ -11,6 +11,7 @@ struct HomeScreen: View {
     @State private var isShowCreatePack: Bool = false
     @State private var isShowGenerate: Bool = false
     @State private var isShowAgeAlert: Bool = false
+    @State private var isShowDailyCard: Bool = false
     
     @State private var selectedCardPack: CardPack?
     @State private var selectedCardType: CardType?
@@ -36,10 +37,24 @@ struct HomeScreen: View {
             GenerateScreen()
                 .environmentObject(viewModel)
         }
+        .fullScreenCover(isPresented: $isShowDailyCard) {
+            Questions(card: viewModel.dailyOriginalCard)
+                .environmentObject(viewModel)
+        }
         .alert(isPresented: $isShowAgeAlert) {
             Alert(title: Text(Localization.adultAlertTitle), message: Text(Localization.adultAlertMessage), primaryButton: .default(Text(Localization.confirm), action: {
                 viewModel.isShowAgeAlert = false
             }), secondaryButton: .cancel(Text(Localization.cancel), action: {}))
+        }
+        .onOpenURL { url in
+            if url.scheme == "hearttalk" {
+                if url.host == "createScreen" {
+                    isShowCreateCard.toggle()
+                }
+                if url.host == "dailyWidgetOpen" {
+                    isShowDailyCard.toggle()
+                }
+            }
         }
     }
     

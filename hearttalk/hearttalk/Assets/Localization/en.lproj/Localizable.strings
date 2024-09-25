@@ -152,3 +152,7 @@
 "languageActionSheetTitle" = "Select language";
 
 "languageActionSheetMessage" = "We will delete all data!";
+
+"dailyWidgetPlaceholder" = "Who are you?";
+
+"dailyWidgetNoCard" = "No card for today";

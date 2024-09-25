@@ -10,7 +10,7 @@ final class ViewModel: ObservableObject {
     static let shared = ViewModel()
     
     private var realmManager: RealmManager = RealmManager()
-    private var networkManager: NetworkManager = NetworkManager()
+//    private var networkManager: NetworkManager = NetworkManager()
     
     @Published var myCardTypes: [CardType] = []
     @Published var cardTypes: [CardType] = []
@@ -26,6 +26,8 @@ final class ViewModel: ObservableObject {
     @Published var isCardFavorite: Bool = false
     @Published var favoriteType: CardType?
     @Published var selectedSavingType: CardType?
+    @Published var dailyCard: DailyCard?
+    @Published var dailyOriginalCard: Card?
     var appVersion: String {
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             return version
@@ -92,8 +94,12 @@ final class ViewModel: ObservableObject {
             return UserDefaults.standard.string(forKey: "AppleLanguage") ?? "en"
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: "AppleLanguage")
-            clearData()
+            if UserDefaults.standard.string(forKey: "AppleLanguage") ?? "en" != newValue {
+                UserDefaults.standard.set(newValue, forKey: "AppleLanguage")
+                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(10)) {
+                    self.clearData()
+                }
+            }
         }
     }
     
@@ -109,6 +115,7 @@ final class ViewModel: ObservableObject {
             UserDefaults.standard.set(true, forKey: hasImportedDataKey)
         }
         fetchAll()
+        getDailyCard()
     }
     
     private func parseCardTypesFromFile() {
@@ -396,7 +403,8 @@ final class ViewModel: ObservableObject {
     
     func createQuestionAI(prompt: String) async -> String {
         do {
-            return try await networkManager.createQuestion(prompt: prompt)
+            return ""
+//            return try await networkManager.createQuestion(prompt: prompt)
         } catch {
             return ""
         }
@@ -410,6 +418,42 @@ final class ViewModel: ObservableObject {
         cards = []
         cardTypes = []
         isCardFavorite = false
+        getDailyCard()
+    }
+    
+    func getDailyCard() {
+        let today = Calendar.current.startOfDay(for: Date())
+        let cardsList = realmManager.fetch(Card.self)
+        let cards = Array(cardsList)
+        let dailyCardsList = realmManager.fetch(DailyCard.self)
+        let dailyCards = Array(dailyCardsList)
+        
+        if let existingCard = dailyCards.first(where: { !Calendar.current.isDate($0.date, inSameDayAs: today) }) {
+            realmManager.delete(existingCard)
+            
+            let newCard = cards[Int.random(in: 0..<cards.count)]
+            let newDailyCardId = UUID().uuidString
+            let newQuestion = newCard.question
+            let newDailyCard = DailyCard(id: newDailyCardId, question: newQuestion)
+            newDailyCard.cardId = newCard.id
+            newDailyCard.date = today
+            self.dailyCard = newDailyCard
+            self.dailyOriginalCard = newCard
+            realmManager.add(newDailyCard)
+        } else if dailyCards.isEmpty {
+            let newCard = cards[Int.random(in: 0..<cards.count)]
+            let newDailyCardId = UUID().uuidString
+            let newQuestion = newCard.question
+            let newDailyCard = DailyCard(id: newDailyCardId, question: newQuestion)
+            newDailyCard.cardId = newCard.id
+            newDailyCard.date = today
+            self.dailyCard = newDailyCard
+            self.dailyOriginalCard = newCard
+            realmManager.add(newDailyCard)
+        } else {
+            self.dailyCard = dailyCards.first
+            self.dailyOriginalCard = realmManager.getCard(forId: dailyCard?.cardId ?? "")
+        }
     }
     
 }

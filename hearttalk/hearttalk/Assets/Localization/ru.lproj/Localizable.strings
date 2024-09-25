@@ -152,3 +152,7 @@
 "languageActionSheetTitle" = "Выберите язык";
 
 "languageActionSheetMessage" = "Мы удалим все данные!";
+
+"dailyWidgetPlaceholder" = "Кто ты?";
+
+"dailyWidgetNoCard" = "Сегодня нет карточки";

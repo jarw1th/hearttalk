@@ -320,7 +320,7 @@ final class ViewModel: ObservableObject {
         }
     }
     
-    func createCardImage(_ question: String) -> UIImage? {
+    func createCardImage(_ question: String) -> IdentifiableImage? {
         let hostingController = UIHostingController(rootView: CardForShare(question: question))
         let view = hostingController.view
         let targetSize = CGSize(width: 300, height: 600) 
@@ -329,9 +329,10 @@ final class ViewModel: ObservableObject {
         view?.backgroundColor = .clear
         
         let renderer = UIGraphicsImageRenderer(size: targetSize)
-        return renderer.image { _ in
+        let identifiableImage = IdentifiableImage(image: renderer.image { _ in
             view?.drawHierarchy(in: CGRect(origin: .zero, size: targetSize), afterScreenUpdates: true)
-        }
+        })
+        return identifiableImage
     }
     
     func shareApp() -> String {

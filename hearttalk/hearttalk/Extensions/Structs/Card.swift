@@ -16,7 +16,7 @@ struct CardView: View {
     @State private var cardWidth: CGFloat = 0
     
     @State private var isShare: Bool = false
-    @State private var shareImage: UIImage?
+    @State private var shareImage: IdentifiableImage?
     
     var body: some View {
         ZStack {
@@ -140,8 +140,8 @@ struct CardView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .sheet(isPresented: $isShare) {
-            ActivityViewControllerRepresentableCenter(activityItems: [shareImage])
+        .sheet(item: $shareImage) { identifiableImage in
+            ActivityViewControllerRepresentableCenter(activityItems: [identifiableImage.image])
         }
         .onChange(of: isSwipeBack) { value in
             if value {
@@ -362,9 +362,6 @@ struct CardView: View {
     
     private func shareAction(_ card: Card) {
         shareImage = viewModel.createCardImage(card.question)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            isShare.toggle()
-        }
     }
     
     private func speakAction(_ card: Card) {

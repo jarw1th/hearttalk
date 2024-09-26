@@ -8,6 +8,8 @@ struct CreateNote: View {
     
     @State private var text: String = ""
     
+    @State private var isShowAlert: Bool = false
+    
     var body: some View {
         makeContent()
             .background(.lightBlack)
@@ -15,6 +17,9 @@ struct CreateNote: View {
                 UIApplication.shared.endEditing()
             }
             .edgesIgnoringSafeArea(.bottom)
+            .alert(isPresented: $isShowAlert) {
+                Alert(title: Text(Localization.alert), message: Text(Localization.alertNote), dismissButton: .default(Text(Localization.confirm), action: {}))
+            }
     }
     
     private func makeContent() -> some View {
@@ -44,6 +49,8 @@ struct CreateNote: View {
                 SoundManager.shared.sound(.click1)
                 createAction()
                 presentationMode.wrappedValue.dismiss()
+            } else {
+                isShowAlert.toggle()
             }
         } label: {
             Image("check")

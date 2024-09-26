@@ -26,6 +26,7 @@
 		2103FEC32CA04D4C0020D1AE /* Notes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2103FEC22CA04D4C0020D1AE /* Notes.swift */; };
 		2103FEC52CA04E520020D1AE /* NoteCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2103FEC42CA04E520020D1AE /* NoteCard.swift */; };
 		2103FEC72CA0558D0020D1AE /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2103FEC62CA0558D0020D1AE /* TextView.swift */; };
+		212B91412CA55AA9009F9344 /* AdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212B91402CA55A9C009F9344 /* AdView.swift */; };
 		21835FAD2CA13F96002A17E9 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21835FAC2CA13F96002A17E9 /* Settings.swift */; };
 		21835FAF2CA144F6002A17E9 /* SettingsListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21835FAE2CA144F6002A17E9 /* SettingsListItem.swift */; };
 		21835FB32CA1545A002A17E9 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21835FB22CA1545A002A17E9 /* String+.swift */; };
@@ -136,6 +137,7 @@
 		2103FEC22CA04D4C0020D1AE /* Notes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notes.swift; sourceTree = "<group>"; };
 		2103FEC42CA04E520020D1AE /* NoteCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteCard.swift; sourceTree = "<group>"; };
 		2103FEC62CA0558D0020D1AE /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
+		212B91402CA55A9C009F9344 /* AdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdView.swift; sourceTree = "<group>"; };
 		21835FAC2CA13F96002A17E9 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		21835FAE2CA144F6002A17E9 /* SettingsListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsListItem.swift; sourceTree = "<group>"; };
 		21835FB22CA1545A002A17E9 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
@@ -401,6 +403,7 @@
 		21BDB3BA2C899ADD0097F90E /* Structs */ = {
 			isa = PBXGroup;
 			children = (
+				212B91402CA55A9C009F9344 /* AdView.swift */,
 				21BDB3FE2C89A1940097F90E /* NavigationBar.swift */,
 				21BDB4002C89A35C0097F90E /* HomeCards.swift */,
 				2103FEA22C9C1DF70020D1AE /* HomePacks.swift */,
@@ -577,6 +580,7 @@
 				21BDB3902C88E0180097F90E /* Resources */,
 				A254E21A2EF0A44458BA721D /* [CP] Embed Pods Frameworks */,
 				21835FD42CA30030002A17E9 /* Embed Foundation Extensions */,
+				E59CAE7285E2800819A9FABB /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -733,6 +737,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		E59CAE7285E2800819A9FABB /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-hearttalk/Pods-hearttalk-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-hearttalk/Pods-hearttalk-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-hearttalk/Pods-hearttalk-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -758,6 +779,7 @@
 				21BDB4372C8B1F6F0097F90E /* Vibration.swift in Sources */,
 				21BDB4102C89C2B50097F90E /* Questions.swift in Sources */,
 				21835FAF2CA144F6002A17E9 /* SettingsListItem.swift in Sources */,
+				212B91412CA55AA9009F9344 /* AdView.swift in Sources */,
 				2103FEBF2C9EA0A80020D1AE /* ColorPicker.swift in Sources */,
 				2103FEC72CA0558D0020D1AE /* TextView.swift in Sources */,
 				21BDB3F32C899ADD0097F90E /* LoadingScreen.swift in Sources */,
@@ -1024,6 +1046,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1063,6 +1086,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

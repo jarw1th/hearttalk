@@ -84,5 +84,9 @@ enum Localization {
     static let dailyWidgetPlaceholder: String = .localized("dailyWidgetPlaceholder", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     static let dailyWidgetNoCard: String = .localized("dailyWidgetNoCard", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     static let darkMode: String = .localized("darkMode", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let alert: String = .localized("alert", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let alertCard: String = .localized("alertCard", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let alertPack: String = .localized("alertPack", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let alertNote: String = .localized("alertNote", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     
 }

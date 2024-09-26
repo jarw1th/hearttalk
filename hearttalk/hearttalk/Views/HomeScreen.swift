@@ -74,6 +74,10 @@ struct HomeScreen: View {
     private func makeFeed() -> some View {
         ScrollView {
             LazyVStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
+                BannerAdView()
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 160)
+                
                 LazyVStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
                     ForEach(viewModel.cardPacks) { cardPack in
                         Button(action: {

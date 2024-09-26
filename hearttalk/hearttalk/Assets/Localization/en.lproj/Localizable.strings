@@ -158,3 +158,11 @@
 "dailyWidgetNoCard" = "No card for today";
 
 "darkMode" = "Dark theme";
+
+"alert" = "Alert";
+
+"alertCard" = "Question should be more than 10 characters";
+
+"alertPack" = "Pack name should be more than 4 characters";
+
+"alertNote" = "Note should be more than 10 characters";

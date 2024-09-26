@@ -12,6 +12,7 @@ struct CreateScreen: View {
     @State private var color: Color = Color(hex: "#9CAFB7")
     
     @State private var isShowActionSheet: Bool = false
+    @State private var isShowAlert: Bool = false
     
     private let colors: [Color] = [Color(hex: "#9CAFB7"), Color(hex: "#ce796b"), Color(hex: "#e6b89c"), Color(hex: "#ead2ac"), Color(hex: "#8d8d92"), Color(hex: "#4281a4"), Color(hex: "#6b9080"), Color(hex: "#f6ca83"), Color(hex: "#63474d"), Color(hex: "#c57b57")]
     
@@ -28,6 +29,9 @@ struct CreateScreen: View {
                     message: Text(Localization.packActionSheetMessage),
                     buttons: makeActionSheetButtons()
                 )
+            }
+            .alert(isPresented: $isShowAlert) {
+                Alert(title: Text(Localization.alert), message: Text(createScreenType.alert()), dismissButton: .default(Text(Localization.confirm), action: {}))
             }
     }
     
@@ -67,6 +71,8 @@ struct CreateScreen: View {
                 SoundManager.shared.sound(.click1)
                 createAction()
                 presentationMode.wrappedValue.dismiss()
+            } else {
+                isShowAlert.toggle()
             }
         } label: {
             Text(Localization.create)

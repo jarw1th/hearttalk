@@ -154,6 +154,15 @@ enum CreateScreenType {
         }
     }
     
+    func alert() -> String {
+        switch self {
+        case .card:
+            return Localization.alertCard
+        case .pack:
+            return Localization.alertPack
+        }
+    }
+    
 }
 
 enum PDFType {

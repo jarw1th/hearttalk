@@ -49,6 +49,11 @@ struct PacksScreen: View {
         VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32) {
             ScrollView {
                 LazyVStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
+                    BannerAdView(adUnitID: AppData.packsScreenAdId)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 160)
+                        .cornerRadius(20)
+                    
                     ForEach(viewModel.cardTypes) { cardType in
                         Button(action: {
                             HapticManager.shared.triggerHapticFeedback(.light)

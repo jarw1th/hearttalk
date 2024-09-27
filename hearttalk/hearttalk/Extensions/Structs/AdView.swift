@@ -4,9 +4,11 @@ import YandexMobileAds
 
 struct BannerAdView: UIViewRepresentable {
     
+    let adUnitID: String
+    
     func makeUIView(context: Context) -> AdView {
         let adSize = BannerAdSize.stickySize(withContainerWidth: UIScreen.main.bounds.width)
-        let bannerView = AdView(adUnitID: "R-M-12107087-1", adSize: adSize)
+        let bannerView = AdView(adUnitID: adUnitID, adSize: adSize)
         bannerView.delegate = context.coordinator
         bannerView.loadAd()
         return bannerView

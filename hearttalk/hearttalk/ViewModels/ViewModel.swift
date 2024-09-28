@@ -150,6 +150,7 @@ final class ViewModel: ObservableObject {
             cardPack = addCardType(withPack: cardPack, withTypeName: cardTypeName, withText: description, fromFile: fileName, with: isSpecial ? baseFileName : "\(baseFileName)_en", save: save, isFavorites: isFavorites) ?? CardPack(id: UUID().uuidString, name: name)
         }
         cardPack.isAdult = isAdult
+        cardPack.isCustom = save
         
         realmManager.add(cardPack)
     }
@@ -183,6 +184,7 @@ final class ViewModel: ObservableObject {
         
         let cardType = CardType(id: UUID().uuidString, name: typeName, text: description)
         cardType.color = typeColor
+        cardType.isCustom = save
         if isFavorites {
             favoriteType = cardType
         }
@@ -195,6 +197,7 @@ final class ViewModel: ObservableObject {
         
         for question in questions {
             let card = Card(id: UUID().uuidString, question: question)
+            card.isCustom = save
             cardType.cards.append(card)
         }
         
@@ -265,6 +268,7 @@ final class ViewModel: ObservableObject {
             cardType.name = name
             cardType.color = color
             cardType.text = description
+            cardType.isCustom = true
             
             let cardObjects = cardQuestions.map { question -> Card in
                 let card = Card()
@@ -291,6 +295,7 @@ final class ViewModel: ObservableObject {
             let newCard = Card()
             newCard.id = UUID().uuidString
             newCard.question = question
+            newCard.isCustom = true
             
             self.realmManager.update {
                 savingType.cards.append(newCard)
@@ -298,6 +303,17 @@ final class ViewModel: ObservableObject {
             
             DispatchQueue.main.async {
                 self.fetchAll()
+            }
+        }
+    }
+    
+    func deleteCard(card: Card) {
+        if card.isCustom,
+           let cardInstance = self.realmManager.getCard(forId: card.id) {
+            self.realmManager.delete(cardInstance)
+            
+            if let index = cards.firstIndex(of: card) {
+                cards.remove(at: index)
             }
         }
     }
@@ -316,6 +332,16 @@ final class ViewModel: ObservableObject {
             
             DispatchQueue.main.async {
                 self.fetchCards(forCardTypeId: cardType.id)
+            }
+        }
+    }
+    
+    func deleteNote(note: Note) {
+        if let cardInstance = self.realmManager.getNote(forId: note.id) {
+            self.realmManager.delete(cardInstance)
+            
+            if let index = notes.firstIndex(of: note) {
+                notes.remove(at: index)
             }
         }
     }

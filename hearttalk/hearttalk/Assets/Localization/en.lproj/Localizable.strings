@@ -119,6 +119,10 @@
 
 "deleting" = "You are going to delete all data";
 
+"deletingCard" = "You are going to delete card";
+
+"deletingNote" = "You are going to delete note";
+
 "delete" = "Delete";
 
 "cancel" = "Cancel";

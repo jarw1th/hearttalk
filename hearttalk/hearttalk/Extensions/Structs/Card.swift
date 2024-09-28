@@ -16,6 +16,7 @@ struct CardView: View {
     @State private var cardWidth: CGFloat = 0
     
     @State private var isShare: Bool = false
+    @State private var isClearAlert: Bool = false
     @State private var shareImage: IdentifiableImage?
     
     var body: some View {
@@ -155,6 +156,9 @@ struct CardView: View {
         ZStack {
             VStack {
                 HStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
+                    if card.isCustom {
+                        makeDeleteButton()
+                    }
                     Spacer()
                     if viewModel.cards[viewModel.cardIndex].notes.count != 0 {
                         makeNotesButton()
@@ -164,7 +168,7 @@ struct CardView: View {
                 Spacer()
             }
             .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32)
-            .padding(.trailing, UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32)
+            .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32)
             VStack {
                 Spacer()
                 Text(card.question)
@@ -212,6 +216,11 @@ struct CardView: View {
                 .fill(.darkWhite)
                 .shadow(color: .shadow, radius: 5)
         )
+        .alert(isPresented: $isClearAlert) {
+            Alert(title: Text(Localization.deletingCard), primaryButton: .destructive(Text(Localization.delete), action: {
+                viewModel.deleteCard(card: card)
+            }), secondaryButton: .cancel(Text(Localization.cancel), action: {}))
+        }
     }
     
     private func makeBackCardView(for card: Card) -> some View {
@@ -328,6 +337,20 @@ struct CardView: View {
                 .renderingMode(.template)
                 .resizable()
                 .foregroundStyle(.darkGreen)
+                .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 40, height: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 40)
+        }
+    }
+    
+    private func makeDeleteButton() -> some View {
+        Button {
+            HapticManager.shared.triggerHapticFeedback(.light)
+            SoundManager.shared.sound(.click1)
+            isClearAlert.toggle()
+        } label: {
+            Image("trash")
+                .renderingMode(.template)
+                .resizable()
+                .foregroundStyle(.destruct)
                 .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 40, height: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 40)
         }
     }

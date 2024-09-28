@@ -13,6 +13,8 @@ struct NoteCardView: View {
     @State private var frontCardRotation: Double = 0
     @State private var cardWidth: CGFloat = 0
     
+    @State private var isClearAlert: Bool = false
+    
     var body: some View {
         ZStack {
             if viewModel.notes.count > viewModel.noteIndex + 1 {
@@ -146,6 +148,15 @@ struct NoteCardView: View {
     private func makeCardView(for note: Note) -> some View {
         ZStack {
             VStack {
+                HStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
+                    Spacer()
+                    makeDeleteButton()
+                }
+                Spacer()
+            }
+            .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32)
+            .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32)
+            VStack {
                 Spacer()
                 Text(note.text)
                     .font(.custom("PlayfairDisplay-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32))
@@ -161,6 +172,11 @@ struct NoteCardView: View {
                 .fill(.darkWhite)
                 .shadow(color: .shadow, radius: 5)
         )
+        .alert(isPresented: $isClearAlert) {
+            Alert(title: Text(Localization.deletingNote), primaryButton: .destructive(Text(Localization.delete), action: {
+                viewModel.deleteNote(note: note)
+            }), secondaryButton: .cancel(Text(Localization.cancel), action: {}))
+        }
     }
     
     private func makeBackCardView(for note: Note) -> some View {
@@ -246,6 +262,20 @@ struct NoteCardView: View {
         }
         
         viewModel.noteIndex = viewModel.noteIndex - 1
+    }
+    
+    private func makeDeleteButton() -> some View {
+        Button {
+            HapticManager.shared.triggerHapticFeedback(.light)
+            SoundManager.shared.sound(.click1)
+            isClearAlert.toggle()
+        } label: {
+            Image("trash")
+                .renderingMode(.template)
+                .resizable()
+                .foregroundStyle(.destruct)
+                .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 40, height: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 40)
+        }
     }
     
 }

@@ -88,5 +88,7 @@ enum Localization {
     static let alertCard: String = .localized("alertCard", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     static let alertPack: String = .localized("alertPack", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     static let alertNote: String = .localized("alertNote", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let deletingCard: String = .localized("deletingCard", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let deletingNote: String = .localized("deletingNote", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     
 }

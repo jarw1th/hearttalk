@@ -80,7 +80,7 @@ struct AddHomeCard: View {
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 20)
-                    .stroke(.lightGray, lineWidth: 2)
+                    .stroke(.lightGray, lineWidth: 1)
                 
                 VStack {
                     Image("plus")

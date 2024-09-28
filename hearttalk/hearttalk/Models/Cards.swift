@@ -6,7 +6,8 @@ class CardPack: Object, Identifiable {
     @Persisted(primaryKey: true) var id: String
     @Persisted var name: String
     @Persisted var color: String
-    @Persisted var isAdult: Bool 
+    @Persisted var isAdult: Bool
+    @Persisted var isCustom: Bool
     @Persisted var cardTypes: List<CardType>
     
     convenience init(id: String, name: String) {
@@ -23,6 +24,7 @@ class CardType: Object, Identifiable {
     @Persisted var name: String
     @Persisted var text: String
     @Persisted var color: String
+    @Persisted var isCustom: Bool
     @Persisted var cards: List<Card>
     @Persisted(originProperty: "cardTypes") var parentCardPack: LinkingObjects<CardPack>
     
@@ -39,6 +41,7 @@ class Card: Object, Identifiable {
     
     @Persisted(primaryKey: true) var id: String
     @Persisted var question: String
+    @Persisted var isCustom: Bool 
     @Persisted var notes: List<Note>
     @Persisted(originProperty: "cards") var parentCardType: LinkingObjects<CardType>
     

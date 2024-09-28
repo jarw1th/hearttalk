@@ -124,6 +124,10 @@ final class RealmManager {
         return realm.object(ofType: Card.self, forPrimaryKey: id)
     }
     
+    func getNote(forId id: String) -> Note? {
+        return realm.object(ofType: Note.self, forPrimaryKey: id)
+    }
+    
     func getCardType(forName name: String) -> CardType? {
         return realm.objects(CardType.self).filter("name == %@", name).first
     }

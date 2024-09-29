@@ -21,22 +21,22 @@ struct Settings: View {
             .background(.lightBlack)
             .edgesIgnoringSafeArea(.bottom)
             .onAppear {
-                isVibrations = viewModel.isVibrations
-                isSounds = viewModel.isSounds
-                isDailyCard = viewModel.isDailyCard
-                isDarkMode = viewModel.isDarkMode
+                isVibrations = UserDefaultsManager.shared.isVibrations
+                isSounds = UserDefaultsManager.shared.isSounds
+                isDailyCard = UserDefaultsManager.shared.isDailyCard
+                isDarkMode = UserDefaultsManager.shared.isDarkMode
             }
             .onChange(of: isVibrations) { new in
-                viewModel.isVibrations = new
+                UserDefaultsManager.shared.isVibrations = new
             }
             .onChange(of: isSounds) { new in
-                viewModel.isSounds = new
+                UserDefaultsManager.shared.isSounds = new
             }
             .onChange(of: isDailyCard) { new in
-                viewModel.isDailyCard = new
+                UserDefaultsManager.shared.isDailyCard = new
             }
             .onChange(of: isDarkMode) { new in
-                viewModel.isDarkMode = new
+                UserDefaultsManager.shared.isDarkMode = new
             }
             .alert(isPresented: $isClearAlert) {
                 Alert(title: Text(Localization.deleting), primaryButton: .destructive(Text(Localization.delete), action: {
@@ -140,7 +140,7 @@ struct Settings: View {
             let language = Locale(identifier: code).localizedString(forLanguageCode: code)
             
             let button = ActionSheet.Button.default(Text(language?.capitalized ?? code), action: {
-                viewModel.language = code
+                UserDefaultsManager.shared.language = code
             })
             buttons.append(button)
         }

@@ -34,7 +34,7 @@ struct Questions: View {
                 }
             }
             .onTapGesture {
-                viewModel.isShowTip = false
+                UserDefaultsManager.shared.isShowTip = false
             }
             .sheet(isPresented: $isShowCreateNote) {
                 CreateNote()

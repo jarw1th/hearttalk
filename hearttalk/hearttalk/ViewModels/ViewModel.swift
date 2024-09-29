@@ -10,6 +10,7 @@ final class ViewModel: ObservableObject {
     static let shared = ViewModel()
     
     private var realmManager: RealmManager = RealmManager()
+    private var userDefaultsManager: UserDefaultsManager = UserDefaultsManager()
     
     @Published var myCardTypes: [CardType] = []
     @Published var cardTypes: [CardType] = []
@@ -27,102 +28,19 @@ final class ViewModel: ObservableObject {
     @Published var selectedSavingType: CardType?
     @Published var dailyCard: DailyCard?
     @Published var dailyOriginalCard: Card?
-    var appVersion: String {
-        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-            return version
-        }
-        return "1.0"
-    }
-    var isShowTip: Bool {
-        get {
-            if UserDefaults.standard.object(forKey: "isShowTip") == nil {
-                return true
-            }
-            return UserDefaults.standard.bool(forKey: "isShowTip")
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: "isShowTip")
-        }
-    }
-    var isShowAgeAlert: Bool {
-        get {
-            if UserDefaults.standard.object(forKey: "isShowAgeAlert") == nil {
-                return true
-            }
-            return UserDefaults.standard.bool(forKey: "isShowAgeAlert")
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: "isShowAgeAlert")
-        }
-    }
-    var isVibrations: Bool {
-        get {
-            if UserDefaults.standard.object(forKey: "isVibrations") == nil {
-                return true
-            }
-            return UserDefaults.standard.bool(forKey: "isVibrations")
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: "isVibrations")
-        }
-    }
-    var isSounds: Bool {
-        get {
-            if UserDefaults.standard.object(forKey: "isSounds") == nil {
-                return false
-            }
-            return UserDefaults.standard.bool(forKey: "isSounds")
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: "isSounds")
-        }
-    }
-    var isDailyCard: Bool {
-        get {
-            if UserDefaults.standard.object(forKey: "isDailyCard") == nil {
-                return true
-            }
-            return UserDefaults.standard.bool(forKey: "isDailyCard")
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: "isDailyCard")
-        }
-    }
-    var language: String {
-        get {
-            return UserDefaults.standard.string(forKey: "AppleLanguage") ?? "en"
-        }
-        set {
-            if UserDefaults.standard.string(forKey: "AppleLanguage") ?? "en" != newValue {
-                UserDefaults.standard.set(newValue, forKey: "AppleLanguage")
-                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(10)) {
-                    self.clearData()
-                }
-            }
-        }
-    }
-    var isDarkMode: Bool {
-        get {
-            if UserDefaults.standard.object(forKey: "isDarkMode") == nil {
-                return true
-            }
-            return UserDefaults.standard.bool(forKey: "isDarkMode")
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: "isDarkMode")
-        }
-    }
+    
+    private(set) var isShowAd: Bool = (Locale.current.region?.identifier == "RU")
     
     private let defaultCardTypes = [Localization.favorites, Localization.simple, Localization.family, Localization.taboo, Localization.sex, Localization.close, Localization.closer, Localization.closest]
-    private let reloadablePacksId: [String] = []
-    private let hasImportedDataKey = "hasImportedData"
-    private var createdPackId: String?
-    private var createdTypeId: String?
     
     init() {
-        if !UserDefaults.standard.bool(forKey: hasImportedDataKey) {
+        if !userDefaultsManager.hasValidData {
+            clearData()
+            userDefaultsManager.hasValidData = true
+        }
+        if !userDefaultsManager.hasImportedData {
             parseCardTypesFromFile()
-            UserDefaults.standard.set(true, forKey: hasImportedDataKey)
+            userDefaultsManager.hasImportedData = true
         }
         fetchAll()
         getDailyCard()
@@ -142,7 +60,7 @@ final class ViewModel: ObservableObject {
     }
     
     private func addCardPack(packName name: String, cardTypes: [(String, String, String)], save: Bool = false, isFavorites: Bool = false, isSpecial: Bool = false, isAdult: Bool = false) {
-        let userLanguage = UserDefaults.standard.string(forKey: "AppleLanguage") ?? "en"
+        let userLanguage = userDefaultsManager.appleLanguage ?? "en"
         
         var cardPack = CardPack(id: UUID().uuidString, name: name)
         for (cardTypeName, description, baseFileName) in cardTypes {
@@ -188,10 +106,6 @@ final class ViewModel: ObservableObject {
         if isFavorites {
             favoriteType = cardType
         }
-        if save {
-            createdPackId = pack.id
-            createdTypeId = cardType.id
-        }
         
         let questions = lines.dropFirst().filter { !$0.isEmpty && !$0.starts(with: "Pack Color:") && !$0.starts(with: "Type Color:") }
         
@@ -223,8 +137,6 @@ final class ViewModel: ObservableObject {
         self.cardTypes = Array(cardTypesResults)
         self.myCardTypes = Array(cardTypesResults).filter { !defaultCardTypes.contains($0.name) }
         self.favoriteType = cardTypes.filter({ $0.name == Localization.favorites }).first
-        self.createdPackId = cardPacks.filter({ $0.name == Localization.created }).first?.id
-        self.createdTypeId = cardTypes.filter({ $0.name == Localization.unsorted }).first?.id
         self.selectedSavingType = cardTypes.filter({ $0.name == Localization.unsorted }).first
     }
     
@@ -261,7 +173,7 @@ final class ViewModel: ObservableObject {
     }
     
     func createType(name: String, color: String, description: String, cardQuestions: [String]) {
-        if let createdPackId = createdPackId,
+        if let createdPackId = realmManager.getCustomCardPack()?.id,
            let createdPack = realmManager.getCardPack(forId: createdPackId) {
             let cardType = CardType()
             cardType.id = UUID().uuidString

@@ -38,7 +38,7 @@ struct HomeScreen: View {
         }
         .alert(isPresented: $isShowAgeAlert) {
             Alert(title: Text(Localization.adultAlertTitle), message: Text(Localization.adultAlertMessage), primaryButton: .default(Text(Localization.confirm), action: {
-                viewModel.isShowAgeAlert = false
+                UserDefaultsManager.shared.isShowAgeAlert = false
             }), secondaryButton: .cancel(Text(Localization.cancel), action: {}))
         }
         .onOpenURL { url in
@@ -74,15 +74,17 @@ struct HomeScreen: View {
     private func makeFeed() -> some View {
         ScrollView {
             LazyVStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
-                BannerAdView(adUnitID: AppData.homeScreenAdId)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 160)
-                    .cornerRadius(20)
+                if viewModel.isShowAd {
+                    BannerAdView(adUnitID: AppData.homeScreenAdId)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 160)
+                        .cornerRadius(20)
+                }
                 
                 LazyVStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
                     ForEach(viewModel.cardPacks) { cardPack in
                         Button(action: {
-                            if cardPack.isAdult && viewModel.isShowAgeAlert {
+                            if cardPack.isAdult && UserDefaultsManager.shared.isShowAgeAlert {
                                 isShowAgeAlert.toggle()
                             } else {
                                 if cardPack.cardTypes.count != 0 {

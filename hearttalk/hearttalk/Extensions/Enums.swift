@@ -111,8 +111,7 @@ enum SettingsType: CaseIterable {
             return Localization.darkMode
         case .language:
             let locale = Locale.current
-            if let languageCode = UserDefaults.standard.string(forKey: "AppleLanguage"),
-               let language = locale.localizedString(forLanguageCode: languageCode) {
+            if let language = locale.localizedString(forLanguageCode: UserDefaultsManager.shared.appleLanguage) {
                 return language.capitalized
             }
             return "English"
@@ -172,9 +171,17 @@ enum PDFType {
     func url() -> URL? {
         switch self {
         case .terms:
-            return Bundle.main.url(forResource: "TermsOfUse", withExtension: "pdf")
+            if UserDefaultsManager.shared.appleLanguage == "ru" {
+                return Bundle.main.url(forResource: "TermsOfUse_ru", withExtension: "pdf")
+            } else {
+                return Bundle.main.url(forResource: "TermsOfUse_en", withExtension: "pdf")
+            }
         case .privacy:
-            return Bundle.main.url(forResource: "PrivacyPolicy", withExtension: "pdf")
+            if UserDefaultsManager.shared.appleLanguage == "ru" {
+                return Bundle.main.url(forResource: "PrivacyPolicy_ru", withExtension: "pdf")
+            } else {
+                return Bundle.main.url(forResource: "PrivacyPolicy_en", withExtension: "pdf")
+            }
         }
     }
     

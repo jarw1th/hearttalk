@@ -1,7 +1,7 @@
 
 import SwiftUI
 
-struct SettingsListItem: View {
+struct AboutListItem: View {
     
     let imageName: String
     let text: String
@@ -15,6 +15,7 @@ struct SettingsListItem: View {
     private func makeContent() -> some View {
         Button {
             HapticManager.shared.triggerHapticFeedback(.light)
+            SoundManager.shared.sound(.click1)
             action()
         } label: {
             HStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32) {
@@ -39,46 +40,6 @@ struct SettingsListItem: View {
             .overlay(
                 RoundedRectangle(cornerRadius: 20)
                     .stroke(isSpecial ? .darkWhite : .clear)
-            )
-        }
-    }
-    
-}
-
-struct SettingsToggler: View {
-    
-    let text: String
-    @Binding var isOn: Bool
-    
-    var body: some View {
-        makeContent()
-    }
-    
-    private func makeContent() -> some View {
-        Button {
-            HapticManager.shared.triggerHapticFeedback(.light)
-            SoundManager.shared.sound(.click1)
-            isOn.toggle()
-        } label: {
-            HStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32) {
-                Image(isOn ? "on" : "off")
-                    .renderingMode(.template)
-                    .resizable()
-                    .foregroundStyle(.lightBlack)
-                    .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48, height: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48)
-                Text(text)
-                    .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24))
-                    .multilineTextAlignment(.leading)
-                    .foregroundStyle(.lightBlack)
-                Spacer()
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32)
-            .padding(.vertical, UIDevice.current.userInterfaceIdiom == .phone ? 12 : 16)
-            .background(
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(.darkWhite)
-                    .opacity(isOn ? 1.0 : 0.66)
             )
         }
     }

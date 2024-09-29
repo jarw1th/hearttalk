@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		2103FDCF2C8B9ECA0020D1AE /* PDFScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2103FDCE2C8B9ECA0020D1AE /* PDFScreen.swift */; };
 		2103FDD12C8B9EF10020D1AE /* PDF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2103FDD02C8B9EF10020D1AE /* PDF.swift */; };
-		2103FDD62C8BA1660020D1AE /* TermsOfUse.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2103FDD52C8BA1660020D1AE /* TermsOfUse.pdf */; };
-		2103FDD82C8BA2090020D1AE /* PrivacyPolicy.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2103FDD72C8BA2090020D1AE /* PrivacyPolicy.pdf */; };
+		2103FDD62C8BA1660020D1AE /* TermsOfUse_en.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2103FDD52C8BA1660020D1AE /* TermsOfUse_en.pdf */; };
+		2103FDD82C8BA2090020D1AE /* PrivacyPolicy_en.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2103FDD72C8BA2090020D1AE /* PrivacyPolicy_en.pdf */; };
 		2103FEA32C9C1DF70020D1AE /* HomePacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2103FEA22C9C1DF70020D1AE /* HomePacks.swift */; };
 		2103FEA52C9C1F3E0020D1AE /* PacksScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2103FEA42C9C1F3E0020D1AE /* PacksScreen.swift */; };
 		2103FEAA2C9C35E30020D1AE /* couples_closer_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2103FEA92C9C35E30020D1AE /* couples_closer_ru.txt */; };
@@ -90,6 +90,15 @@
 		21BDB4412C8B663E0097F90E /* couples_close_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 21BDB4402C8B663E0097F90E /* couples_close_ru.txt */; };
 		21BDB4432C8B664D0097F90E /* couples_closest_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 21BDB4422C8B664D0097F90E /* couples_closest_ru.txt */; };
 		21BDB4472C8B69630097F90E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 21BDB4452C8B69630097F90E /* Localizable.strings */; };
+		21F4DC7A2CA99A48008B3589 /* PrivacyPolicy_ru.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 21F4DC792CA99A48008B3589 /* PrivacyPolicy_ru.pdf */; };
+		21F4DC7C2CA99A9E008B3589 /* TermsOfUse_ru.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 21F4DC7B2CA99A9E008B3589 /* TermsOfUse_ru.pdf */; };
+		21F4DCB62CA99D6C008B3589 /* CardPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F4DCB52CA99D68008B3589 /* CardPack.swift */; };
+		21F4DCB72CA99D6C008B3589 /* CardPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F4DCB52CA99D68008B3589 /* CardPack.swift */; };
+		21F4DCB92CA99D82008B3589 /* CardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F4DCB82CA99D80008B3589 /* CardType.swift */; };
+		21F4DCBA2CA99D82008B3589 /* CardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F4DCB82CA99D80008B3589 /* CardType.swift */; };
+		21F4DCBC2CA99D96008B3589 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F4DCBB2CA99D94008B3589 /* Note.swift */; };
+		21F4DCBD2CA99D96008B3589 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F4DCBB2CA99D94008B3589 /* Note.swift */; };
+		21F4DCBF2CA99E0C008B3589 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F4DCBE2CA99E00008B3589 /* UserDefaultsManager.swift */; };
 		27203AAEFEE5F8D249BCCBB5 /* Pods_hearttalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F04D0D3CFAA742CBEF7DDEB /* Pods_hearttalk.framework */; };
 		DC053A994C992465AD2BF698 /* Pods_hearttalkWidgetExtensionExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 018A66986B786D8101FFA613 /* Pods_hearttalkWidgetExtensionExtension.framework */; };
 /* End PBXBuildFile section */
@@ -123,8 +132,8 @@
 		11F8054245486A51C275701B /* Pods-hearttalk.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hearttalk.debug.xcconfig"; path = "Target Support Files/Pods-hearttalk/Pods-hearttalk.debug.xcconfig"; sourceTree = "<group>"; };
 		2103FDCE2C8B9ECA0020D1AE /* PDFScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFScreen.swift; sourceTree = "<group>"; };
 		2103FDD02C8B9EF10020D1AE /* PDF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDF.swift; sourceTree = "<group>"; };
-		2103FDD52C8BA1660020D1AE /* TermsOfUse.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = TermsOfUse.pdf; sourceTree = "<group>"; };
-		2103FDD72C8BA2090020D1AE /* PrivacyPolicy.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = PrivacyPolicy.pdf; sourceTree = "<group>"; };
+		2103FDD52C8BA1660020D1AE /* TermsOfUse_en.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = TermsOfUse_en.pdf; sourceTree = "<group>"; };
+		2103FDD72C8BA2090020D1AE /* PrivacyPolicy_en.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = PrivacyPolicy_en.pdf; sourceTree = "<group>"; };
 		2103FEA22C9C1DF70020D1AE /* HomePacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePacks.swift; sourceTree = "<group>"; };
 		2103FEA42C9C1F3E0020D1AE /* PacksScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacksScreen.swift; sourceTree = "<group>"; };
 		2103FEA82C9C35C80020D1AE /* default_family_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = default_family_ru.txt; sourceTree = "<group>"; };
@@ -203,6 +212,12 @@
 		21BDB4422C8B664D0097F90E /* couples_closest_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = couples_closest_ru.txt; sourceTree = "<group>"; };
 		21BDB4462C8B69630097F90E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		21BDB4482C8B696A0097F90E /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		21F4DC792CA99A48008B3589 /* PrivacyPolicy_ru.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = PrivacyPolicy_ru.pdf; sourceTree = "<group>"; };
+		21F4DC7B2CA99A9E008B3589 /* TermsOfUse_ru.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = TermsOfUse_ru.pdf; sourceTree = "<group>"; };
+		21F4DCB52CA99D68008B3589 /* CardPack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPack.swift; sourceTree = "<group>"; };
+		21F4DCB82CA99D80008B3589 /* CardType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardType.swift; sourceTree = "<group>"; };
+		21F4DCBB2CA99D94008B3589 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
+		21F4DCBE2CA99E00008B3589 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		7F04D0D3CFAA742CBEF7DDEB /* Pods_hearttalk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_hearttalk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E46BEC5504BE82D606C22EB /* Pods-hearttalkWidgetExtensionExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hearttalkWidgetExtensionExtension.release.xcconfig"; path = "Target Support Files/Pods-hearttalkWidgetExtensionExtension/Pods-hearttalkWidgetExtensionExtension.release.xcconfig"; sourceTree = "<group>"; };
 		F1B06A95D27A6D9B24797D32 /* Pods-hearttalk.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hearttalk.release.xcconfig"; path = "Target Support Files/Pods-hearttalk/Pods-hearttalk.release.xcconfig"; sourceTree = "<group>"; };
@@ -245,8 +260,10 @@
 		2103FDD22C8B9F9E0020D1AE /* PDF */ = {
 			isa = PBXGroup;
 			children = (
-				2103FDD72C8BA2090020D1AE /* PrivacyPolicy.pdf */,
-				2103FDD52C8BA1660020D1AE /* TermsOfUse.pdf */,
+				21F4DC7B2CA99A9E008B3589 /* TermsOfUse_ru.pdf */,
+				21F4DC792CA99A48008B3589 /* PrivacyPolicy_ru.pdf */,
+				2103FDD72C8BA2090020D1AE /* PrivacyPolicy_en.pdf */,
+				2103FDD52C8BA1660020D1AE /* TermsOfUse_en.pdf */,
 			);
 			path = PDF;
 			sourceTree = "<group>";
@@ -401,6 +418,7 @@
 			children = (
 				21BDB3B02C899ADD0097F90E /* RequestManager.swift */,
 				21BDB4022C89B42D0097F90E /* RealmManager.swift */,
+				21F4DCBE2CA99E00008B3589 /* UserDefaultsManager.swift */,
 				21BDB3B12C899ADD0097F90E /* ViewModel.swift */,
 			);
 			path = ViewModels;
@@ -409,21 +427,8 @@
 		21BDB3BA2C899ADD0097F90E /* Structs */ = {
 			isa = PBXGroup;
 			children = (
-				212B91402CA55A9C009F9344 /* AdView.swift */,
-				21BDB3FE2C89A1940097F90E /* NavigationBar.swift */,
-				21BDB4002C89A35C0097F90E /* HomeCards.swift */,
-				2103FEA22C9C1DF70020D1AE /* HomePacks.swift */,
-				21BDB4112C89C7D40097F90E /* ListItem.swift */,
-				21BDB4172C89CB970097F90E /* AboutListItem.swift */,
-				21835FAE2CA144F6002A17E9 /* SettingsListItem.swift */,
-				21BDB41B2C8A2F900097F90E /* FillField.swift */,
-				21BDB4242C8AE0390097F90E /* Card.swift */,
-				2103FEC42CA04E520020D1AE /* NoteCard.swift */,
-				21BDB43C2C8B61820097F90E /* WhatIsCard.swift */,
-				21BDB4262C8AFC0A0097F90E /* CardForShare.swift */,
-				2103FDD02C8B9EF10020D1AE /* PDF.swift */,
-				2103FEBE2C9EA0A80020D1AE /* ColorPicker.swift */,
-				2103FEC62CA0558D0020D1AE /* TextView.swift */,
+				21F4DCB22CA99CB9008B3589 /* Sub */,
+				21F4DCB12CA99CB1008B3589 /* Main */,
 			);
 			path = Structs;
 			sourceTree = "<group>";
@@ -440,10 +445,9 @@
 		21BDB3BF2C899ADD0097F90E /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
+				21F4DCB32CA99D1E008B3589 /* Managers */,
 				21BDB42C2C8B0B4A0097F90E /* ActivityView.swift */,
 				21BDB4342C8B1E300097F90E /* UIApplication+.swift */,
-				21BDB4362C8B1F6F0097F90E /* Vibration.swift */,
-				21835FB42CA16B57002A17E9 /* Sound.swift */,
 				21835FB22CA1545A002A17E9 /* String+.swift */,
 			);
 			path = UIKit;
@@ -464,8 +468,8 @@
 		21BDB3C62C899ADD0097F90E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				21F4DCB42CA99D4F008B3589 /* Realm */,
 				212B91422CA58535009F9344 /* IdentifiableImage.swift */,
-				21BDB4042C89B4A00097F90E /* Cards.swift */,
 				21BDB4322C8B1D140097F90E /* OpenAI.swift */,
 			);
 			path = Models;
@@ -543,6 +547,55 @@
 				21BDB4452C8B69630097F90E /* Localizable.strings */,
 			);
 			path = Localization;
+			sourceTree = "<group>";
+		};
+		21F4DCB12CA99CB1008B3589 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				2103FEC42CA04E520020D1AE /* NoteCard.swift */,
+				21835FAE2CA144F6002A17E9 /* SettingsListItem.swift */,
+				21BDB3FE2C89A1940097F90E /* NavigationBar.swift */,
+				21BDB4002C89A35C0097F90E /* HomeCards.swift */,
+				2103FEA22C9C1DF70020D1AE /* HomePacks.swift */,
+				21BDB4112C89C7D40097F90E /* ListItem.swift */,
+				21BDB4172C89CB970097F90E /* AboutListItem.swift */,
+				21BDB4242C8AE0390097F90E /* Card.swift */,
+				21BDB43C2C8B61820097F90E /* WhatIsCard.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		21F4DCB22CA99CB9008B3589 /* Sub */ = {
+			isa = PBXGroup;
+			children = (
+				2103FDD02C8B9EF10020D1AE /* PDF.swift */,
+				212B91402CA55A9C009F9344 /* AdView.swift */,
+				21BDB4262C8AFC0A0097F90E /* CardForShare.swift */,
+				2103FEBE2C9EA0A80020D1AE /* ColorPicker.swift */,
+				2103FEC62CA0558D0020D1AE /* TextView.swift */,
+				21BDB41B2C8A2F900097F90E /* FillField.swift */,
+			);
+			path = Sub;
+			sourceTree = "<group>";
+		};
+		21F4DCB32CA99D1E008B3589 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				21BDB4362C8B1F6F0097F90E /* Vibration.swift */,
+				21835FB42CA16B57002A17E9 /* Sound.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		21F4DCB42CA99D4F008B3589 /* Realm */ = {
+			isa = PBXGroup;
+			children = (
+				21F4DCBB2CA99D94008B3589 /* Note.swift */,
+				21F4DCB82CA99D80008B3589 /* CardType.swift */,
+				21F4DCB52CA99D68008B3589 /* CardPack.swift */,
+				21BDB4042C89B4A00097F90E /* Cards.swift */,
+			);
+			path = Realm;
 			sourceTree = "<group>";
 		};
 		7E650386A8608DAEA832AA7B /* Frameworks */ = {
@@ -652,7 +705,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2103FDD82C8BA2090020D1AE /* PrivacyPolicy.pdf in Resources */,
+				21F4DC7A2CA99A48008B3589 /* PrivacyPolicy_ru.pdf in Resources */,
+				2103FDD82C8BA2090020D1AE /* PrivacyPolicy_en.pdf in Resources */,
 				2103FEB92C9DEF990020D1AE /* adult_taboo_en.txt in Resources */,
 				21BDB40D2C89C1200097F90E /* couples_close_en.txt in Resources */,
 				21835FBA2CA16E24002A17E9 /* Click1.mp3 in Resources */,
@@ -664,6 +718,7 @@
 				2103FEAB2C9C35E90020D1AE /* default_family_ru.txt in Resources */,
 				21BDB4232C8A4DAB0097F90E /* created.txt in Resources */,
 				2103FEAF2C9C37290020D1AE /* couples_closest_en.txt in Resources */,
+				21F4DC7C2CA99A9E008B3589 /* TermsOfUse_ru.pdf in Resources */,
 				2103FEB72C9DEF890020D1AE /* adult_taboo_ru.txt in Resources */,
 				21BDB4142C89C87B0097F90E /* PlayfairDisplay-SemiBold.ttf in Resources */,
 				21BDB3F92C899E970097F90E /* PlayfairDisplay-Regular.ttf in Resources */,
@@ -674,7 +729,7 @@
 				2103FEAD2C9C37130020D1AE /* couples_closer_en.txt in Resources */,
 				2103FEBB2C9DF1ED0020D1AE /* adult_sex_ru.txt in Resources */,
 				21BDB4212C8A4C380097F90E /* favorites.txt in Resources */,
-				2103FDD62C8BA1660020D1AE /* TermsOfUse.pdf in Resources */,
+				2103FDD62C8BA1660020D1AE /* TermsOfUse_en.pdf in Resources */,
 				21BDB3D82C899ADD0097F90E /* Assets.xcassets in Resources */,
 				21BDB4412C8B663E0097F90E /* couples_close_ru.txt in Resources */,
 			);
@@ -768,6 +823,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				21F4DCB62CA99D6C008B3589 /* CardPack.swift in Sources */,
 				21835FD72CA3008E002A17E9 /* AddCardWidget.swift in Sources */,
 				21835FC62CA3002E002A17E9 /* hearttalkWidgetExtensionBundle.swift in Sources */,
 				21835FDC2CA30CEC002A17E9 /* Localization.swift in Sources */,
@@ -777,6 +833,8 @@
 				21A18B832CA319DF00D0EB6B /* String+.swift in Sources */,
 				21835FDE2CA3109C002A17E9 /* RealmManager.swift in Sources */,
 				212B91442CA5853A009F9344 /* IdentifiableImage.swift in Sources */,
+				21F4DCBA2CA99D82008B3589 /* CardType.swift in Sources */,
+				21F4DCBC2CA99D96008B3589 /* Note.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -789,6 +847,7 @@
 				21835FAF2CA144F6002A17E9 /* SettingsListItem.swift in Sources */,
 				212B91412CA55AA9009F9344 /* AdView.swift in Sources */,
 				2103FEBF2C9EA0A80020D1AE /* ColorPicker.swift in Sources */,
+				21F4DCB92CA99D82008B3589 /* CardType.swift in Sources */,
 				2103FEC72CA0558D0020D1AE /* TextView.swift in Sources */,
 				21BDB3F32C899ADD0097F90E /* LoadingScreen.swift in Sources */,
 				21BDB4272C8AFC0B0097F90E /* CardForShare.swift in Sources */,
@@ -800,6 +859,7 @@
 				21BDB3DE2C899ADD0097F90E /* ViewModel.swift in Sources */,
 				2103FEA32C9C1DF70020D1AE /* HomePacks.swift in Sources */,
 				212B91462CA6BFA2009F9344 /* AppData.swift in Sources */,
+				21F4DCBD2CA99D96008B3589 /* Note.swift in Sources */,
 				2103FDCF2C8B9ECA0020D1AE /* PDFScreen.swift in Sources */,
 				21BDB4012C89A35C0097F90E /* HomeCards.swift in Sources */,
 				21BDB4252C8AE0390097F90E /* Card.swift in Sources */,
@@ -814,11 +874,13 @@
 				21BDB3DD2C899ADD0097F90E /* RequestManager.swift in Sources */,
 				21BDB4032C89B42D0097F90E /* RealmManager.swift in Sources */,
 				2103FEC52CA04E520020D1AE /* NoteCard.swift in Sources */,
+				21F4DCB72CA99D6C008B3589 /* CardPack.swift in Sources */,
 				21BDB41F2C8A33540097F90E /* CustomRoundedRectangle.swift in Sources */,
 				2103FEC12CA0457A0020D1AE /* CreateNote.swift in Sources */,
 				21BDB42D2C8B0B4A0097F90E /* ActivityView.swift in Sources */,
 				21BDB3F12C899ADD0097F90E /* HomeScreen.swift in Sources */,
 				21BDB3D52C899ADD0097F90E /* Localization.swift in Sources */,
+				21F4DCBF2CA99E0C008B3589 /* UserDefaultsManager.swift in Sources */,
 				21BDB43D2C8B61820097F90E /* WhatIsCard.swift in Sources */,
 				21BDB43B2C8B61330097F90E /* WhatIsTheApp.swift in Sources */,
 				21835FAD2CA13F96002A17E9 /* Settings.swift in Sources */,

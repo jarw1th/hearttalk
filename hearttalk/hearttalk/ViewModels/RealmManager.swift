@@ -79,6 +79,8 @@ final class RealmManager {
         }
     }
     
+    // MARK: - Custom
+    
     func getAllCardPacks() -> Results<CardPack> {
         return realm.objects(CardPack.self)
     }
@@ -116,8 +118,16 @@ final class RealmManager {
         return realm.objects(CardPack.self).filter("name == %@", name).first
     }
     
+    func getCustomCardPack() -> CardPack? {
+        return realm.objects(CardPack.self).filter("isCustom == %@", true).first
+    }
+    
     func getCardType(forId id: String) -> CardType? {
         return realm.object(ofType: CardType.self, forPrimaryKey: id)
+    }
+    
+    func getCardType(forName name: String) -> CardType? {
+        return realm.objects(CardType.self).filter("name == %@", name).first
     }
     
     func getCard(forId id: String) -> Card? {
@@ -126,10 +136,6 @@ final class RealmManager {
     
     func getNote(forId id: String) -> Note? {
         return realm.object(ofType: Note.self, forPrimaryKey: id)
-    }
-    
-    func getCardType(forName name: String) -> CardType? {
-        return realm.objects(CardType.self).filter("name == %@", name).first
     }
     
 }

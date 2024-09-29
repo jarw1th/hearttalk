@@ -54,7 +54,7 @@ struct AboutApp: View {
                     .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 12 : 0)
                 Spacer()
                 if  UIDevice.current.userInterfaceIdiom == .phone {
-                    Text("\(Localization.version) \(viewModel.appVersion)")
+                    Text("\(Localization.version) \(UserDefaultsManager.shared.appVersion)")
                         .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 10 : 14))
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.darkWhite)
@@ -174,7 +174,7 @@ struct AboutApp: View {
         buttons.append(telegramButton)
         
         let instButton = ActionSheet.Button.default(Text("Instagram"), action: {
-            let inst = "https://instagram.com/hearttalk_app_\(viewModel.language)"
+            let inst = "https://instagram.com/hearttalk_app_\(UserDefaultsManager.shared.language)"
             if let url = URL(string: inst) {
                 if UIApplication.shared.canOpenURL(url) {
                     UIApplication.shared.open(url)

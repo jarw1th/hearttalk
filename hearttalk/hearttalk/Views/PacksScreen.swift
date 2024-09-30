@@ -47,7 +47,7 @@ struct PacksScreen: View {
     
     private func makeFeed() -> some View {
         VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32) {
-            ScrollView {
+            ScrollView(.vertical, showsIndicators: false) {
                 LazyVStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
                     if viewModel.isShowAd {
                         BannerAdView(adUnitID: AppData.packsScreenAdId)
@@ -85,7 +85,6 @@ struct PacksScreen: View {
                     }
                 }
             }
-            .scrollIndicators(.hidden, axes: .vertical)
             .clipShape(
                 RoundedRectangle(cornerRadius: 20)
             )

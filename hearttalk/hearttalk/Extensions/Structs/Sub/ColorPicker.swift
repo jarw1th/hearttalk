@@ -42,7 +42,10 @@ struct ColorPicker: View {
         } label: {
             RoundedRectangle(cornerRadius: 20)
                 .fill(color)
-                .stroke(self.color == color ? .darkWhite : .clear, lineWidth: 2)
+                .overlay(  
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(self.color == color ? Color(white: 1.0) : .clear, lineWidth: 2)
+                )
                 .frame(width: 48, height: 48)
         }
     }

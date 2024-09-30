@@ -72,7 +72,7 @@ struct HomeScreen: View {
     }
     
     private func makeFeed() -> some View {
-        ScrollView {
+        ScrollView(.vertical, showsIndicators: false) {
             LazyVStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
                 if viewModel.isShowAd {
                     BannerAdView(adUnitID: AppData.homeScreenAdId)
@@ -153,7 +153,6 @@ struct HomeScreen: View {
                 }
             }
         }
-        .scrollIndicators(.hidden, axes: .vertical)
         .clipShape(
             RoundedRectangle(cornerRadius: 20)
         )

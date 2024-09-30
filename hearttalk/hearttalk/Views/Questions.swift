@@ -144,7 +144,7 @@ struct Questions: View {
                     }
                     .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
                     
-                    ScrollView {
+                    ScrollView(.vertical, showsIndicators: false) {
                         LazyVStack {
                             ForEach(Array(viewModel.cards.enumerated()), id: \.element.id) { index, card in
                                 ListItem(number: index + 1, question: card.question) {
@@ -155,7 +155,6 @@ struct Questions: View {
                         }
                         
                     }
-                    .scrollIndicators(.hidden, axes: .vertical)
                     .clipShape(
                         RoundedRectangle(cornerRadius: 20)
                     )

@@ -29,7 +29,7 @@ final class ViewModel: ObservableObject {
     @Published var dailyCard: DailyCard?
     @Published var dailyOriginalCard: Card?
     
-    private(set) var isShowAd: Bool = (Locale.current.region?.identifier == "RU")
+    private(set) var isShowAd: Bool = (Locale.current.regionCode == "RU")
     
     private let defaultCardTypes = [Localization.favorites, Localization.simple, Localization.family, Localization.taboo, Localization.sex, Localization.close, Localization.closer, Localization.closest]
     

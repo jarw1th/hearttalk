@@ -117,7 +117,7 @@
 
 "whatIs4Name" = "The app also features an advanced AI that generates custom questions based on user prompts. This personalized approach allows users to explore topics that are particularly relevant to their own experiences and interests, further enhancing the quality of their conversations.";
 
-"deleting" = "You are going to delete all data";
+"deleting" = "You are going to delete all data after app restart";
 
 "deletingCard" = "You are going to delete card";
 
@@ -155,7 +155,7 @@
 
 "languageActionSheetTitle" = "Select language";
 
-"languageActionSheetMessage" = "We will delete all data!";
+"languageActionSheetMessage" = "Your custom packs is linked to selected language.";
 
 "dailyWidgetPlaceholder" = "Who are you?";
 

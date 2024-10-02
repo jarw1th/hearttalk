@@ -129,6 +129,10 @@ struct CreateScreen: View {
             })
             buttons.append(button)
         }
+        if buttons.isEmpty {
+            let button = ActionSheet.Button.cancel(Text(Localization.cancel), action: {})
+            buttons.append(button)
+        }
         return buttons
     }
     

@@ -11,6 +11,7 @@ struct HomeScreen: View {
     @State private var isShowCreatePack: Bool = false
     @State private var isShowAgeAlert: Bool = false
     @State private var isShowDailyCard: Bool = false
+    @State private var isShowGlobalAlert: Bool = false
     
     @State private var selectedCardPack: CardPack?
     @State private var selectedCardType: CardType?
@@ -19,6 +20,9 @@ struct HomeScreen: View {
         NavigationView {
             makeContent()
                 .background(.lightBlack)
+        }
+        .onAppear {
+            isShowGlobalAlert = (viewModel.remoteConfigManager.appData?.isShowAlert) ?? false
         }
         .sheet(isPresented: $isShowSettings) {
             AboutApp()
@@ -51,6 +55,9 @@ struct HomeScreen: View {
                 }
             }
         }
+        .alert(isPresented: $isShowGlobalAlert) {
+            Alert(title: Text(viewModel.remoteConfigManager.appData?.alertTitle ?? ""), message: Text(viewModel.remoteConfigManager.appData?.alertMessage ?? ""), dismissButton: .default(Text(Localization.confirm), action: {}))
+        }
     }
     
     private func makeContent() -> some View {
@@ -75,7 +82,7 @@ struct HomeScreen: View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
                 if viewModel.isShowAd {
-                    BannerAdView(adUnitID: AppData.homeScreenAdId)
+                    BannerAdView(adUnitID: viewModel.remoteConfigManager.appData?.homeScreenAdId ?? "")
                         .frame(maxWidth: .infinity)
                         .frame(height: 160)
                         .cornerRadius(20)

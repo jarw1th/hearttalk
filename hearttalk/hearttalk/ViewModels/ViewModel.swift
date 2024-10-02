@@ -11,6 +11,8 @@ final class ViewModel: ObservableObject {
     
     private var realmManager: RealmManager = RealmManager()
     private var userDefaultsManager: UserDefaultsManager = UserDefaultsManager()
+    private var firebaseManager: FirebaseManager
+    private(set) var remoteConfigManager: RemoteConfigManager = RemoteConfigManager()
     
     @Published var myCardTypes: [CardType] = []
     @Published var cardTypes: [CardType] = []
@@ -31,99 +33,28 @@ final class ViewModel: ObservableObject {
     
     private(set) var isShowAd: Bool = (Locale.current.regionCode == "RU")
     
-    private let defaultCardTypes = [Localization.favorites, Localization.simple, Localization.family, Localization.taboo, Localization.sex, Localization.close, Localization.closer, Localization.closest]
-    
     init() {
-        if !userDefaultsManager.hasValidData {
-            clearData()
-            userDefaultsManager.hasValidData = true
-        }
-        if !userDefaultsManager.hasImportedData {
-            parseCardTypesFromFile()
-            userDefaultsManager.hasImportedData = true
-        }
-        fetchAll()
-        getDailyCard()
-    }
-    
-    private func parseCardTypesFromFile() {
-        let cardPacks = [Localization.defaultPack, Localization.couples, Localization.adult]
-        let cardTypes = [[(Localization.simple, Localization.simpleDesc, "default_simple"), (Localization.family, Localization.familyDesc, "default_family")],
-                         [(Localization.close, Localization.closeDesc, "couples_close"), (Localization.closer, Localization.closerDesc, "couples_closer"), (Localization.closest, Localization.closestDesc, "couples_closest")],
-                         [(Localization.taboo, Localization.tabooDesc, "adult_taboo"), (Localization.sex, Localization.sexDesc, "adult_sex")]]
-        
-        for (index, cardPackName) in cardPacks.enumerated() {
-           addCardPack(packName: cardPackName, cardTypes: cardTypes[index], isAdult: index == 2)
-        }
-        addCardPack(packName: Localization.favorites, cardTypes: [(Localization.favorites, "", "favorites")], isFavorites: true, isSpecial: true)
-        addCardPack(packName: Localization.created, cardTypes: [(Localization.unsorted, Localization.unsortedDesc, "created")], save: true, isSpecial: true)
-    }
-    
-    private func addCardPack(packName name: String, cardTypes: [(String, String, String)], save: Bool = false, isFavorites: Bool = false, isSpecial: Bool = false, isAdult: Bool = false) {
-        let userLanguage = userDefaultsManager.appleLanguage ?? "en"
-        
-        var cardPack = CardPack(id: UUID().uuidString, name: name)
-        for (cardTypeName, description, baseFileName) in cardTypes {
-            let fileName = "\(baseFileName)_\(userLanguage)"
-            cardPack = addCardType(withPack: cardPack, withTypeName: cardTypeName, withText: description, fromFile: fileName, with: isSpecial ? baseFileName : "\(baseFileName)_en", save: save, isFavorites: isFavorites) ?? CardPack(id: UUID().uuidString, name: name)
-        }
-        cardPack.isAdult = isAdult
-        cardPack.isCustom = save
-        
-        realmManager.add(cardPack)
-    }
-    
-    private func addCardType(withPack pack: CardPack, withTypeName typeName: String, withText description: String, fromFile fileName: String, with baseName: String, save: Bool = false, isFavorites: Bool = false) -> CardPack? {
-        var fileContents: String = ""
-        guard let baseFileContents = try? readTextFile(fileName: baseName) else {
-            print("Error fetching file")
-            return nil
-        }
-        if let langFileContents = try? readTextFile(fileName: fileName) {
-            fileContents = langFileContents
-        } else {
-            fileContents = baseFileContents
-        }
-        
-        let lines = fileContents.components(separatedBy: .newlines)
-        
-        guard let packColorLine = lines.first(where: { $0.starts(with: "Pack Color:") }) else {
-            print("Error: No color found in file \(fileName)")
-            return nil
-        }
-        guard let typeColorLine = lines.first(where: { $0.starts(with: "Type Color:") }) else {
-            print("Error: No color found in file \(fileName)")
-            return nil
-        }
-        
-        let packColor = packColorLine.replacingOccurrences(of: "Pack Color:", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
-        pack.color = packColor
-        let typeColor = typeColorLine.replacingOccurrences(of: "Type Color:", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        let cardType = CardType(id: UUID().uuidString, name: typeName, text: description)
-        cardType.color = typeColor
-        cardType.isCustom = save
-        if isFavorites {
-            favoriteType = cardType
-        }
-        
-        let questions = lines.dropFirst().filter { !$0.isEmpty && !$0.starts(with: "Pack Color:") && !$0.starts(with: "Type Color:") }
-        
-        for question in questions {
-            let card = Card(id: UUID().uuidString, question: question)
-            card.isCustom = save
-            cardType.cards.append(card)
-        }
-        
-        pack.cardTypes.append(cardType)
-        return pack
-    }
-    
-    private func readTextFile(fileName: String) throws -> String {
-        if let filePath = Bundle.main.path(forResource: fileName, ofType: "txt") {
-            return try String(contentsOfFile: filePath, encoding: .utf8)
-        } else {
-            throw NSError(domain: "FileNotFound", code: 404, userInfo: nil)
+        self.firebaseManager = FirebaseManager(realmManager)
+       
+        self.remoteConfigManager.fetchRemoteConfig {
+            if !UserDefaultsManager.shared.hasValidData || (self.remoteConfigManager.appData?.isUpdateContent ?? false) {
+                self.realmManager.deleteAll()
+                self.firebaseManager.parseCards {
+                    self.fetchAll()
+                    self.getDailyCard()
+                }
+                UserDefaultsManager.shared.hasValidData = true
+            } else {
+                self.fetchAll()
+                self.getDailyCard()
+                if self.cardTypes.isEmpty {
+                    self.realmManager.deleteAll()
+                    self.firebaseManager.parseCards {
+                        self.fetchAll()
+                        self.getDailyCard()
+                    }
+                }
+            }
         }
     }
     
@@ -131,26 +62,29 @@ final class ViewModel: ObservableObject {
         self.cardTypes = []
         self.myCardTypes = []
         self.favoriteType = nil
+        self.selectedSavingType = nil
         let cardTypesResults = self.realmManager.getAllCardTypes()
         
-        fetchAllCardPacks()
-        self.cardTypes = Array(cardTypesResults)
-        self.myCardTypes = Array(cardTypesResults).filter { !defaultCardTypes.contains($0.name) }
-        self.favoriteType = cardTypes.filter({ $0.name == Localization.favorites }).first
-        self.selectedSavingType = cardTypes.filter({ $0.name == Localization.unsorted }).first
+        let lang = userDefaultsManager.appleLanguage
+        fetchAllCardPacks(lang)
+        self.cardTypes = Array(cardTypesResults).filter { $0.language == lang || $0.language == "none" }
+        self.myCardTypes = Array(cardTypesResults).filter { $0.isCustom && $0.language == lang || $0.language == "none" }
+        self.favoriteType = cardTypes.filter({ $0.isFavorite }).first
+        self.selectedSavingType = cardTypes.filter({ $0.isCustom }).first
     }
     
-    func fetchAllCardPacks() {
+    func fetchAllCardPacks(_ lang: String) {
         self.cardPacks = []
         let cardPacksResults = self.realmManager.getAllCardPacks()
         
-        self.cardPacks = Array(cardPacksResults).filter { $0.name != Localization.favorites }
+        self.cardPacks = Array(cardPacksResults).filter { !$0.isFavorite && ($0.language == lang || $0.language == "none") }
     }
     
     func fetchAllCardTypes(forCardPackId cardPackId: String) {
         if let cardTypesList = self.realmManager.getCardTypes(forCardPackId: cardPackId) {
-            self.cardTypes = Array(cardTypesList)
-            self.myCardTypes = Array(self.realmManager.getAllCardTypes()).filter { !defaultCardTypes.contains($0.name) }
+            let lang = userDefaultsManager.appleLanguage
+            self.cardTypes = Array(cardTypesList).filter { $0.language == lang || $0.language == "none" }
+            self.myCardTypes = Array(self.realmManager.getAllCardTypes()).filter { $0.isCustom && $0.language == lang }
         } else {
             self.cardTypes = []
         }
@@ -173,13 +107,15 @@ final class ViewModel: ObservableObject {
     }
     
     func createType(name: String, color: String, description: String, cardQuestions: [String]) {
-        if let createdPackId = realmManager.getCustomCardPack()?.id,
+        let lang = userDefaultsManager.appleLanguage
+        if let createdPackId = realmManager.getCustomCardPack(with: lang)?.id,
            let createdPack = realmManager.getCardPack(forId: createdPackId) {
             let cardType = CardType()
             cardType.id = UUID().uuidString
             cardType.name = name
             cardType.color = color
             cardType.text = description
+            cardType.language = lang
             cardType.isCustom = true
             
             let cardObjects = cardQuestions.map { question -> Card in
@@ -351,20 +287,31 @@ final class ViewModel: ObservableObject {
     }
     
     func clearData() {
-        realmManager.deleteAll()
-        parseCardTypesFromFile()
-        fetchAll()
+        self.cardTypes = []
+        self.myCardTypes = []
+        self.favoriteType = nil
+        self.selectedSavingType = nil
+        self.dailyCard = nil
+        self.dailyOriginalCard = nil
+        self.cards = []
+        self.notes = []
         cardIndex = 0
-        cards = []
-        cardTypes = []
         isCardFavorite = false
-        getDailyCard()
+        
+        UserDefaultsManager.shared.hasValidData = false
+        
+//        realmManager.deleteAll()
+//        firebaseManager.parseCards {
+//            self.fetchAll()
+//            self.getDailyCard()
+//        }
     }
     
     func getDailyCard() {
         let today = Calendar.current.startOfDay(for: Date())
         let cardsList = realmManager.fetch(Card.self)
-        let cards = Array(cardsList)
+        let lang = userDefaultsManager.appleLanguage
+        let cards = Array(cardsList.filter { $0.language == lang })
         let dailyCardsList = realmManager.fetch(DailyCard.self)
         let dailyCards = Array(dailyCardsList)
         
@@ -381,6 +328,7 @@ final class ViewModel: ObservableObject {
             self.dailyOriginalCard = newCard
             realmManager.add(newDailyCard)
         } else if dailyCards.isEmpty {
+            guard !cards.isEmpty else { return }
             let newCard = cards[Int.random(in: 0..<cards.count)]
             let newDailyCardId = UUID().uuidString
             let newQuestion = newCard.question

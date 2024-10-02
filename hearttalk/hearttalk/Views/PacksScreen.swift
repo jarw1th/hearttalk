@@ -50,7 +50,7 @@ struct PacksScreen: View {
             ScrollView(.vertical, showsIndicators: false) {
                 LazyVStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
                     if viewModel.isShowAd {
-                        BannerAdView(adUnitID: AppData.packsScreenAdId)
+                        BannerAdView(adUnitID: viewModel.remoteConfigManager.appData?.packsScreenAdId ?? "")
                             .frame(maxWidth: .infinity)
                             .frame(height: 160)
                             .cornerRadius(20)

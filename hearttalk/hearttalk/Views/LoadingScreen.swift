@@ -14,6 +14,16 @@ struct LoadingScreen: View {
             .background(.lightBlack)
             .ignoresSafeArea()
             .preferredColorScheme(UserDefaultsManager.shared.isDarkMode ? .dark : .light)
+            .onChange(of: viewModel.cardPacks) { value in
+                if !value.isEmpty {
+                    isShowNext.toggle()
+                }
+            }
+            .onAppear {
+                if !viewModel.cardPacks.isEmpty {
+                    isShowNext.toggle()
+                }
+            }
     }
     
     private func makeContent() -> some View {
@@ -24,9 +34,6 @@ struct LoadingScreen: View {
         .fullScreenCover(isPresented: $isShowNext) {
             HomeScreen()
                 .environmentObject(viewModel)
-        }
-        .onAppear {
-            isShowNext.toggle()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }

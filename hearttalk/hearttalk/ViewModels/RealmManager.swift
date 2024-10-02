@@ -20,7 +20,18 @@ final class RealmManager {
         }
     }
     
+    func write(_ block: () -> Void) {
+        do {
+            try realm.write {
+                block()
+            }
+        } catch {
+            print("Failed to write to Realm: \(error)")
+        }
+    }
+    
     func add<T: Object>(_ object: T) {
+        guard !object.isInvalidated else { return }
         do {
             try realm.write {
                 realm.add(object)
@@ -31,6 +42,7 @@ final class RealmManager {
     }
     
     func delete<T: Object>(_ object: T) {
+        guard !object.isInvalidated else { return }
         do {
             try realm.write {
                 realm.delete(object)
@@ -118,8 +130,8 @@ final class RealmManager {
         return realm.objects(CardPack.self).filter("name == %@", name).first
     }
     
-    func getCustomCardPack() -> CardPack? {
-        return realm.objects(CardPack.self).filter("isCustom == %@", true).first
+    func getCustomCardPack(with lang: String) -> CardPack? {
+        return realm.objects(CardPack.self).filter("isCustom == %@", true).filter("language == %@", lang).first
     }
     
     func getCardType(forId id: String) -> CardType? {

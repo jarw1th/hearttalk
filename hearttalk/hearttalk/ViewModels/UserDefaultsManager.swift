@@ -1,6 +1,5 @@
 
 import Foundation
-import SystemConfiguration
 
 final class UserDefaultsManager {
     
@@ -14,8 +13,7 @@ final class UserDefaultsManager {
     private let isDailyCardKey: String = "isDailyCard"
     private let AppleLanguageKey: String = "AppleLanguage"
     private let isDarkModeKey: String = "isDarkMode"
-    private let hasImportedDataKey: String = "hasImportedData"
-    private let hasValidDataKey: String = "hasImportedData"
+    private let hasValidDataKey: String = "hasValidData"
     
     var appVersion: String {
         if let version = Bundle.main.infoDictionary?[CFBundleShortVersionKey] as? String {
@@ -85,7 +83,6 @@ final class UserDefaultsManager {
         set {
             if UserDefaults.standard.string(forKey: AppleLanguageKey) ?? "en" != newValue {
                 UserDefaults.standard.set(newValue, forKey: AppleLanguageKey)
-                self.hasValidData = false
             }
         }
     }
@@ -98,17 +95,6 @@ final class UserDefaultsManager {
         }
         set {
             UserDefaults.standard.set(newValue, forKey: isDarkModeKey)
-        }
-    }
-    var hasImportedData: Bool {
-        get {
-            if UserDefaults.standard.object(forKey: hasImportedDataKey) == nil {
-                return false
-            }
-            return UserDefaults.standard.bool(forKey: hasImportedDataKey)
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: hasImportedDataKey)
         }
     }
     var hasValidData: Bool {

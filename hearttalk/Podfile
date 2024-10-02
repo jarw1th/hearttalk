@@ -10,6 +10,10 @@ target 'hearttalk' do
   # Pods for hearttalk
   pod 'RealmSwift'
   pod 'YandexMobileAds'
+  pod 'FirebaseCore'
+  pod 'FirebaseFirestore'
+  pod 'FirebaseDatabase'
+  pod 'FirebaseRemoteConfig'
 
 end
 

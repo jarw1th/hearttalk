@@ -170,3 +170,11 @@
 "alertPack" = "Pack name should be more than 4 characters";
 
 "alertNote" = "Note should be more than 10 characters";
+
+"addCard" = "Add card";
+
+"addPack" = "Add pack";
+
+"addCardSub" = "Add a new card";
+
+"addPackSub" = "Add a new pack";

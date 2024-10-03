@@ -12,6 +12,7 @@ final class UserDefaultsManager {
             return UserDefaults.standard
         }
     }
+    private var standart: UserDefaults = UserDefaults.standard
     
     private let isShowTipKey: String = "isShowTip"
     private let CFBundleShortVersionKey: String = "CFBundleShortVersionString"
@@ -86,11 +87,11 @@ final class UserDefaultsManager {
     }
     var language: String {
         get {
-            return userDefaults.string(forKey: AppleLanguageKey) ?? "en"
+            return standart.string(forKey: AppleLanguageKey) ?? "en"
         }
         set {
-            if userDefaults.string(forKey: AppleLanguageKey) ?? "en" != newValue {
-                userDefaults.set(newValue, forKey: AppleLanguageKey)
+            if standart.string(forKey: AppleLanguageKey) ?? "en" != newValue {
+                standart.set(newValue, forKey: AppleLanguageKey)
             }
         }
     }
@@ -118,10 +119,10 @@ final class UserDefaultsManager {
     }
     var appleLanguage: String {
         get {
-            return userDefaults.string(forKey: AppleLanguageKey) ?? "en"
+            return standart.string(forKey: AppleLanguageKey) ?? "en"
         }
         set {
-            userDefaults.set(newValue, forKey: AppleLanguageKey)
+            standart.set(newValue, forKey: AppleLanguageKey)
         }
     }
     

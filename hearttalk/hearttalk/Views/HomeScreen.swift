@@ -24,6 +24,14 @@ struct HomeScreen: View {
         }
         .onAppear {
             isShowGlobalAlert = (viewModel.remoteConfigManager.appData?.isShowAlert) ?? false
+            if let action = QuickActionsManager.shared.quickAction {
+                switch action {
+                case .addCard:
+                    isShowCreateCard.toggle()
+                case .addPack:
+                    isShowCreatePack.toggle()
+                }
+            }
         }
         .sheet(isPresented: $isShowSettings) {
             AboutApp()

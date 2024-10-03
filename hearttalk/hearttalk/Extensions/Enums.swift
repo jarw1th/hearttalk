@@ -186,3 +186,9 @@ enum PDFType {
     }
     
 }
+
+enum QuickAction: Hashable {
+    
+    case addCard, addPack
+    
+}

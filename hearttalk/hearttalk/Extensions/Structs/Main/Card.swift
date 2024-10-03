@@ -178,6 +178,12 @@ struct CardView: View {
                     .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 48 : 64)
                 Spacer()
             }
+            .simultaneousGesture(
+                TapGesture()
+                    .onEnded {
+                        UserDefaultsManager.shared.isShowTip = false
+                    }
+            )
             VStack {
                 Spacer()
                 HStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 64 : 80) {

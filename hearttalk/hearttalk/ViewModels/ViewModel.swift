@@ -68,7 +68,7 @@ final class ViewModel: ObservableObject {
         let lang = userDefaultsManager.appleLanguage
         fetchAllCardPacks(lang)
         self.cardTypes = Array(cardTypesResults).filter { $0.language == lang || $0.language == "none" }
-        self.myCardTypes = Array(cardTypesResults).filter { $0.isCustom && $0.language == lang || $0.language == "none" }
+        self.myCardTypes = Array(cardTypesResults).filter { $0.isCustom && $0.language == lang }
         self.favoriteType = cardTypes.filter({ $0.isFavorite }).first
         self.selectedSavingType = cardTypes.filter({ $0.isCustom }).first
     }

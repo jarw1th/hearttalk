@@ -77,20 +77,23 @@ struct DailyCardWidgetProvider: TimelineProvider {
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<DailyCardWidgetEntry>) -> Void) {
         var entries: [DailyCardWidgetEntry] = []
-
-        let today = Calendar.current.startOfDay(for: Date())
                 
-        let dailyCardsList = realmManager.fetch(DailyCard.self)
-        let dailyCards = Array(dailyCardsList)
-        
-        print("Widget DailyCards:", Array(dailyCardsList))
-        print(dailyCards)
-
-        if let dailyCard = dailyCards.first(where: { Calendar.current.isDate($0.date, inSameDayAs: today) }) {
-            let entry = DailyCardWidgetEntry(date: Date(), text: dailyCard.question, link: URL(string: "hearttalk://dailyWidgetOpen"))
-            entries.append(entry)
+        if let isDailyCard = UserDefaults(suiteName: "group.ruslanparastaev.hearttalk")?.bool(forKey: "isDailyCard"),
+           isDailyCard {
+            let today = Calendar.current.startOfDay(for: Date())
+            
+            let dailyCardsList = realmManager.fetch(DailyCard.self)
+            let dailyCards = Array(dailyCardsList)
+            
+            if let dailyCard = dailyCards.first(where: { Calendar.current.isDate($0.date, inSameDayAs: today) }) {
+                let entry = DailyCardWidgetEntry(date: Date(), text: dailyCard.question, link: URL(string: "hearttalk://dailyWidgetOpen"))
+                entries.append(entry)
+            } else {
+                let entry = DailyCardWidgetEntry(date: Date(), text: "No card today", link: nil)
+                entries.append(entry)
+            }
         } else {
-            let entry = DailyCardWidgetEntry(date: Date(), text: "No card today", link: nil)
+            let entry = DailyCardWidgetEntry(date: Date(), text: "Turn on daily card", link: URL(string: "hearttalk://dailyTurningOn"))
             entries.append(entry)
         }
 

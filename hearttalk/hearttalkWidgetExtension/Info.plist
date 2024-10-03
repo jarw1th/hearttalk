@@ -6,11 +6,15 @@
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
+			<string>hearttalk://dailyTurningOn</string>
+		</dict>
+		<dict>
+			<key>CFBundleURLName</key>
 			<string>hearttalk://createScreen</string>
 		</dict>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>hearttalk://dailyWidgetOpen"</string>
+			<string>hearttalk://dailyWidgetOpen&quot;</string>
 		</dict>
 	</array>
 	<key>NSExtension</key>

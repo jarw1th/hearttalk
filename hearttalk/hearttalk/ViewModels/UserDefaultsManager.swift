@@ -5,6 +5,14 @@ final class UserDefaultsManager {
     
     static let shared = UserDefaultsManager()
     
+    private var userDefaults: UserDefaults {
+        if let userDefaults = UserDefaults(suiteName: "group.ruslanparastaev.hearttalk") {
+            return userDefaults
+        } else {
+            return UserDefaults.standard
+        }
+    }
+    
     private let isShowTipKey: String = "isShowTip"
     private let CFBundleShortVersionKey: String = "CFBundleShortVersionString"
     private let isShowAgeAlertKey: String = "isShowAgeAlert"
@@ -23,97 +31,97 @@ final class UserDefaultsManager {
     }
     var isShowTip: Bool {
         get {
-            if UserDefaults.standard.object(forKey: isShowTipKey) == nil {
+            if userDefaults.object(forKey: isShowTipKey) == nil {
                 return true
             }
-            return UserDefaults.standard.bool(forKey: isShowTipKey)
+            return userDefaults.bool(forKey: isShowTipKey)
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: isShowTipKey)
+            userDefaults.set(newValue, forKey: isShowTipKey)
         }
     }
     var isShowAgeAlert: Bool {
         get {
-            if UserDefaults.standard.object(forKey: isShowAgeAlertKey) == nil {
+            if userDefaults.object(forKey: isShowAgeAlertKey) == nil {
                 return true
             }
-            return UserDefaults.standard.bool(forKey: isShowAgeAlertKey)
+            return userDefaults.bool(forKey: isShowAgeAlertKey)
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: isShowAgeAlertKey)
+            userDefaults.set(newValue, forKey: isShowAgeAlertKey)
         }
     }
     var isVibrations: Bool {
         get {
-            if UserDefaults.standard.object(forKey: isVibrationsKey) == nil {
+            if userDefaults.object(forKey: isVibrationsKey) == nil {
                 return true
             }
-            return UserDefaults.standard.bool(forKey: isVibrationsKey)
+            return userDefaults.bool(forKey: isVibrationsKey)
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: isVibrationsKey)
+            userDefaults.set(newValue, forKey: isVibrationsKey)
         }
     }
     var isSounds: Bool {
         get {
-            if UserDefaults.standard.object(forKey: isSoundsKey) == nil {
+            if userDefaults.object(forKey: isSoundsKey) == nil {
                 return false
             }
-            return UserDefaults.standard.bool(forKey: isSoundsKey)
+            return userDefaults.bool(forKey: isSoundsKey)
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: isSoundsKey)
+            userDefaults.set(newValue, forKey: isSoundsKey)
         }
     }
     var isDailyCard: Bool {
         get {
-            if UserDefaults.standard.object(forKey: isDailyCardKey) == nil {
+            if userDefaults.object(forKey: isDailyCardKey) == nil {
                 return true
             }
-            return UserDefaults.standard.bool(forKey: isDailyCardKey)
+            return userDefaults.bool(forKey: isDailyCardKey)
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: isDailyCardKey)
+            userDefaults.set(newValue, forKey: isDailyCardKey)
         }
     }
     var language: String {
         get {
-            return UserDefaults.standard.string(forKey: AppleLanguageKey) ?? "en"
+            return userDefaults.string(forKey: AppleLanguageKey) ?? "en"
         }
         set {
-            if UserDefaults.standard.string(forKey: AppleLanguageKey) ?? "en" != newValue {
-                UserDefaults.standard.set(newValue, forKey: AppleLanguageKey)
+            if userDefaults.string(forKey: AppleLanguageKey) ?? "en" != newValue {
+                userDefaults.set(newValue, forKey: AppleLanguageKey)
             }
         }
     }
     var isDarkMode: Bool {
         get {
-            if UserDefaults.standard.object(forKey: isDarkModeKey) == nil {
+            if userDefaults.object(forKey: isDarkModeKey) == nil {
                 return true
             }
-            return UserDefaults.standard.bool(forKey: isDarkModeKey)
+            return userDefaults.bool(forKey: isDarkModeKey)
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: isDarkModeKey)
+            userDefaults.set(newValue, forKey: isDarkModeKey)
         }
     }
     var hasValidData: Bool {
         get {
-            if UserDefaults.standard.object(forKey: hasValidDataKey) == nil {
+            if userDefaults.object(forKey: hasValidDataKey) == nil {
                 return false
             }
-            return UserDefaults.standard.bool(forKey: hasValidDataKey)
+            return userDefaults.bool(forKey: hasValidDataKey)
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: hasValidDataKey)
+            userDefaults.set(newValue, forKey: hasValidDataKey)
         }
     }
     var appleLanguage: String {
         get {
-            return UserDefaults.standard.string(forKey: AppleLanguageKey) ?? "en"
+            return userDefaults.string(forKey: AppleLanguageKey) ?? "en"
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: AppleLanguageKey)
+            userDefaults.set(newValue, forKey: AppleLanguageKey)
         }
     }
     

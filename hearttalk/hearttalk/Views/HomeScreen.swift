@@ -12,6 +12,7 @@ struct HomeScreen: View {
     @State private var isShowAgeAlert: Bool = false
     @State private var isShowDailyCard: Bool = false
     @State private var isShowGlobalAlert: Bool = false
+    @State private var isShowDailySettings: Bool = false
     
     @State private var selectedCardPack: CardPack?
     @State private var selectedCardType: CardType?
@@ -26,6 +27,10 @@ struct HomeScreen: View {
         }
         .sheet(isPresented: $isShowSettings) {
             AboutApp()
+                .environmentObject(viewModel)
+        }
+        .sheet(isPresented: $isShowDailySettings) {
+            Settings(isPresented: $isShowDailySettings)
                 .environmentObject(viewModel)
         }
         .sheet(isPresented: $isShowCreateCard) {
@@ -52,6 +57,9 @@ struct HomeScreen: View {
                 }
                 if url.host == "dailyWidgetOpen" {
                     isShowDailyCard.toggle()
+                }
+                if url.host == "dailyTurningOn" {
+                    isShowDailySettings.toggle()
                 }
             }
         }

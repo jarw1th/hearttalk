@@ -32,7 +32,6 @@ struct DailyCardWidget: View {
                             .multilineTextAlignment(.center)
                     }
                     .padding()
-                    .background(.darkWhite)
                     .cornerRadius(10)
                 }
             } else {
@@ -43,7 +42,6 @@ struct DailyCardWidget: View {
                         .multilineTextAlignment(.center)
                 }
                 .padding()
-                .background(.darkWhite)
                 .cornerRadius(10)
             }
         }

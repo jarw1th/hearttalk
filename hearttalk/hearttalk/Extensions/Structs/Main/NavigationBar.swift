@@ -3,6 +3,7 @@ import SwiftUI
 
 struct NavigationBar<Content: View>: View {
     
+    var text: String = "Heart Talk"
     @ViewBuilder let buttonContent: (() -> Content)
     let buttonAction: (() -> Void)?
     
@@ -16,7 +17,7 @@ struct NavigationBar<Content: View>: View {
                 .fill(.clear)
                 .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32, height: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
             Spacer()
-            Text("Heart Talk")
+            Text(text)
                 .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32))
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.darkWhite)

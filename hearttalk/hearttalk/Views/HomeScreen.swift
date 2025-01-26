@@ -9,10 +9,10 @@ struct HomeScreen: View {
     @State private var isShowSettings: Bool = false
     @State private var isShowCreateCard: Bool = false
     @State private var isShowCreatePack: Bool = false
-    @State private var isShowAgeAlert: Bool = false
     @State private var isShowDailyCard: Bool = false
     @State private var isShowGlobalAlert: Bool = false
     @State private var isShowDailySettings: Bool = false
+    @State private var isShowOnlineScreen: Bool = false
     
     @State private var selectedCardPack: CardPack?
     @State private var selectedCardType: CardType?
@@ -53,11 +53,6 @@ struct HomeScreen: View {
             Questions(card: viewModel.dailyOriginalCard)
                 .environmentObject(viewModel)
         }
-        .alert(isPresented: $isShowAgeAlert) {
-            Alert(title: Text(Localization.adultAlertTitle), message: Text(Localization.adultAlertMessage), primaryButton: .default(Text(Localization.confirm), action: {
-                UserDefaultsManager.shared.isShowAgeAlert = false
-            }), secondaryButton: .cancel(Text(Localization.cancel), action: {}))
-        }
         .onOpenURL { url in
             if url.scheme == "hearttalk" {
                 if url.host == "createScreen" {
@@ -97,24 +92,13 @@ struct HomeScreen: View {
     private func makeFeed() -> some View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
-                if viewModel.isShowAd {
-                    BannerAdView(adUnitID: viewModel.remoteConfigManager.appData?.homeScreenAdId ?? "")
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 160)
-                        .cornerRadius(20)
-                }
-                
                 LazyVStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
                     ForEach(viewModel.cardPacks) { cardPack in
                         Button(action: {
-                            if cardPack.isAdult && UserDefaultsManager.shared.isShowAgeAlert {
-                                isShowAgeAlert.toggle()
-                            } else {
-                                if cardPack.cardTypes.count != 0 {
-                                    HapticManager.shared.triggerHapticFeedback(.light)
-                                    SoundManager.shared.sound(.click1)
-                                    selectedCardPack = cardPack
-                                }
+                            if cardPack.cardTypes.count != 0 {
+                                HapticManager.shared.triggerHapticFeedback(.light)
+                                SoundManager.shared.sound(.click1)
+                                selectedCardPack = cardPack
                             }
                         }) {
                             HomeCard(HomeCardProperties(color: Color(hex: cardPack.color),
@@ -166,7 +150,21 @@ struct HomeScreen: View {
                     }
                 }
                 
-                AddHomeCard() { type in
+                OnlineHomeCard {
+                    isShowOnlineScreen.toggle()
+                }
+                .background {
+                    NavigationLink(
+                        destination: OnlineScreen()
+                            .environmentObject(viewModel)
+                            .navigationBarHidden(true),
+                        isActive: $isShowOnlineScreen
+                    ) {
+                        EmptyView()
+                    }
+                }
+                
+                AddHomeCard { type in
                     switch type {
                     case .pack:
                         isShowCreatePack.toggle()
@@ -182,8 +180,4 @@ struct HomeScreen: View {
         .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
     }
     
-}
-
-#Preview {
-    HomeScreen()
 }

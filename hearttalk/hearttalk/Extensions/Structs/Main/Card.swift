@@ -16,6 +16,7 @@ struct CardView: View {
     @State private var cardWidth: CGFloat = 0
     
     @State private var isShare: Bool = false
+    @State private var isFlipped: Bool = false
     @State private var isClearAlert: Bool = false
     @State private var shareImage: IdentifiableImage?
     

@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CLIENT_ID</key>
+	<string>779291630555-jvf4fcmutauvjmdqqt8hh5r1a66o5k1t.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.779291630555-jvf4fcmutauvjmdqqt8hh5r1a66o5k1t</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDXG8ontd2zKWF0A1HZu1bs4GXIvWy8qpM</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +17,7 @@
 	<key>PROJECT_ID</key>
 	<string>hearttalk-557bf</string>
 	<key>STORAGE_BUCKET</key>
-	<string>hearttalk-557bf.appspot.com</string>
+	<string>hearttalk-557bf.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>

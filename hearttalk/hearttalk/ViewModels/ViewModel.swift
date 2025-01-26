@@ -11,7 +11,7 @@ final class ViewModel: ObservableObject {
     
     private var realmManager: RealmManager = RealmManager()
     private var userDefaultsManager: UserDefaultsManager = UserDefaultsManager()
-    private var firebaseManager: FirebaseManager
+    private var textFileManager: TextFileManager
     private(set) var remoteConfigManager: RemoteConfigManager = RemoteConfigManager()
     
     @Published var myCardTypes: [CardType] = []
@@ -34,12 +34,12 @@ final class ViewModel: ObservableObject {
     private(set) var isShowAd: Bool = (Locale.current.regionCode == "RU")
     
     init() {
-        self.firebaseManager = FirebaseManager(realmManager)
+        self.textFileManager = TextFileManager(realmManager)
        
         self.remoteConfigManager.fetchRemoteConfig {
             if !UserDefaultsManager.shared.hasValidData || (self.remoteConfigManager.appData?.isUpdateContent ?? false) {
                 self.realmManager.deleteAll()
-                self.firebaseManager.parseCards {
+                self.textFileManager.parseCards {
                     self.fetchAll()
                     self.getDailyCard()
                 }
@@ -49,7 +49,7 @@ final class ViewModel: ObservableObject {
                 self.getDailyCard()
                 if self.cardTypes.isEmpty {
                     self.realmManager.deleteAll()
-                    self.firebaseManager.parseCards {
+                    self.textFileManager.parseCards {
                         self.fetchAll()
                         self.getDailyCard()
                     }
@@ -133,6 +133,27 @@ final class ViewModel: ObservableObject {
             
             DispatchQueue.main.async {
                 self.fetchAll()
+            }
+        }
+    }
+    
+    func deleteType(cardType: CardType) {
+        if cardType.isCustom,
+           let cardInstance = self.realmManager.getCardType(forId: cardType.id) {
+            self.realmManager.delete(cardInstance)
+            
+            if let index = cardTypes.firstIndex(of: cardType) {
+                cards.remove(at: index)
+            }
+        }
+    }
+    
+    func updateType(_ newCardType: CardType) {
+        if newCardType.isCustom,
+           let cardInstance = self.realmManager.getCardType(forId: newCardType.id) {
+            self.realmManager.update {
+                cardInstance.name = newCardType.name
+                cardInstance.text = newCardType.text
             }
         }
     }
@@ -287,24 +308,7 @@ final class ViewModel: ObservableObject {
     }
     
     func clearData() {
-        self.cardTypes = []
-        self.myCardTypes = []
-        self.favoriteType = nil
-        self.selectedSavingType = nil
-        self.dailyCard = nil
-        self.dailyOriginalCard = nil
-        self.cards = []
-        self.notes = []
-        cardIndex = 0
-        isCardFavorite = false
-        
         UserDefaultsManager.shared.hasValidData = false
-        
-//        realmManager.deleteAll()
-//        firebaseManager.parseCards {
-//            self.fetchAll()
-//            self.getDailyCard()
-//        }
     }
     
     func getDailyCard() {

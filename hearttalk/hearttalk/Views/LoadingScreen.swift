@@ -28,7 +28,7 @@ struct LoadingScreen: View {
     
     private func makeContent() -> some View {
         VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 48) {
-            makeLoader()
+            LoadingView()
             makeText()
         }
         .fullScreenCover(isPresented: $isShowNext) {
@@ -36,26 +36,6 @@ struct LoadingScreen: View {
                 .environmentObject(viewModel)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-    
-    private func makeLoader() -> some View {
-        ZStack {
-            Image("heartLogoPart")
-                .renderingMode(.template)
-                .resizable()
-                .foregroundStyle(.darkWhite)
-                .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 200 : 400, height: UIDevice.current.userInterfaceIdiom == .phone ? 172 : 344)
-            
-            Image("hLogoPart")
-                .renderingMode(.template)
-                .resizable()
-                .foregroundStyle(.lightBlack)
-                .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 54 : 106, height: UIDevice.current.userInterfaceIdiom == .phone ? 54 : 106)
-                .rotationEffect(.degrees(rotation))
-                .onAppear {
-                    startRotation()
-                }
-        }
     }
     
     private func makeText() -> some View {
@@ -66,19 +46,4 @@ struct LoadingScreen: View {
             .opacity(66)
     }
     
-    private func startRotation() {
-        guard isLoading else { return }
-        
-        withAnimation(
-            Animation.linear(duration: 1)
-                .repeatForever(autoreverses: false)
-        ) {
-            rotation = 360
-        }
-    }
-    
-}
-
-#Preview {
-    LoadingScreen()
 }

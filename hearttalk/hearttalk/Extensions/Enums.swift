@@ -192,3 +192,26 @@ enum QuickAction: Hashable {
     case addCard, addPack
     
 }
+
+enum OnlineSearchType: String, Identifiable, CaseIterable {
+    
+    case cards
+    case accounts
+    case packs
+    
+    var id: String {
+        self.rawValue
+    }
+    
+    var value: String {
+        switch self {
+        case .cards:
+            "Cards"
+        case .accounts:
+            "Accounts"
+        case .packs:
+            "Packs"
+        }
+    }
+    
+}

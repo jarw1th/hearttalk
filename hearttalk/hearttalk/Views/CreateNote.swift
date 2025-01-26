@@ -34,7 +34,9 @@ struct CreateNote: View {
                     .multilineTextAlignment(.leading)
                     .foregroundStyle(.darkWhite)
                     .frame(maxWidth: .infinity)
-                makeCard()
+                FillField(placeholder: Localization.notePlaceholder, text: $text)
+                Spacer()
+                makeCreateButton()
             }
         }
         .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32)
@@ -53,11 +55,12 @@ struct CreateNote: View {
                 isShowAlert.toggle()
             }
         } label: {
-            Image("check")
-                .renderingMode(.template)
-                .resizable()
-                .foregroundStyle(.darkGreen)
-                .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 40, height: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 40)
+            Text(Localization.create)
+                .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32))
+                .underline()
+                .multilineTextAlignment(.center)
+                .foregroundStyle(.darkWhite)
+                .opacity(66)
         }
     }
     
@@ -75,39 +78,6 @@ struct CreateNote: View {
         }
     }
     
-    private func makeCard() -> some View {
-        ZStack {
-            VStack {
-                HStack {
-                    Spacer()
-                    makeCreateButton()
-                }
-                .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32)
-                .padding(.trailing, UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32)
-                Spacer()
-                
-                ZStack(alignment: .center) {
-                    if text.isEmpty {
-                        Text(Localization.notePlaceholder)
-                            .font(.custom("PlayfairDisplay-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32))
-                            .foregroundColor(.lightBlack)
-                            .opacity(0.66)
-                    }
-                    TextView(text: $text)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                }
-                .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 48 : 64)
-                Spacer()
-            }
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(
-            RoundedRectangle(cornerRadius: 20)
-                .fill(.darkWhite)
-                .shadow(color: .shadow, radius: 5)
-        )
-    }
-    
     private func checkText() -> Bool {
         text.count > 10
     }
@@ -116,8 +86,4 @@ struct CreateNote: View {
         viewModel.createNote(text: text)
     }
     
-}
-
-#Preview {
-    CreateScreen(createScreenType: .card)
 }

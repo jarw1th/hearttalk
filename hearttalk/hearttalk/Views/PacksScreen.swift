@@ -8,8 +8,11 @@ struct PacksScreen: View {
     let cardPack: CardPack?
     
     @State private var isShowSettings: Bool = false
+    @State private var isShowAgeAlert: Bool = false
     
     @State private var selectedCardType: CardType?
+    @State private var selectedNameCardType: CardType?
+    @State private var selectedDescCardType: CardType?
     
     var body: some View {
         NavigationView {
@@ -24,6 +27,27 @@ struct PacksScreen: View {
         .sheet(isPresented: $isShowSettings) {
             AboutApp()
                 .environmentObject(viewModel)
+        }
+        .sheet(item: $selectedNameCardType) { cardType in
+            ChangeTextScreen(text: Binding(get: {
+                cardType.name
+            }, set: {
+                let ct = CardType(id: cardType.id, name: $0, text: cardType.text)
+                viewModel.updateType(ct)
+            }))
+        }
+        .sheet(item: $selectedDescCardType) { cardType in
+            ChangeTextScreen(text: Binding(get: {
+                cardType.text
+            }, set: {
+                let ct = CardType(id: cardType.id, name: cardType.name, text: $0)
+                viewModel.updateType(ct)
+            }))
+        }
+        .alert(isPresented: $isShowAgeAlert) {
+            Alert(title: Text(Localization.adultAlertTitle), message: Text(Localization.adultAlertMessage), primaryButton: .default(Text(Localization.confirm), action: {
+                UserDefaultsManager.shared.isShowAgeAlert = false
+            }), secondaryButton: .cancel(Text(Localization.cancel), action: {}))
         }
     }
     
@@ -49,23 +73,45 @@ struct PacksScreen: View {
         VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32) {
             ScrollView(.vertical, showsIndicators: false) {
                 LazyVStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
-                    if viewModel.isShowAd {
-                        BannerAdView(adUnitID: viewModel.remoteConfigManager.appData?.packsScreenAdId ?? "")
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 160)
-                            .cornerRadius(20)
-                    }
-                    
                     ForEach(viewModel.cardTypes) { cardType in
                         Button(action: {
-                            HapticManager.shared.triggerHapticFeedback(.light)
-                            SoundManager.shared.sound(.click1)
-                            selectedCardType = cardType
+                            if cardType.isAdult && UserDefaultsManager.shared.isShowAgeAlert {
+                                isShowAgeAlert.toggle()
+                            } else {
+                                HapticManager.shared.triggerHapticFeedback(.light)
+                                SoundManager.shared.sound(.click1)
+                                selectedCardType = cardType
+                            }
                         }) {
                             HomePack(HomeCardProperties(color: Color(hex: cardType.color),
                                                         header: cardType.name,
                                                         text: cardType.cards.count == 0 ? Localization.empty : "\(cardType.cards.count) \(cardType.cards.count > 1 ? Localization.cards : Localization.card)",
                                                         description: cardType.text))
+                        }
+                        .contextMenu {
+                            if cardType.isCustom {
+                                Button {
+                                    HapticManager.shared.triggerHapticFeedback(.light)
+                                    SoundManager.shared.sound(.click1)
+                                    viewModel.deleteType(cardType: cardType)
+                                } label: {
+                                    Text("Delete")
+                                }
+                                Button {
+                                    HapticManager.shared.triggerHapticFeedback(.light)
+                                    SoundManager.shared.sound(.click1)
+                                    selectedNameCardType = cardType
+                                } label: {
+                                    Text("Change name")
+                                }
+                                Button {
+                                    HapticManager.shared.triggerHapticFeedback(.light)
+                                    SoundManager.shared.sound(.click1)
+                                    selectedDescCardType = cardType
+                                } label: {
+                                    Text("Change description")
+                                }
+                            }
                         }
                         .background(
                             NavigationLink(
@@ -110,8 +156,4 @@ struct PacksScreen: View {
         }
     }
     
-}
-
-#Preview {
-    HomeScreen()
 }

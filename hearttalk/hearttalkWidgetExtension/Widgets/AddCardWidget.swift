@@ -33,7 +33,6 @@ struct AddCardWidget: View {
                             .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 48 : 64, height: UIDevice.current.userInterfaceIdiom == .phone ? 48 : 64)
                     }
                     .padding()
-                    .background(.darkGreen)
                     .cornerRadius(10)
                 }
             } else {
@@ -45,7 +44,6 @@ struct AddCardWidget: View {
                         .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 48 : 64, height: UIDevice.current.userInterfaceIdiom == .phone ? 48 : 64)
                 }
                 .padding()
-                .background(.darkGreen)
                 .cornerRadius(10)
             }
         }

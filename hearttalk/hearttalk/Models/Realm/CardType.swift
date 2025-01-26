@@ -9,6 +9,7 @@ class CardType: Object, Identifiable {
     @Persisted var color: String
     @Persisted var language: String = "none"
     @Persisted var isCustom: Bool
+    @Persisted var isAdult: Bool
     @Persisted var isFavorite: Bool
     @Persisted var cards: List<Card>
     @Persisted(originProperty: "cardTypes") var parentCardPack: LinkingObjects<CardPack>

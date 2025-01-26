@@ -202,7 +202,3 @@ struct AboutApp: View {
     }
     
 }
-
-#Preview {
-    AboutApp()
-}

@@ -172,3 +172,34 @@ struct AddHomeCard: View {
     }
     
 }
+
+struct OnlineHomeCard: View {
+    
+    let tapAction: () -> Void
+    
+    var body: some View {
+        makeContent()
+    }
+    
+    private func makeContent() -> some View {
+        Button {
+            HapticManager.shared.triggerHapticFeedback(.light)
+            SoundManager.shared.sound(.click1)
+            tapAction()
+        } label: {
+            ZStack {
+                RoundedRectangle(cornerRadius: 20)
+                    .stroke(.darkWhite, lineWidth: 2)
+                
+                Text("Online")
+                    .font(.custom("PlayfairDisplay-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32))
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(.darkWhite)
+                    .frame(maxWidth: .infinity, alignment: .center)
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 160)
+        }
+    }
+    
+}

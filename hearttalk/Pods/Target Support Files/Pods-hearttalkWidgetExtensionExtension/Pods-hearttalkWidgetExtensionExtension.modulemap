@@ -1,0 +1,6 @@
+framework module Pods_hearttalkWidgetExtensionExtension {
+  umbrella header "Pods-hearttalkWidgetExtensionExtension-umbrella.h"
+
+  export *
+  module * { export * }
+}

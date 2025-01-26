@@ -1,6 +1,5 @@
 
 import SwiftUI
-import YandexMobileAds
 import FirebaseCore
 
 @main
@@ -13,7 +12,6 @@ struct ProjectApp: App {
     
     init() {
         FirebaseApp.configure()
-        MobileAds.initializeSDK()
     }
     
     var body: some Scene {

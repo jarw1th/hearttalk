@@ -14,9 +14,9 @@ class Card: Object, Identifiable {
     @Persisted var answer: String
     @Persisted var notes: List<Note>
     @Persisted var language: String = "none"
-    @Persisted var isCustom: Bool
+    @Persisted var creator: String = "ht"
     @Persisted var isFlipCard: Bool
-    @Persisted(originProperty: "cards") var parentCardType: LinkingObjects<CardType>
+    @Persisted(originProperty: "cards") var parentPack: LinkingObjects<Pack>
     
     convenience init(id: String, question: String) {
         self.init()

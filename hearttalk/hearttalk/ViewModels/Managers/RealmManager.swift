@@ -93,23 +93,12 @@ final class RealmManager {
     
     // MARK: - Custom
     
-    func getAllCardPacks() -> Results<CardPack> {
-        return realm.objects(CardPack.self)
+    func getAllPacks() -> Results<Pack> {
+        return realm.objects(Pack.self)
     }
     
-    func getAllCardTypes() -> Results<CardType> {
-        return realm.objects(CardType.self)
-    }
-    
-    func getCardTypes(forCardPackId cardPackId: String) -> List<CardType>? {
-        guard let cardPack = realm.object(ofType: CardPack.self, forPrimaryKey: cardPackId) else {
-            return nil
-        }
-        return cardPack.cardTypes
-    }
-    
-    func getCards(forCardTypeId cardTypeId: String) -> List<Card>? {
-        guard let cardType = realm.object(ofType: CardType.self, forPrimaryKey: cardTypeId) else {
+    func getCards(forPackId packId: String) -> List<Card>? {
+        guard let cardType = realm.object(ofType: Pack.self, forPrimaryKey: packId) else {
             return nil
         }
         return cardType.cards
@@ -122,24 +111,12 @@ final class RealmManager {
         return card.notes
     }
     
-    func getCardPack(forId id: String) -> CardPack? {
-        return realm.object(ofType: CardPack.self, forPrimaryKey: id)
+    func getPack(forId id: String) -> Pack? {
+        return realm.object(ofType: Pack.self, forPrimaryKey: id)
     }
     
-    func getCardPack(forName name: String) -> CardPack? {
-        return realm.objects(CardPack.self).filter("name == %@", name).first
-    }
-    
-    func getCustomCardPack(with lang: String) -> CardPack? {
-        return realm.objects(CardPack.self).filter("isCustom == %@", true).filter("language == %@", lang).first
-    }
-    
-    func getCardType(forId id: String) -> CardType? {
-        return realm.object(ofType: CardType.self, forPrimaryKey: id)
-    }
-    
-    func getCardType(forName name: String) -> CardType? {
-        return realm.objects(CardType.self).filter("name == %@", name).first
+    func getPack(forName name: String) -> Pack? {
+        return realm.objects(Pack.self).filter("name == %@", name).first
     }
     
     func getCard(forId id: String) -> Card? {

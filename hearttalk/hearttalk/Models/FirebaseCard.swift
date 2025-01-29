@@ -8,10 +8,10 @@
 struct FirebasePack: Identifiable {
     
     var id: String
-    var pack: CardType
+    var pack: Pack
     var tags: [String]
     
-    init(pack: CardType, tags: [String]) {
+    init(pack: Pack, tags: [String]) {
         self.id = pack.id
         self.pack = pack
         self.tags = tags

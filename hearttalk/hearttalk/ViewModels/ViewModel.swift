@@ -14,9 +14,9 @@ final class ViewModel: ObservableObject {
     private var textFileManager: TextFileManager
     private(set) var remoteConfigManager: RemoteConfigManager = RemoteConfigManager()
     
-    @Published var myCardTypes: [CardType] = []
-    @Published var cardTypes: [CardType] = []
-    @Published var cardPacks: [CardPack] = []
+    @Published var myPacks: [Pack] = []
+    @Published var htPacks: [Pack] = []
+    @Published var quizPacks: [Pack] = []
     @Published var cards: [Card] = []
     @Published var notes: [Note] = []
     @Published var cardIndex: Int = 0 {
@@ -26,10 +26,12 @@ final class ViewModel: ObservableObject {
     }
     @Published var noteIndex: Int = 0 
     @Published var isCardFavorite: Bool = false
-    @Published var favoriteType: CardType?
-    @Published var selectedSavingType: CardType?
+    @Published var favoriteType: Pack?
+    @Published var selectedSavingType: Pack?
     @Published var dailyCard: DailyCard?
     @Published var dailyOriginalCard: Card?
+    @Published var selectedCards: [Card] = []
+    @Published var selectedNotes: [Note] = []
     
     private(set) var isShowAd: Bool = (Locale.current.regionCode == "RU")
     
@@ -47,7 +49,7 @@ final class ViewModel: ObservableObject {
             } else {
                 self.fetchAll()
                 self.getDailyCard()
-                if self.cardTypes.isEmpty {
+                if self.htPacks.isEmpty {
                     self.realmManager.deleteAll()
                     self.textFileManager.parseCards {
                         self.fetchAll()
@@ -59,39 +61,20 @@ final class ViewModel: ObservableObject {
     }
     
     func fetchAll() {
-        self.cardTypes = []
-        self.myCardTypes = []
         self.favoriteType = nil
         self.selectedSavingType = nil
-        let cardTypesResults = self.realmManager.getAllCardTypes()
+        let packsResults = self.realmManager.getAllPacks()
         
         let lang = userDefaultsManager.appleLanguage
-        fetchAllCardPacks(lang)
-        self.cardTypes = Array(cardTypesResults).filter { $0.language == lang || $0.language == "none" }
-        self.myCardTypes = Array(cardTypesResults).filter { $0.isCustom && $0.language == lang }
-        self.favoriteType = cardTypes.filter({ $0.isFavorite }).first
-        self.selectedSavingType = cardTypes.filter({ $0.isCustom }).first
+        self.htPacks = Array(packsResults).filter { ($0.language == lang || $0.language == "none") && $0.creator == "ht" }.sorted(by: { $0.name > $1.name })
+        self.myPacks = Array(packsResults).filter { ($0.language == lang || $0.language == "none") && $0.creator == "me" }.sorted(by: { $0.name > $1.name })
+        self.quizPacks = Array(packsResults).filter { ($0.language == lang || $0.language == "none") && $0.creator == "htq" }.sorted(by: { $0.name > $1.name })
+        self.favoriteType = Array(packsResults).filter { ($0.language == lang || $0.language == "none") && $0.isFavorite }.first
+        self.selectedSavingType = myPacks.first
     }
     
-    func fetchAllCardPacks(_ lang: String) {
-        self.cardPacks = []
-        let cardPacksResults = self.realmManager.getAllCardPacks()
-        
-        self.cardPacks = Array(cardPacksResults).filter { !$0.isFavorite && ($0.language == lang || $0.language == "none") }
-    }
-    
-    func fetchAllCardTypes(forCardPackId cardPackId: String) {
-        if let cardTypesList = self.realmManager.getCardTypes(forCardPackId: cardPackId) {
-            let lang = userDefaultsManager.appleLanguage
-            self.cardTypes = Array(cardTypesList).filter { $0.language == lang || $0.language == "none" }
-            self.myCardTypes = Array(self.realmManager.getAllCardTypes()).filter { $0.isCustom && $0.language == lang }
-        } else {
-            self.cardTypes = []
-        }
-    }
-    
-    func fetchCards(forCardTypeId cardTypeId: String) {
-        if let cardsList = self.realmManager.getCards(forCardTypeId: cardTypeId) {
+    func fetchCards(forPackId packId: String) {
+        if let cardsList = self.realmManager.getCards(forPackId: packId) {
             self.cards = Array(cardsList)
         } else {
             self.cards = []
@@ -106,30 +89,36 @@ final class ViewModel: ObservableObject {
         }
     }
     
-    func createType(name: String, color: String, description: String, cardQuestions: [String]) {
+    func createPack(name: String, color: String, description: String, cardQuestions: [String]) {
         let lang = userDefaultsManager.appleLanguage
-        if let createdPackId = realmManager.getCustomCardPack(with: lang)?.id,
-           let createdPack = realmManager.getCardPack(forId: createdPackId) {
-            let cardType = CardType()
-            cardType.id = UUID().uuidString
-            cardType.name = name
-            cardType.color = color
-            cardType.text = description
-            cardType.language = lang
-            cardType.isCustom = true
+        let pack = Pack()
+        pack.id = UUID().uuidString
+        pack.name = name
+        pack.color = color
+        pack.text = description
+        pack.language = lang
+        pack.creator = "me"
+        pack.isCustom = true
+        
+        let cardObjects = cardQuestions.map { question -> Card in
+            let card = Card()
+            card.id = UUID().uuidString
+            card.question = question
+            return card
+        }
+        
+        pack.cards.append(objectsIn: cardObjects)
             
-            let cardObjects = cardQuestions.map { question -> Card in
-                let card = Card()
-                card.id = UUID().uuidString
-                card.question = question
-                return card
-            }
-            
-            cardType.cards.append(objectsIn: cardObjects)
-                
-            realmManager.update {
-                createdPack.cardTypes.append(cardType)
-            }
+        realmManager.add(pack)
+        
+        DispatchQueue.main.async {
+            self.fetchAll()
+        }
+    }
+    
+    func deletePack(_ pack: Pack) {
+        if let packInstance = self.realmManager.getPack(forId: pack.id) {
+            self.realmManager.delete(packInstance)
             
             DispatchQueue.main.async {
                 self.fetchAll()
@@ -137,37 +126,29 @@ final class ViewModel: ObservableObject {
         }
     }
     
-    func deleteType(cardType: CardType) {
-        if cardType.isCustom,
-           let cardInstance = self.realmManager.getCardType(forId: cardType.id) {
-            self.realmManager.delete(cardInstance)
-            
-            if let index = cardTypes.firstIndex(of: cardType) {
-                cards.remove(at: index)
-            }
-        }
-    }
-    
-    func updateType(_ newCardType: CardType) {
-        if newCardType.isCustom,
-           let cardInstance = self.realmManager.getCardType(forId: newCardType.id) {
+    func updatePack(_ newPack: Pack) {
+        if let packInstance = self.realmManager.getPack(forId: newPack.id) {
             self.realmManager.update {
-                cardInstance.name = newCardType.name
-                cardInstance.text = newCardType.text
+                packInstance.name = newPack.name
+                packInstance.text = newPack.text
             }
         }
     }
     
-    func createCard(question: String) {
+    func createCard(question: String, answer: String, isFlipCard: Bool) {
         if let selectedSavingType = selectedSavingType,
-           let savingType = self.realmManager.getCardType(forId: selectedSavingType.id) {
+           let savingPack = self.realmManager.getPack(forId: selectedSavingType.id) {
             let newCard = Card()
             newCard.id = UUID().uuidString
             newCard.question = question
-            newCard.isCustom = true
+            newCard.isFlipCard = isFlipCard
+            if isFlipCard {
+                newCard.answer = answer
+            }
+            newCard.creator = "me"
             
             self.realmManager.update {
-                savingType.cards.append(newCard)
+                savingPack.cards.append(newCard)
             }
             
             DispatchQueue.main.async {
@@ -176,41 +157,40 @@ final class ViewModel: ObservableObject {
         }
     }
     
-    func deleteCard(card: Card) {
-        if card.isCustom,
-           let cardInstance = self.realmManager.getCard(forId: card.id) {
+    func deleteCard(_ card: Card) {
+        if let cardInstance = self.realmManager.getCard(forId: card.id) {
             self.realmManager.delete(cardInstance)
             
-            if let index = cards.firstIndex(of: card) {
-                cards.remove(at: index)
+            DispatchQueue.main.async {
+                self.cards.removeAll(where: { $0 == card })
             }
         }
     }
     
-    func createNote(text: String) {
+    func createNote(text: String, image: UIImage?) {
         if cardIndex < cards.count,
-           let card = self.realmManager.getCard(forId: cards[cardIndex].id),
-           let cardType = cards[cardIndex].parentCardType.first {
+           let card = self.realmManager.getCard(forId: cards[cardIndex].id) {
             let newNote = Note()
             newNote.id = UUID().uuidString
             newNote.text = text
+            newNote.imageData = image?.jpegData(compressionQuality: 1.0)
             
             self.realmManager.update {
                 card.notes.append(newNote)
             }
             
             DispatchQueue.main.async {
-                self.fetchCards(forCardTypeId: cardType.id)
+                self.fetchNotes(forCardId: card.id)
             }
         }
     }
     
-    func deleteNote(note: Note) {
+    func deleteNote(_ note: Note) {
         if let cardInstance = self.realmManager.getNote(forId: note.id) {
             self.realmManager.delete(cardInstance)
             
-            if let index = notes.firstIndex(of: note) {
-                notes.remove(at: index)
+            DispatchQueue.main.async {
+                self.notes.removeAll(where: { $0 == note })
             }
         }
     }
@@ -242,7 +222,7 @@ final class ViewModel: ObservableObject {
     }
     
     func addCardToFavorites(_ card: Card) {
-        guard let favoritesCardType = realmManager.getCardType(forId: favoriteType?.id ?? "") else {
+        guard let favoritesCardType = realmManager.getPack(forId: favoriteType?.id ?? "") else {
             print("Error: 'Favorites' card type not found.")
             return
         }
@@ -264,17 +244,17 @@ final class ViewModel: ObservableObject {
         updateCardFavoriteStatus()
     }
     
-    func addCard(_ card: Card, to cardType: CardType) {
-        if let existingCard = cardType.cards.first(where: { $0.id == card.id }) {
+    func addCard(_ card: Card, to pack: Pack) {
+        if let existingCard = pack.cards.first(where: { $0.id == card.id }) {
             realmManager.update {
-                if let index = cardType.cards.firstIndex(of: existingCard) {
-                    cardType.cards.remove(at: index)
+                if let index = pack.cards.firstIndex(of: existingCard) {
+                    pack.cards.remove(at: index)
                 }
             }
             print("Card removed from Favorites.")
         } else {
             realmManager.update {
-                cardType.cards.append(card)
+                pack.cards.append(card)
             }
             print("Card added to Favorites.")
         }
@@ -283,7 +263,7 @@ final class ViewModel: ObservableObject {
     }
     
     func updateCardFavoriteStatus() {
-        guard let favoritesCardType = realmManager.getCardType(forId: favoriteType?.id ?? "") else {
+        guard let favoritesCardType = realmManager.getPack(forId: favoriteType?.id ?? "") else {
             print("Error: 'Favorites' card type not found.")
             isCardFavorite = false
             return
@@ -345,6 +325,41 @@ final class ViewModel: ObservableObject {
         } else {
             self.dailyCard = dailyCards.first
             self.dailyOriginalCard = realmManager.getCard(forId: dailyCard?.cardId ?? "")
+        }
+    }
+    
+    func deleteCards() {
+        guard !selectedCards.isEmpty else { return }
+        for card in selectedCards {
+            if let cardInstance = self.realmManager.getCard(forId: card.id) {
+                self.realmManager.delete(cardInstance)
+            }
+        }
+        DispatchQueue.main.async {
+            self.cards.removeAll(where: { self.selectedCards.contains($0) })
+            self.selectedCards = []
+        }
+    }
+    
+    func isSelected() -> Bool {
+        selectedCards == cards
+    }
+    
+    func shuffle() {
+        cards = cards.shuffled()
+    }
+    
+    func deleteNotes(for card: Card) {
+        guard !selectedNotes.isEmpty else { return }
+        for note in selectedNotes {
+            if let cardInstance = self.realmManager.getNote(forId: note.id) {
+                self.realmManager.delete(cardInstance)
+            }
+        }
+        
+        DispatchQueue.main.async {
+            self.notes.removeAll(where: { self.selectedNotes.contains($0) })
+            self.selectedNotes = []
         }
     }
     

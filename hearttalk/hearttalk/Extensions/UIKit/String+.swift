@@ -1,7 +1,11 @@
 
 import Foundation
 
-extension String {
+extension String: @retroactive Identifiable {
+    
+    public var id: String {
+        "\(self)"
+    }
     
     public static func localized(_ key: String, language: String? = nil) -> String {
         let language = language ?? Locale.preferredLanguages.first?.components(separatedBy: "-").first ?? "en"

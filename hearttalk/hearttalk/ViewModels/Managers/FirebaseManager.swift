@@ -65,29 +65,29 @@ final class FirebaseManager {
     }
     
     
-    func createPack(_ cardType: CardType, tags: [String], completion: ((Bool) -> Void)? = nil) {
+    func createPack(_ pack: Pack, tags: [String], completion: ((Bool) -> Void)? = nil) {
         guard let user else {
             completion?(false)
             return
         }
         let path = users.document(user.uid).collection(packKey)
-        checkExistence(path, id: cardType.id) { exists in
+        checkExistence(path, id: pack.id) { exists in
             guard !exists else {
                 completion?(false)
                 return
             }
             let data: [String: Any] = [
-                "id": cardType.id,
-                "name": cardType.name,
-                "description": cardType.text,
-                "color": cardType.color,
-                "language": cardType.language,
+                "id": pack.id,
+                "name": pack.name,
+                "description": pack.text,
+                "color": pack.color,
+                "language": pack.language,
                 "tags": tags,
                 "createdAt": Timestamp(date: Date()),
                 "lastModifiedAt": Timestamp(date: Date())
             ]
 
-            path.document(cardType.id).setData(data) { error in
+            path.document(pack.id).setData(data) { error in
                 if let error = error {
                     completion?(false)
                     print("Error creating document: \(error.localizedDescription)")
@@ -99,27 +99,27 @@ final class FirebaseManager {
         }
     }
     
-    func createQuestion(_ question: Card, for cardType: CardType, completion: ((Bool) -> Void)? = nil) {
+    func createQuestion(_ question: Card, for pack: Pack, completion: ((Bool) -> Void)? = nil) {
         guard let user else {
             completion?(false)
             return
         }
         let path = users.document(user.uid).collection(packKey)
-        checkExistence(path, id: cardType.id) { [weak self] exists in
+        checkExistence(path, id: pack.id) { [weak self] exists in
             guard exists, let self else {
                 completion?(false)
                 return
             }
             let data: [String: Any] = [
                 "id": question.id,
-                "packId": cardType.id,
+                "packId": pack.id,
                 "text": question.question,
                 "language": question.language,
                 "createdAt": Timestamp(date: Date()),
                 "lastModifiedAt": Timestamp(date: Date())
             ]
             
-            path.document(cardType.id).collection(contentKey).document(question.id).setData(data) { error in
+            path.document(pack.id).collection(contentKey).document(question.id).setData(data) { error in
                 if let error = error {
                     completion?(false)
                     print("Error creating document: \(error.localizedDescription)")
@@ -192,19 +192,19 @@ final class FirebaseManager {
         }
     }
     
-    func deleteQuestion(_ questionId: String, for cardType: CardType, completion: ((Bool) -> Void)? = nil) {
+    func deleteQuestion(_ questionId: String, for pack: Pack, completion: ((Bool) -> Void)? = nil) {
         guard let user else {
             completion?(false)
             return
         }
         let path = users.document(user.uid).collection(packKey)
-        checkExistence(path, id: cardType.id) { [weak self] exists in
+        checkExistence(path, id: pack.id) { [weak self] exists in
             guard exists, let self else {
                 completion?(false)
                 return
             }
             
-            path.document(cardType.id).collection(contentKey).document(questionId).delete { error in
+            path.document(pack.id).collection(contentKey).document(questionId).delete { error in
                 if let error = error {
                     completion?(false)
                     print("Error deleting document: \(error.localizedDescription)")
@@ -300,7 +300,7 @@ final class FirebaseManager {
                 let language = data["language"] as? String ?? "en"
                 let tags = data["tags"] as? [String] ?? []
                 
-                let pack = CardType(id: id, name: name, text: description)
+                let pack = Pack(id: id, name: name, text: description)
                 pack.color = color
                 pack.language = language
                 let firebasePack = FirebasePack(pack: pack, tags: tags)
@@ -310,10 +310,10 @@ final class FirebaseManager {
         }
     }
     
-    func fetchQuestions(_ userId: String? = nil, for cardType: CardType? = nil, completion: @escaping ([Card]) -> Void) {
+    func fetchQuestions(_ userId: String? = nil, for pack: Pack? = nil, completion: @escaping ([Card]) -> Void) {
         if let userId,
-           let cardType {
-            fetchQuestionsFor(userId, and: cardType.id, completion: completion)
+           let pack {
+            fetchQuestionsFor(userId, and: pack.id, completion: completion)
         } else if let userId {
             fetchQuestionsFor(userId, completion: completion)
         } else {

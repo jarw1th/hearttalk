@@ -16,44 +16,52 @@ final class OnlineViewModel: ObservableObject {
     @Published var questions: [Card] = []
     @Published var favorites: [Card] = []
     @Published var users: [FirebaseUser] = []
-    @Published var selectedSavingType: CardType?
+    @Published var selectedSavingType: Pack?
     
     init() {
         self.isSignedIn = firebaseManager.user != nil
     }
     
-    func fetchPacks(_ userId: String? = nil) {
+    private func fetchPacks(_ userId: String? = nil, completion: @escaping () -> Void) {
         packs = []
-        isLoading = true
         firebaseManager.fetchPacks(userId) { [weak self] packs in
             self?.packs = packs
-            self?.firebaseManager.fetchFavorites { favs in
-                self?.favorites = favs
-                self?.isLoading = false
-            }
+            completion()
         }
     }
     
-    func fetchQuestions(_ userId: String? = nil, for cardType: CardType? = nil) {
+    private func fetchQuestions(_ userId: String? = nil, for pack: Pack? = nil, completion: @escaping () -> Void) {
         questions = []
-        isLoading = true
-        firebaseManager.fetchQuestions(userId, for: cardType) { [weak self] questions in
+        firebaseManager.fetchQuestions(userId, for: pack) { [weak self] questions in
             self?.questions = questions
-            self?.firebaseManager.fetchFavorites { favs in
-                self?.favorites = favs
-                self?.isLoading = false
-            }
+            completion()
         }
     }
     
-    func fetchUsers() {
+    private func fetchUsers(completion: @escaping () -> Void) {
         users = []
-        isLoading = true
         firebaseManager.fetchAllUsers { [weak self] users in
             self?.users = users
-            self?.firebaseManager.fetchFavorites { favs in
-                self?.favorites = favs
-                self?.isLoading = false
+            completion()
+        }
+    }
+    
+    private func fetchFavorites(completion: @escaping () -> Void) {
+        firebaseManager.fetchFavorites { [weak self] favs in
+            self?.favorites = favs
+            completion()
+        }
+    }
+    
+    func fetchAll() {
+        isLoading = true
+        fetchQuestions { [weak self] in
+            self?.fetchPacks {
+                self?.fetchUsers {
+                    self?.fetchFavorites {
+                        self?.isLoading = false
+                    }
+                }
             }
         }
     }
@@ -82,8 +90,8 @@ final class OnlineViewModel: ObservableObject {
         firebaseManager.signOut()
     }
     
-    func createPack(_ cardType: CardType, tags: [String]) {
-        firebaseManager.createPack(cardType, tags: tags)
+    func createPack(_ pack: Pack, tags: [String]) {
+        firebaseManager.createPack(pack, tags: tags)
     }
     
     func createQuestion(_ question: Card) {
@@ -100,9 +108,9 @@ final class OnlineViewModel: ObservableObject {
         return FirebaseUser(id: id, email: email, displayName: displayName, photoURL: photoURL)
     }
     
-    func deletePack(_ cardType: CardType) {
+    func deletePack(_ pack: Pack) {
         isLoading = true
-        firebaseManager.deletePack(cardType.id) { [weak self] success in
+        firebaseManager.deletePack(pack.id) { [weak self] success in
             self?.isLoading = false
         }
     }

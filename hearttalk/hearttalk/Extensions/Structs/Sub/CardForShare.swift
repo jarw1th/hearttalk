@@ -11,7 +11,7 @@ struct CardForShare: View {
             VStack {
                 Spacer()
                 Text(question)
-                    .font(.custom("PlayfairDisplay-SemiBold", size: 20))
+                    .font(.custom("Poppins-SemiBold", size: 20))
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.lightBlack)
                     .padding(.horizontal, 48)
@@ -20,17 +20,16 @@ struct CardForShare: View {
             
             VStack {
                 Text("Heart Talk")
-                    .font(.custom("PlayfairDisplay-Regular", size: 16))
+                    .font(.custom("Poppins-Regular", size: 16))
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.lightBlack)
-                    .opacity(66)
                 Spacer()
             }
             .padding(.top, 24)
         }
         .frame(width: 300, height: 600)
         .background(
-            RoundedRectangle(cornerRadius: 20)
+            Rectangle()
                 .fill(.darkWhite)
         )
     }

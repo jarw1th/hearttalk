@@ -26,7 +26,7 @@ struct AddCardWidget: View {
             if let link = entry.link {
                 Link(destination: link) {
                     VStack {
-                        Image("plus")
+                        Image("add")
                             .renderingMode(.template)
                             .resizable()
                             .foregroundStyle(.darkWhite)
@@ -37,7 +37,7 @@ struct AddCardWidget: View {
                 }
             } else {
                 VStack {
-                    Image("plus")
+                    Image("add")
                         .renderingMode(.template)
                         .resizable()
                         .foregroundStyle(.darkWhite)
@@ -47,7 +47,7 @@ struct AddCardWidget: View {
                 .cornerRadius(10)
             }
         }
-        .widgetBackground(Color.darkGreen)
+        .widgetBackground(Color.lightBlack)
     }
     
 }

@@ -27,8 +27,8 @@ struct DailyCardWidget: View {
                 Link(destination: link) {
                     VStack {
                         Text(entry.text)
-                            .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 14 : 20))
-                            .foregroundColor(.lightBlack)
+                            .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 14 : 20))
+                            .foregroundColor(.darkWhite)
                             .multilineTextAlignment(.center)
                     }
                     .padding()
@@ -37,15 +37,15 @@ struct DailyCardWidget: View {
             } else {
                 VStack {
                     Text(entry.text)
-                        .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 14 : 20))
-                        .foregroundColor(.lightBlack)
+                        .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 14 : 20))
+                        .foregroundColor(.darkWhite)
                         .multilineTextAlignment(.center)
                 }
                 .padding()
                 .cornerRadius(10)
             }
         }
-        .widgetBackground(Color.darkWhite)
+        .widgetBackground(Color.lightBlack)
     }
     
 }

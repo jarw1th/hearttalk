@@ -4,20 +4,16 @@ import SwiftUI
 struct Questions: View {
     
     @EnvironmentObject var viewModel: ViewModel
-    @Environment(\.presentationMode) var presentationMode
-    let cardType: CardType?
-    let card: Card?
+    @Environment(\.dismiss) var dismiss
+    
+    var pack: Pack? = nil
+    var card: Card? = nil
     
     @State private var questionMode: QuestionMode = .cards
+    @State private var isEdit: Bool = false
     
-    @State private var isSwipeBack: Bool = false
-    @State private var isShowCreateNote: Bool = false
     @State private var isShowNotes: Bool = false
-    
-    init(cardType: CardType? = nil, card: Card? = nil) {
-        self.cardType = cardType
-        self.card = card
-    }
+    @State private var isShowChangeText: Bool = false
     
     var body: some View {
         makeContent()
@@ -25,27 +21,21 @@ struct Questions: View {
             .edgesIgnoringSafeArea(.bottom)
             .onAppear {
                 if let card = card {
-                    let cardType = card.parentCardType.first
-                    viewModel.fetchCards(forCardTypeId: cardType?.id ?? "")
+                    let pack = card.parentPack.first
+                    viewModel.fetchCards(forPackId: pack?.id ?? "")
                     viewModel.cardIndex = viewModel.cards.firstIndex(of: card) ?? 0
                 } else {
-                    viewModel.fetchCards(forCardTypeId: cardType?.id ?? "")
+                    viewModel.fetchCards(forPackId: pack?.id ?? "")
                     viewModel.cardIndex = 0
                 }
             }
-            .onTapGesture {
-                UserDefaultsManager.shared.isShowTip = false
-            }
-            .sheet(isPresented: $isShowCreateNote) {
-                CreateNote()
-                    .environmentObject(viewModel)
-            }
-            .sheet(isPresented: $isShowNotes) {
-                Notes(card: viewModel.cards[viewModel.cardIndex])
+            .fullScreenCover(isPresented: $isShowNotes) {
+                NotesScreen(card: viewModel.cards[viewModel.cardIndex])
                     .environmentObject(viewModel)
             }
     }
     
+    @ViewBuilder
     private func makeContent() -> some View {
         VStack {
             if questionMode == .list {
@@ -56,43 +46,70 @@ struct Questions: View {
         }
     }
     
+    @ViewBuilder
     private func makeCards() -> some View {
         ZStack {
-            VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32) {
-                ZStack {
-                    NavigationBar {
-                        Image(questionMode.imageName())
-                            .renderingMode(.template)
-                            .resizable()
-                            .foregroundStyle(.darkWhite)
-                            .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32, height: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
-                    } buttonAction: {
-                        questionMode.toggle()
+            VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 40 : 32) {
+                BackTopBar(text: pack?.name ?? "Pack", isEdit: isEdit, isSelected: viewModel.isSelected()) {
+                    if !viewModel.isSelected() {
+                        viewModel.selectedCards = viewModel.cards
+                    } else {
+                        viewModel.selectedCards = []
                     }
-                    
-                    HStack {
-                        if viewModel.cardIndex != 0 {
-                            Button {
-                                HapticManager.shared.triggerHapticFeedback(.soft)
-                                SoundManager.shared.sound(.card)
-                                isSwipeBack.toggle()
-                            } label: {
-                                Image("swipeBack")
-                                    .renderingMode(.template)
-                                    .resizable()
-                                    .foregroundStyle(.darkWhite)
-                                    .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32, height: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
-                            }
+                } deleteTapAction: {
+                    viewModel.deleteCards()
+                } optionButtons: {
+                    VStack {
+                        Button {
+                            HapticManager.shared.triggerHapticFeedback(.light)
+                            SoundManager.shared.sound(.click1)
+                            questionMode = .list
+                        } label: {
+                            Text("List")
                         }
-                        Spacer()
+                        Button {
+                            HapticManager.shared.triggerHapticFeedback(.light)
+                            SoundManager.shared.sound(.click1)
+                            viewModel.shuffle()
+                        } label: {
+                            Text("Shuffle")
+                        }
+                        Button(role: .destructive) {
+                            HapticManager.shared.triggerHapticFeedback(.light)
+                            SoundManager.shared.sound(.click1)
+                            if let pack {
+                                dismiss()
+                                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
+                                    viewModel.deletePack(pack)
+                                }
+                            }
+                        } label: {
+                            Text("Delete this pack")
+                        }
+                        Button(role: .destructive) {
+                            HapticManager.shared.triggerHapticFeedback(.light)
+                            SoundManager.shared.sound(.click1)
+                            if viewModel.cards.count > viewModel.cardIndex {
+                                viewModel.deleteCard(viewModel.cards[viewModel.cardIndex])
+                            }
+                        } label: {
+                            Text("Delete current card")
+                        }
+                    }
+                } closeTapAction: {
+                    if isEdit {
+                        isEdit = false
+                    } else {
+                        dismiss()
                     }
                 }
+                .padding(.vertical, 16)
                 .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
-                Spacer()
+                
                 ZStack(alignment: .bottom) {
-                    CardView(isSwipeBack: $isSwipeBack, isShowCreateNote: $isShowCreateNote, isShowNotes: $isShowNotes)
+                    CardView(isShowNotes: $isShowNotes)
                         .environmentObject(viewModel)
-                    makeBackButton()
+                    makeDescriptionButton()
                 }
             }
             .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 8 : 24)
@@ -100,30 +117,63 @@ struct Questions: View {
         }
     }
     
+    @ViewBuilder
     private func makeList() -> some View {
         VStack {
             if viewModel.cards.count == 0 {
                 ZStack {
-                    VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32) {
-                        NavigationBar {
-                            Image(questionMode.imageName())
-                                .renderingMode(.template)
-                                .resizable()
-                                .foregroundStyle(.darkWhite)
-                                .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32, height: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
-                        } buttonAction: {
-                            questionMode.toggle()
+                    BackTopBar(text: pack?.name ?? "Pack", isEdit: isEdit, isSelected: viewModel.isSelected()) {
+                        if !viewModel.isSelected() {
+                            viewModel.selectedCards = viewModel.cards
+                        } else {
+                            viewModel.selectedCards = []
                         }
-                        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
-                        Spacer()
-                        makeBackButton()
+                    } deleteTapAction: {
+                        viewModel.deleteCards()
+                    } optionButtons: {
+                        VStack {
+                            Button {
+                                HapticManager.shared.triggerHapticFeedback(.light)
+                                SoundManager.shared.sound(.click1)
+                                questionMode = .cards
+                            } label: {
+                                Text("Cards")
+                            }
+                            Button {
+                                HapticManager.shared.triggerHapticFeedback(.light)
+                                SoundManager.shared.sound(.click1)
+                                isShowChangeText.toggle()
+                            } label: {
+                                Text("Change question")
+                            }
+                            Button {
+                                HapticManager.shared.triggerHapticFeedback(.light)
+                                SoundManager.shared.sound(.click1)
+                                viewModel.shuffle()
+                            } label: {
+                                Text("Shuffle")
+                            }
+                            Button(role: .destructive) {
+                                HapticManager.shared.triggerHapticFeedback(.light)
+                                SoundManager.shared.sound(.click1)
+                                isEdit.toggle()
+                            } label: {
+                                Text("Delete")
+                            }
+                        }
+                    } closeTapAction: {
+                        if isEdit {
+                            isEdit = false
+                        } else {
+                            dismiss()
+                        }
                     }
-                    .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 8 : 24)
-                    .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 70 : 120)
+                    .padding(.vertical, 16)
+                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
                     
                     VStack {
                         Spacer()
-                        Text(Localization.thatIsAll)
+                        Text("Empty.")
                             .font(.custom("PlayfairDisplay-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32))
                             .multilineTextAlignment(.center)
                             .foregroundStyle(.darkWhite)
@@ -133,53 +183,86 @@ struct Questions: View {
                 }
             } else {
                 VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32) {
-                    NavigationBar {
-                        Image(questionMode.imageName())
-                            .renderingMode(.template)
-                            .resizable()
-                            .foregroundStyle(.darkWhite)
-                            .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32, height: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
-                    } buttonAction: {
-                        questionMode.toggle()
+                    BackTopBar(text: pack?.name ?? "Pack", isEdit: isEdit, isSelected: viewModel.isSelected()) {
+                        if !viewModel.isSelected() {
+                            viewModel.selectedCards = viewModel.cards
+                        } else {
+                            viewModel.selectedCards = []
+                        }
+                    } deleteTapAction: {
+                        viewModel.deleteCards()
+                    } optionButtons: {
+                        VStack {
+                            Button {
+                                HapticManager.shared.triggerHapticFeedback(.light)
+                                SoundManager.shared.sound(.click1)
+                                questionMode = .cards
+                            } label: {
+                                Text("Cards")
+                            }
+                            Button {
+                                HapticManager.shared.triggerHapticFeedback(.light)
+                                SoundManager.shared.sound(.click1)
+                                isShowChangeText.toggle()
+                            } label: {
+                                Text("Change question")
+                            }
+                            Button {
+                                HapticManager.shared.triggerHapticFeedback(.light)
+                                SoundManager.shared.sound(.click1)
+                                viewModel.shuffle()
+                            } label: {
+                                Text("Shuffle")
+                            }
+                            Button(role: .destructive) {
+                                HapticManager.shared.triggerHapticFeedback(.light)
+                                SoundManager.shared.sound(.click1)
+                                isEdit.toggle()
+                            } label: {
+                                Text("Delete")
+                            }
+                        }
+                    } closeTapAction: {
+                        if isEdit {
+                            isEdit = false
+                        } else {
+                            dismiss()
+                        }
                     }
-                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
+                    .padding(.vertical, 16)
                     
                     ScrollView(.vertical, showsIndicators: false) {
                         LazyVStack {
                             ForEach(Array(viewModel.cards.enumerated()), id: \.element.id) { index, card in
-                                ListItem(number: index + 1, question: card.question) {
-                                    viewModel.cardIndex = index
-                                    questionMode.toggle()
+                                CardsListItem(index: index, question: card.question, isSelected: isEdit ? viewModel.selectedCards.contains(card) : true) {
+                                    if isEdit {
+                                        if viewModel.selectedCards.contains(card) {
+                                            viewModel.selectedCards.removeAll(where: { $0 == card })
+                                        } else {
+                                            viewModel.selectedCards.append(card)
+                                        }
+                                    } else {
+                                        viewModel.cardIndex = index
+                                        questionMode.toggle()
+                                    }
                                 }
                             }
                         }
                         
                     }
-                    .clipShape(
-                        RoundedRectangle(cornerRadius: 20)
-                    )
-                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
-                
-                    makeBackButton()
                 }
-                .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 8 : 24)
-                .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 70 : 120)
+                .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
             }
         }
     }
     
-    private func makeBackButton() -> some View {
+    @ViewBuilder
+    private func makeDescriptionButton() -> some View {
         Button {
             HapticManager.shared.triggerHapticFeedback(.light)
             SoundManager.shared.sound(.click1)
-            presentationMode.wrappedValue.dismiss()
         } label: {
-            Text(Localization.goBack)
-                .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32))
-                .underline()
-                .multilineTextAlignment(.center)
-                .foregroundStyle(.darkWhite)
-                .opacity(66)
+            Icon(name: "upArrow")
         }
     }
     

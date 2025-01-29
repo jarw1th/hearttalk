@@ -14,14 +14,14 @@ struct LoadingScreen: View {
             .background(.lightBlack)
             .ignoresSafeArea()
             .preferredColorScheme(UserDefaultsManager.shared.isDarkMode ? .dark : .light)
-            .onChange(of: viewModel.cardPacks) { value in
+            .onChange(of: viewModel.htPacks) { value in
                 if !value.isEmpty {
-                    isShowNext.toggle()
+                    isShowNext = true
                 }
             }
             .onAppear {
-                if !viewModel.cardPacks.isEmpty {
-                    isShowNext.toggle()
+                if !viewModel.htPacks.isEmpty {
+                    isShowNext = true
                 }
             }
     }

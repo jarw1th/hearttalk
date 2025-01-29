@@ -28,32 +28,23 @@ struct SignScreen: View {
     }
     
     private func makeContent() -> some View {
-        VStack {
-            HStack {
-                Spacer()
-                makeBackButton()
+        VStack(spacing: 40) {
+            SingleBackTopBar(text: "Hear Talk") {
+                dismiss()
             }
-            VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48) {
-                if viewModel.isLoading {
-                    Spacer()
-                    LoadingView()
-                    Spacer()
-                } else {
-                    Text("Signing")
-                        .font(.custom("PlayfairDisplay-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48))
-                        .multilineTextAlignment(.leading)
-                        .foregroundStyle(.darkWhite)
-                        .frame(maxWidth: .infinity)
-                    FillField(placeholder: "Email", text: $email)
-                    FillField(placeholder: "Password", text: $password)
-                    Spacer()
-                    makeCreateButton()
+            .padding(.vertical, 16)
+            
+            VStack(spacing: 40) {
+                VStack(spacing: 16) {
+                    CustomTextField(placeholder: "Email", text: $email)
+                    CustomTextField(placeholder: "Password", text: $password)
                 }
+                Spacer()
+                makeCreateButton()
             }
         }
-        .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32)
+        .padding(.horizontal, 20)
         .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 70 : 120)
-        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
     }
     
     private func makeCreateButton() -> some View {
@@ -66,26 +57,12 @@ struct SignScreen: View {
                 isShowAlert.toggle()
             }
         } label: {
-            Text("Sign")
+            Text("Sign in")
                 .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32))
                 .underline()
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.darkWhite)
                 .opacity(66)
-        }
-    }
-    
-    private func makeBackButton() -> some View {
-        Button {
-            HapticManager.shared.triggerHapticFeedback(.light)
-            SoundManager.shared.sound(.click1)
-            dismiss()
-        } label: {
-            Image("cross")
-                .renderingMode(.template)
-                .resizable()
-                .foregroundStyle(.darkWhite)
-                .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48, height: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48)
         }
     }
     

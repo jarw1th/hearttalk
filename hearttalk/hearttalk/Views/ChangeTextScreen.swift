@@ -17,28 +17,25 @@ struct ChangeTextScreen: View {
             .edgesIgnoringSafeArea(.bottom)
     }
     
+    @ViewBuilder
     private func makeContent() -> some View {
-        VStack {
-            HStack {
-                Spacer()
-                makeBackButton()
+        VStack(spacing: 40) {
+            SingleBackTopBar(text: "Chage text") {
+                dismiss()
             }
-            VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48) {
-                Text("New value")
-                    .font(.custom("PlayfairDisplay-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48))
-                    .multilineTextAlignment(.leading)
-                    .foregroundStyle(.darkWhite)
-                    .frame(maxWidth: .infinity)
-                FillField(placeholder: "Value", text: $value)
+            .padding(.vertical, 16)
+            
+            VStack(spacing: 24) {
+                CustomTextField(placeholder: "Value", text: $value)
                 Spacer()
                 makeCreateButton()
             }
         }
-        .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32)
+        .padding(.horizontal, 20)
         .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 70 : 120)
-        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
     }
     
+    @ViewBuilder
     private func makeCreateButton() -> some View {
         Button {
             HapticManager.shared.triggerHapticFeedback(.light)
@@ -47,25 +44,10 @@ struct ChangeTextScreen: View {
             dismiss()
         } label: {
             Text("Change")
-                .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32))
+                .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32))
                 .underline()
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.darkWhite)
-                .opacity(66)
-        }
-    }
-    
-    private func makeBackButton() -> some View {
-        Button {
-            HapticManager.shared.triggerHapticFeedback(.light)
-            SoundManager.shared.sound(.click1)
-            dismiss()
-        } label: {
-            Image("cross")
-                .renderingMode(.template)
-                .resizable()
-                .foregroundStyle(.darkWhite)
-                .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48, height: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 48)
         }
     }
     

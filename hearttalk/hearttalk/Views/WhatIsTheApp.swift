@@ -3,10 +3,9 @@ import SwiftUI
 
 struct WhatIsTheApp: View {
     
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
     
     @State private var height: CGFloat = 0
-    @State private var isSwipeBack: Bool = false
     @State private var index: Int = 0
     
     var body: some View {
@@ -24,25 +23,8 @@ struct WhatIsTheApp: View {
     private func makeCards() -> some View {
         ZStack {
             VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32) {
-                ZStack {
-                    NavigationBar(buttonContent: {}, buttonAction: nil)
-                    
-                    HStack {
-                        if index != 0 {
-                            Button {
-                                HapticManager.shared.triggerHapticFeedback(.soft)
-                                SoundManager.shared.sound(.card)
-                                isSwipeBack.toggle()
-                            } label: {
-                                Image("swipeBack")
-                                    .renderingMode(.template)
-                                    .resizable()
-                                    .foregroundStyle(.darkWhite)
-                                    .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32, height: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
-                            }
-                        }
-                        Spacer()
-                    }
+                SingleBackTopBar(text: "What is Heart Talk?") {
+                    dismiss()
                 }
                 .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
                 Spacer()
@@ -54,33 +36,14 @@ struct WhatIsTheApp: View {
                                 }
                         }
                     )
-                makeBackButton()
             }
             .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 8 : 24)
             .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 70 : 120)
             
-            WhatIsCardView(isSwipeBack: $isSwipeBack, index: $index)
+            WhatIsCardView(index: $index)
                 .frame(height: height)
-        }
-    }
-    
-    private func makeBackButton() -> some View {
-        Button {
-            HapticManager.shared.triggerHapticFeedback(.light)
-            SoundManager.shared.sound(.click1)
-            presentationMode.wrappedValue.dismiss()
-        } label: {
-            Text(Localization.goBack)
-                .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32))
-                .underline()
-                .multilineTextAlignment(.center)
-                .foregroundStyle(.darkWhite)
-                .opacity(66)
         }
     }
     
 }
 
-#Preview {
-    WhatIsTheApp()
-}

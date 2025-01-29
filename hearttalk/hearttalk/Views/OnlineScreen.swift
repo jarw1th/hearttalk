@@ -9,43 +9,22 @@ struct OnlineScreen: View {
     @StateObject private var onlineViewModel: OnlineViewModel = OnlineViewModel()
     
     @State private var needsToSign: Bool = true
-    @State private var isShowProfile: Bool = false
+    @State private var isShowSettings: Bool = false
     @State private var isShowSignScreen: Bool = false
-    @State private var selectedType: OnlineSearchType = .cards
     @State private var searchText: String = ""
     
     var body: some View {
         NavigationView {
             makeContent()
                 .background(.lightBlack)
-                .onTapGesture {
-                    UIApplication.shared.endEditing()
-                }
-                .edgesIgnoringSafeArea(.bottom)
         }
         .onAppear {
             if onlineViewModel.isSignedIn {
-                onlineViewModel.fetchQuestions()
+                onlineViewModel.fetchAll()
             } else if needsToSign {
                 isShowSignScreen.toggle()
             } else {
                 dismiss()
-            }
-        }
-        .onChange(of: selectedType) { newValue in
-            switch newValue {
-            case .cards:
-                if onlineViewModel.questions.isEmpty {
-                    onlineViewModel.fetchQuestions()
-                }
-            case .accounts:
-                if onlineViewModel.users.isEmpty {
-                    onlineViewModel.fetchUsers()
-                }
-            case .packs:
-                if onlineViewModel.packs.isEmpty {
-                    onlineViewModel.fetchPacks()
-                }
             }
         }
         .onChange(of: needsToSign) { newValue in
@@ -58,124 +37,113 @@ struct OnlineScreen: View {
                 isShowSignScreen.toggle()
             }
         }
-        .sheet(isPresented: $isShowSignScreen) {
+        .fullScreenCover(isPresented: $isShowSignScreen) {
             SignScreen(needsToSign: $needsToSign)
                 .environmentObject(onlineViewModel)
         }
-        .sheet(isPresented: $isShowProfile) {
-            ProfileScreen()
+        .fullScreenCover(isPresented: $isShowSettings) {
+            Settings()
                 .environmentObject(onlineViewModel)
         }
     }
     
+    @ViewBuilder
     private func makeContent() -> some View {
-        VStack(spacing: 24) {
-            NavigationBar(text: "Heart Talk Online") {
-                Image("profile")
-                    .renderingMode(.template)
-                    .resizable()
-                    .foregroundStyle(.darkWhite)
-                    .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32, height: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
-            } buttonAction: {
-                isShowProfile.toggle()
+        VStack(spacing: 40) {
+            HomeTopBar(text: "Online") {
+                isShowSettings.toggle()
             }
-            .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
+            .padding(.vertical, 16)
+            .padding(.horizontal, 20)
             
-            if onlineViewModel.isLoading {
-                Spacer()
-//                LoadingView(isBig: false)
-                Spacer()
-            } else {
-                makeTools()
-                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
-            }
-            makeCenterView()
-        }
-        .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 8 : 24)
-    }
-    
-    private func makeTools() -> some View {
-        VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
-            OnlineSwitcher(selected: $selectedType)
-            FillField(placeholder: "Search...", text: $searchText)
-        }
-    }
-    
-    private func makeCenterView() -> some View {
-        VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32) {
-            if !onlineViewModel.isLoading {
-                switch selectedType {
-                case .cards:
-                    makeCardsFeed()
-                case .accounts:
-                    makeAccountsFeed()
-                case .packs:
-                    makePacksFeed()
-                }
-            }
+            SearchBar(placeholder: "Search...", text: $searchText)
             
-            makeBackButton()
-        }
-        .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 70 : 120)
-    }
-    
-    private func makeCardsFeed() -> some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-                ForEach(formatedCards()) { card in
-                    OnlinePreviewCard(card: card, isAdded: onlineViewModel.favorites.contains(card)) {
-                        if onlineViewModel.favorites.contains(card) {
-                            onlineViewModel.removeFromFavorites(card)
-                        } else {
-                            onlineViewModel.addToFavorites(card)
-                        }
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(spacing: 24) {
+                    makeSection("Cards") {
+                        makeCardsFeed()
+                    }
+                    makeSection("Packs") {
+                        makePacksFeed()
+                    }
+                    makeSection("Accounts") {
+                        makeAccountsFeed()
+                    }
+                    makeSection("My content", isCreatable: true) {
+                        makeMyFeed()
                     }
                 }
             }
+            .refreshable {
+                onlineViewModel.fetchAll()
+            }
         }
-        .refreshable {
-            onlineViewModel.fetchQuestions()
-        }
-        .clipShape(
-            RoundedRectangle(cornerRadius: 20)
-        )
-        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
     }
     
+    @ViewBuilder
+    private func makeMyFeed() -> some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            LazyHStack(spacing: 16) {
+                ForEach(formatedMyContent()) { pack in
+                   
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
     private func makePacksFeed() -> some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            LazyVStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
+        ScrollView(.horizontal, showsIndicators: false) {
+            LazyHStack(spacing: 16) {
                 ForEach(formatedPacks()) { pack in
-                    OnlinePack(OnlinePackProperties(color: Color(hex: pack.pack.color), header: pack.pack.name, description: pack.pack.text))
+                    Text("\(pack.id)")
                 }
             }
         }
-        .refreshable {
-            onlineViewModel.fetchPacks()
-        }
-        .clipShape(
-            RoundedRectangle(cornerRadius: 20)
-        )
-        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
     }
     
+    @ViewBuilder
+    private func makeCardsFeed() -> some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            LazyHStack(spacing: 16) {
+                ForEach(formatedCards()) { card in
+                    Text("\(card.id)")
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
     private func makeAccountsFeed() -> some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            LazyVStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
+        ScrollView(.horizontal, showsIndicators: false) {
+            LazyHStack(spacing: 16) {
                 ForEach(formatedUsers()) { user in
-                    OnlineAccountPreview(photoURL: user.photoURL, name: user.displayName) {
+                    Text("\(user.id)")
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private func makeSection<Content: View>(_ text: String, isCreatable: Bool = false, content: () -> Content) -> some View {
+        VStack(spacing: 16) {
+            HStack {
+                Text(text)
+                    .font(.custom("Poppins-Regular", size: 16))
+                    .multilineTextAlignment(.leading)
+                    .foregroundStyle(.darkWhite)
+                Spacer()
+                if isCreatable {
+                    Menu {
                         
+                    } label: {
+                        Icon(name: "add")
                     }
                 }
             }
+            .padding(.horizontal, 20)
+            content()
         }
-        .refreshable {
-            onlineViewModel.fetchUsers()
-        }
-        .clipShape(
-            RoundedRectangle(cornerRadius: 20)
-        )
-        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
     }
     
     private func formatedUsers() -> [FirebaseUser] {
@@ -202,19 +170,8 @@ struct OnlineScreen: View {
         }
     }
     
-    private func makeBackButton() -> some View {
-        Button {
-            HapticManager.shared.triggerHapticFeedback(.light)
-            SoundManager.shared.sound(.click1)
-            dismiss()
-        } label: {
-            Text(Localization.goBack)
-                .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32))
-                .underline()
-                .multilineTextAlignment(.center)
-                .foregroundStyle(.darkWhite)
-                .opacity(66)
-        }
+    private func formatedMyContent() -> [FirebasePack] {
+        return []
     }
     
 }

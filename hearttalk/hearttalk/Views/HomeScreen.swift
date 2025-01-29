@@ -11,11 +11,12 @@ struct HomeScreen: View {
     @State private var isShowCreatePack: Bool = false
     @State private var isShowDailyCard: Bool = false
     @State private var isShowGlobalAlert: Bool = false
-    @State private var isShowDailySettings: Bool = false
     @State private var isShowOnlineScreen: Bool = false
+    @State private var isShowAgeAlert: Bool = false
     
-    @State private var selectedCardPack: CardPack?
-    @State private var selectedCardType: CardType?
+    @State private var selectedPack: Pack?
+    @State private var selectedNamePack: Pack?
+    @State private var selectedDescPack: Pack?
     
     var body: some View {
         NavigationView {
@@ -33,25 +34,46 @@ struct HomeScreen: View {
                 }
             }
         }
-        .sheet(isPresented: $isShowSettings) {
-            AboutApp()
+        .fullScreenCover(isPresented: $isShowSettings) {
+            Settings()
                 .environmentObject(viewModel)
         }
-        .sheet(isPresented: $isShowDailySettings) {
-            Settings(isPresented: $isShowDailySettings)
+        .fullScreenCover(isPresented: $isShowCreateCard) {
+            CreateCardScreen()
                 .environmentObject(viewModel)
         }
-        .sheet(isPresented: $isShowCreateCard) {
-            CreateScreen(createScreenType: .card)
-                .environmentObject(viewModel)
-        }
-        .sheet(isPresented: $isShowCreatePack) {
-            CreateScreen(createScreenType: .pack)
+        .fullScreenCover(isPresented: $isShowCreatePack) {
+            CreatePackScreen()
                 .environmentObject(viewModel)
         }
         .fullScreenCover(isPresented: $isShowDailyCard) {
             Questions(card: viewModel.dailyOriginalCard)
                 .environmentObject(viewModel)
+        }
+        .fullScreenCover(isPresented: $isShowOnlineScreen) {
+            OnlineScreen()
+                .environmentObject(viewModel)
+        }
+        .fullScreenCover(item: $selectedNamePack) { pack in
+            ChangeTextScreen(text: Binding(get: {
+                pack.name
+            }, set: {
+                let p = Pack(id: pack.id, name: $0, text: pack.text)
+                viewModel.updatePack(p)
+            }))
+        }
+        .fullScreenCover(item: $selectedDescPack) { pack in
+            ChangeTextScreen(text: Binding(get: {
+                pack.text
+            }, set: {
+                let p = Pack(id: pack.id, name: pack.name, text: $0)
+                viewModel.updatePack(p)
+            }))
+        }
+        .alert(isPresented: $isShowAgeAlert) {
+            Alert(title: Text(Localization.adultAlertTitle), message: Text(Localization.adultAlertMessage), primaryButton: .default(Text(Localization.confirm), action: {
+                UserDefaultsManager.shared.isShowAgeAlert = false
+            }), secondaryButton: .cancel(Text(Localization.cancel), action: {}))
         }
         .onOpenURL { url in
             if url.scheme == "hearttalk" {
@@ -62,7 +84,9 @@ struct HomeScreen: View {
                     isShowDailyCard.toggle()
                 }
                 if url.host == "dailyTurningOn" {
-                    isShowDailySettings.toggle()
+                    if !isShowSettings {
+                        isShowSettings.toggle()
+                    }
                 }
             }
         }
@@ -71,113 +95,197 @@ struct HomeScreen: View {
         }
     }
     
+    @ViewBuilder
     private func makeContent() -> some View {
-        VStack(spacing: 24) {
-            NavigationBar {
-                Image("settings")
-                    .renderingMode(.template)
-                    .resizable()
-                    .foregroundStyle(.darkWhite)
-                    .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32, height: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
-            } buttonAction: {
+        VStack(spacing: 40) {
+            HomeTopBar(text: "Home") {
                 isShowSettings.toggle()
             }
-            .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
+            .padding(.vertical, 16)
+            .padding(.horizontal, 20)
             
-            makeFeed()
-        }
-        .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 8 : 24)
-    }
-    
-    private func makeFeed() -> some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            LazyVStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
-                LazyVStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24) {
-                    ForEach(viewModel.cardPacks) { cardPack in
-                        Button(action: {
-                            if cardPack.cardTypes.count != 0 {
-                                HapticManager.shared.triggerHapticFeedback(.light)
-                                SoundManager.shared.sound(.click1)
-                                selectedCardPack = cardPack
-                            }
-                        }) {
-                            HomeCard(HomeCardProperties(color: Color(hex: cardPack.color),
-                                                        header: cardPack.name,
-                                                        text: cardPack.cardTypes.count == 0 ? Localization.empty : "\(cardPack.cardTypes.count) \(cardPack.cardTypes.count > 1 ? Localization.packs : Localization.pack)"))
-                        }
-                        .background {
-                            NavigationLink(
-                                destination: PacksScreen(cardPack: selectedCardPack)
-                                    .environmentObject(viewModel)
-                                    .navigationBarHidden(true),
-                                isActive: Binding(
-                                    get: { selectedCardPack == cardPack },
-                                    set: { isActive in
-                                        if !isActive { selectedCardPack = nil }
-                                    }
-                                )
-                            ) {
-                                EmptyView()
-                            }
-                        }
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(spacing: 24) {
+                    makeSection("My content", isCreatable: true) {
+                        makeMyFeed()
                     }
-                }
-                
-                if let favoriteType = viewModel.favoriteType {
-                    Button(action: {
-                        HapticManager.shared.triggerHapticFeedback(.light)
-                        SoundManager.shared.sound(.click1)
-                        selectedCardType = favoriteType
-                    }) {
-                        HomeCard(HomeCardProperties(color: Color(hex: favoriteType.color),
-                                                    header: favoriteType.name,
-                                                    text: favoriteType.cards.count == 0 ? Localization.empty : "\(favoriteType.cards.count) \(favoriteType.cards.count ?? 0 > 1 ? Localization.cards : Localization.card)"))
+                    makeSection("Our choice") {
+                        makeHTFeed()
                     }
-                    .background {
-                        NavigationLink(
-                            destination: Questions(cardType: favoriteType)
-                                .environmentObject(viewModel)
-                                .navigationBarHidden(true),
-                            isActive: Binding(
-                                get: { selectedCardType == favoriteType },
-                                set: { isActive in
-                                    if !isActive { selectedCardType = nil }
-                                }
-                            )
-                        ) {
-                            EmptyView()
-                        }
-                    }
-                }
-                
-                OnlineHomeCard {
-                    isShowOnlineScreen.toggle()
-                }
-                .background {
-                    NavigationLink(
-                        destination: OnlineScreen()
-                            .environmentObject(viewModel)
-                            .navigationBarHidden(true),
-                        isActive: $isShowOnlineScreen
-                    ) {
-                        EmptyView()
-                    }
-                }
-                
-                AddHomeCard { type in
-                    switch type {
-                    case .pack:
-                        isShowCreatePack.toggle()
-                    case .card:
-                        isShowCreateCard.toggle()
+                    makeSection("Flip cards") {
+                        makeQuizFeed()
                     }
                 }
             }
         }
-        .clipShape(
-            RoundedRectangle(cornerRadius: 20)
-        )
-        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
+    }
+    
+    @ViewBuilder
+    private func makeMyFeed() -> some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            LazyHStack(spacing: 16) {
+                ForEach(viewModel.myPacks) { pack in
+                    Button {
+                        HapticManager.shared.triggerHapticFeedback(.light)
+                        SoundManager.shared.sound(.click1)
+                        if pack.isAdult && UserDefaultsManager.shared.isShowAgeAlert {
+                            isShowAgeAlert.toggle()
+                        } else {
+                            HapticManager.shared.triggerHapticFeedback(.light)
+                            SoundManager.shared.sound(.click1)
+                            selectedPack = pack
+                        }
+                    } label: {
+                        PackView(color: pack.color, name: pack.name, numberOfCards: pack.cards.count)
+                    }
+                    .contextMenu {
+                        Button(role: .destructive) {
+                            HapticManager.shared.triggerHapticFeedback(.light)
+                            SoundManager.shared.sound(.click1)
+                            viewModel.deletePack(pack)
+                        } label: {
+                            Text("Delete")
+                        }
+                        Button {
+                            HapticManager.shared.triggerHapticFeedback(.light)
+                            SoundManager.shared.sound(.click1)
+                            selectedNamePack = pack
+                        } label: {
+                            Text("Change name")
+                        }
+                        Button {
+                            HapticManager.shared.triggerHapticFeedback(.light)
+                            SoundManager.shared.sound(.click1)
+                            selectedDescPack = pack
+                        } label: {
+                            Text("Change description")
+                        }
+                    }
+                    .fullScreenCover(item: $selectedPack) { pack in
+                        Questions(pack: selectedPack ?? pack)
+                            .environmentObject(viewModel)
+                            .navigationBarHidden(true)
+                    }
+                }
+            }
+            .padding(.leading, 20)
+        }
+    }
+    
+    @ViewBuilder
+    private func makeHTFeed() -> some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            LazyHStack(spacing: 16) {
+                ForEach(viewModel.htPacks) { pack in
+                    Button {
+                        selectedPack = pack
+                    } label: {
+                        PackView(color: pack.color, name: pack.name, numberOfCards: pack.cards.count)
+                    }
+                    .contextMenu {
+                        Button(role: .destructive) {
+                            HapticManager.shared.triggerHapticFeedback(.light)
+                            SoundManager.shared.sound(.click1)
+                            viewModel.deletePack(pack)
+                        } label: {
+                            Text("Delete")
+                        }
+                        Button {
+                            HapticManager.shared.triggerHapticFeedback(.light)
+                            SoundManager.shared.sound(.click1)
+                            selectedNamePack = pack
+                        } label: {
+                            Text("Change name")
+                        }
+                        Button {
+                            HapticManager.shared.triggerHapticFeedback(.light)
+                            SoundManager.shared.sound(.click1)
+                            selectedDescPack = pack
+                        } label: {
+                            Text("Change description")
+                        }
+                    }
+                    .fullScreenCover(item: $selectedPack) { pack in
+                        Questions(pack: selectedPack ?? pack)
+                            .environmentObject(viewModel)
+                            .navigationBarHidden(true)
+                    }
+                }
+            }
+            .padding(.leading, 20)
+        }
+    }
+    
+    @ViewBuilder
+    private func makeQuizFeed() -> some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            LazyHStack(spacing: 16) {
+                ForEach(viewModel.quizPacks) { pack in
+                    Button {
+                        selectedPack = pack
+                    } label: {
+                        PackView(color: pack.color, name: pack.name, numberOfCards: pack.cards.count)
+                    }
+                    .contextMenu {
+                        Button(role: .destructive) {
+                            HapticManager.shared.triggerHapticFeedback(.light)
+                            SoundManager.shared.sound(.click1)
+                            viewModel.deletePack(pack)
+                        } label: {
+                            Text("Delete")
+                        }
+                        Button {
+                            HapticManager.shared.triggerHapticFeedback(.light)
+                            SoundManager.shared.sound(.click1)
+                            selectedNamePack = pack
+                        } label: {
+                            Text("Change name")
+                        }
+                        Button {
+                            HapticManager.shared.triggerHapticFeedback(.light)
+                            SoundManager.shared.sound(.click1)
+                            selectedDescPack = pack
+                        } label: {
+                            Text("Change description")
+                        }
+                    }
+                    .fullScreenCover(item: $selectedPack) { pack in
+                        Questions(pack: selectedPack ?? pack)
+                            .environmentObject(viewModel)
+                            .navigationBarHidden(true)
+                    }
+                }
+            }
+            .padding(.leading, 20)
+        }
+    }
+    
+    @ViewBuilder
+    private func makeSection<Content: View>(_ text: String, isCreatable: Bool = false, content: () -> Content) -> some View {
+        VStack(spacing: 16) {
+            HStack {
+                Text(text)
+                    .font(.custom("Poppins-Regular", size: 16))
+                    .multilineTextAlignment(.leading)
+                    .foregroundStyle(.darkWhite)
+                Spacer()
+                if isCreatable {
+                    Menu {
+                        Button("Add card") {
+                            isShowCreateCard.toggle()
+                        }
+                        Button("Add pack") {
+                            isShowCreatePack.toggle()
+                        }
+                    } label: {
+                        Icon(name: "add")
+                    }
+                }
+            }
+            .padding(.horizontal, 20)
+            content()
+                .frame(height: 140)
+        }
     }
     
 }

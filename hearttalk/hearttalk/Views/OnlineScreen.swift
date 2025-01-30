@@ -4,62 +4,48 @@ import SwiftUI
 struct OnlineScreen: View {
     
     @EnvironmentObject var viewModel: ViewModel
+    @EnvironmentObject var onlineViewModel: OnlineViewModel
     @Environment(\.dismiss) var dismiss
     
-    @StateObject private var onlineViewModel: OnlineViewModel = OnlineViewModel()
-    
-    @State private var needsToSign: Bool = true
-    @State private var isShowSettings: Bool = false
+    @State private var isShowCreateCard: Bool = false
+    @State private var isShowCreatePack: Bool = false
     @State private var isShowSignScreen: Bool = false
     @State private var searchText: String = ""
     
     var body: some View {
-        NavigationView {
-            makeContent()
-                .background(.lightBlack)
-        }
-        .onAppear {
-            if onlineViewModel.isSignedIn {
-                onlineViewModel.fetchAll()
-            } else if needsToSign {
-                isShowSignScreen.toggle()
-            } else {
-                dismiss()
+        makeContent()
+            .background(.lightBlack)
+            .onAppear {
+                if onlineViewModel.isSignedIn {
+                    onlineViewModel.fetchAll()
+                }
             }
-        }
-        .onChange(of: needsToSign) { newValue in
-            if newValue {
-                dismiss()
+            .onChange(of: onlineViewModel.isSignedIn) { newValue in
+                if !newValue {
+                    isShowSignScreen.toggle()
+                }
             }
-        }
-        .onChange(of: onlineViewModel.isSignedIn) { newValue in
-            if !newValue {
-                isShowSignScreen.toggle()
+            .fullScreenCover(isPresented: $isShowCreateCard) {
+                OnlineCreateCardScreen()
+                    .environmentObject(onlineViewModel)
             }
-        }
-        .fullScreenCover(isPresented: $isShowSignScreen) {
-            SignScreen(needsToSign: $needsToSign)
-                .environmentObject(onlineViewModel)
-        }
-        .fullScreenCover(isPresented: $isShowSettings) {
-            Settings()
-                .environmentObject(onlineViewModel)
-        }
+            .fullScreenCover(isPresented: $isShowCreatePack) {
+                OnlineCreatePackScreen()
+                    .environmentObject(onlineViewModel)
+            }
     }
     
     @ViewBuilder
     private func makeContent() -> some View {
-        VStack(spacing: 40) {
-            HomeTopBar(text: "Online") {
-                isShowSettings.toggle()
-            }
-            .padding(.vertical, 16)
-            .padding(.horizontal, 20)
-            
-            SearchBar(placeholder: "Search...", text: $searchText)
-            
-            ScrollView(.vertical, showsIndicators: false) {
+        if onlineViewModel.isSignedIn {
+            VStack(spacing: 40) {
+                SearchBar(placeholder: "Search...", text: $searchText)
+                    .padding(.horizontal, 20)
+                
                 VStack(spacing: 24) {
+                    makeSection("Online content", isCreatable: true) {
+                        makeMyFeed()
+                    }
                     makeSection("Cards") {
                         makeCardsFeed()
                     }
@@ -69,13 +55,7 @@ struct OnlineScreen: View {
                     makeSection("Accounts") {
                         makeAccountsFeed()
                     }
-                    makeSection("My content", isCreatable: true) {
-                        makeMyFeed()
-                    }
                 }
-            }
-            .refreshable {
-                onlineViewModel.fetchAll()
             }
         }
     }
@@ -84,8 +64,11 @@ struct OnlineScreen: View {
     private func makeMyFeed() -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 16) {
+                PackView(color: "D44A13", name: "Favorites", numberOfCards: onlineViewModel.favorites.count)
                 ForEach(formatedMyContent()) { pack in
-                   
+                    OnlinePreviewPack(color: pack.pack.color, name: pack.pack.name, tags: pack.tags) {
+                        
+                    }
                 }
             }
         }
@@ -96,7 +79,9 @@ struct OnlineScreen: View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 16) {
                 ForEach(formatedPacks()) { pack in
-                    Text("\(pack.id)")
+                    OnlinePreviewPack(color: pack.pack.color, name: pack.pack.name, tags: pack.tags) {
+                        
+                    }
                 }
             }
         }
@@ -107,7 +92,9 @@ struct OnlineScreen: View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 16) {
                 ForEach(formatedCards()) { card in
-                    Text("\(card.id)")
+                    OnlinePreviewCard(isLiked: onlineViewModel.favorites.contains(card), question: card.question) {
+                        
+                    }
                 }
             }
         }
@@ -117,8 +104,17 @@ struct OnlineScreen: View {
     private func makeAccountsFeed() -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 16) {
-                ForEach(formatedUsers()) { user in
-                    Text("\(user.id)")
+                ForEach(Array(stride(from: 0, to: formatedUsers().count, by: 2)), id: \.self) { index in
+                    VStack(spacing: 8) {
+                        OnlineProfilePreview(image: formatedUsers()[index].photoURL, name: formatedUsers()[index].displayName) {
+                            
+                        }
+                        if index + 1 < formatedUsers().count {
+                            OnlineProfilePreview(image: formatedUsers()[index + 1].photoURL, name: formatedUsers()[index + 1].displayName) {
+                                
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -135,7 +131,12 @@ struct OnlineScreen: View {
                 Spacer()
                 if isCreatable {
                     Menu {
-                        
+                        Button("Add card") {
+                            isShowCreateCard.toggle()
+                        }
+                        Button("Add pack") {
+                            isShowCreatePack.toggle()
+                        }
                     } label: {
                         Icon(name: "add")
                     }
@@ -143,6 +144,7 @@ struct OnlineScreen: View {
             }
             .padding(.horizontal, 20)
             content()
+                .padding(.leading, 20)
         }
     }
     
@@ -171,7 +173,11 @@ struct OnlineScreen: View {
     }
     
     private func formatedMyContent() -> [FirebasePack] {
-        return []
+        if searchText.isEmpty {
+            return onlineViewModel.myPacks
+        } else {
+            return onlineViewModel.myPacks.filter({ $0.pack.name.lowercased().contains(searchText.lowercased()) || $0.pack.description.lowercased().contains(searchText.lowercased()) || $0.tags.map({ $0.lowercased() }).contains(searchText.lowercased()) })
+        }
     }
     
 }

@@ -6,11 +6,10 @@ struct SignScreen: View {
     @EnvironmentObject var viewModel: OnlineViewModel
     @Environment(\.dismiss) var dismiss
     
-    @Binding var needsToSign: Bool
     @State private var email: String = ""
     @State private var password: String = ""
     
-    @State private var isShowAlert: Bool = false
+    @State private var alertType: OnlineAlertType?
     
     var body: some View {
         makeContent()
@@ -19,11 +18,8 @@ struct SignScreen: View {
                 UIApplication.shared.endEditing()
             }
             .edgesIgnoringSafeArea(.bottom)
-            .alert(isPresented: $isShowAlert) {
-                Alert(title: Text("Something wrong"), message: Text("Password should have: special symbols, numbers, length is more than 8."), dismissButton: .default(Text(Localization.confirm), action: {}))
-            }
-            .onDisappear {
-                needsToSign = false
+            .alert(item: $alertType) { type in
+                Alert(title: Text("Something wrong"), message: Text(type.text), dismissButton: .default(Text(Localization.confirm), action: {}))
             }
     }
     
@@ -38,6 +34,8 @@ struct SignScreen: View {
                 VStack(spacing: 16) {
                     CustomTextField(placeholder: "Email", text: $email)
                     CustomTextField(placeholder: "Password", text: $password)
+                    makeResetButton()
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 Spacer()
                 makeCreateButton()
@@ -49,29 +47,44 @@ struct SignScreen: View {
     
     private func makeCreateButton() -> some View {
         Button {
-            if checkText() {
-                HapticManager.shared.triggerHapticFeedback(.light)
-                SoundManager.shared.sound(.click1)
+            HapticManager.shared.triggerHapticFeedback(.light)
+            SoundManager.shared.sound(.click1)
+            if checkEmail() && checkPassword() {
                 signAction()
-            } else {
-                isShowAlert.toggle()
+                return
+            }
+            if !checkEmail() {
+                alertType = .password
+                return
+            }
+            if !checkPassword() {
+                alertType = .email
+                return
             }
         } label: {
             Text("Sign in")
-                .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32))
+                .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32))
                 .underline()
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.darkWhite)
-                .opacity(66)
         }
     }
     
-    private func checkText() -> Bool {
-        if password.count <= 8 {
-            return false
+    private func makeResetButton() -> some View {
+        Button {
+            HapticManager.shared.triggerHapticFeedback(.light)
+            SoundManager.shared.sound(.click1)
+            resetAction()
+        } label: {
+            Text("Reset password")
+                .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32))
+                .multilineTextAlignment(.leading)
+                .foregroundStyle(.blue)
         }
-        
-        if !isValidEmail() {
+    }
+    
+    private func checkPassword() -> Bool {
+        if password.count <= 8 {
             return false
         }
         
@@ -80,7 +93,7 @@ struct SignScreen: View {
         return predicate.evaluate(with: password)
     }
     
-    private func isValidEmail() -> Bool {
+    private func checkEmail() -> Bool {
         let emailRegex = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
         let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
         
@@ -88,11 +101,25 @@ struct SignScreen: View {
     }
     
     private func signAction() {
-        viewModel.sign(email: email, password: password) { success in
+        viewModel.sign(email: email, password: password) { success, isRightPassword in
+            guard isRightPassword else {
+                alertType = .wrongPassword(email)
+                return
+            }
             if success {
                 dismiss()
             } else {
-                isShowAlert.toggle()
+                alertType = .wrongPassword(email)
+            }
+        }
+    }
+    
+    private func resetAction() {
+        viewModel.resetPassword(email: email) { success in
+            if success {
+                alertType = .successReset(email)
+            } else {
+                alertType = .noEmail(email)
             }
         }
     }

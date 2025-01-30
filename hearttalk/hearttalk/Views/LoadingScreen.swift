@@ -4,6 +4,7 @@ import SwiftUI
 struct LoadingScreen: View {
     
     @EnvironmentObject var viewModel: ViewModel
+    @StateObject private var onlineViewModel: OnlineViewModel = OnlineViewModel()
     
     @State private var isLoading: Bool = true
     @State private var isShowNext: Bool = false
@@ -34,13 +35,14 @@ struct LoadingScreen: View {
         .fullScreenCover(isPresented: $isShowNext) {
             HomeScreen()
                 .environmentObject(viewModel)
+                .environmentObject(onlineViewModel)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
     private func makeText() -> some View {
         Text("Heart Talk")
-            .font(.custom("PlayfairDisplay-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 36 : 64))
+            .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 36 : 64))
             .multilineTextAlignment(.center)
             .foregroundStyle(.darkWhite)
             .opacity(66)

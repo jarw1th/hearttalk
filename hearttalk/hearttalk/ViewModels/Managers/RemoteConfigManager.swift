@@ -5,11 +5,16 @@ class RemoteConfigManager {
     
     private let remoteConfig = RemoteConfig.remoteConfig()
     var appData: AppData?
+    
+    private var isConnected: Bool
 
-    init() {
-        let settings = RemoteConfigSettings()
-        settings.minimumFetchInterval = 3600
-        remoteConfig.configSettings = settings
+    init(_ isConnected: Bool) {
+        self.isConnected = isConnected
+        if isConnected {
+            let settings = RemoteConfigSettings()
+            settings.minimumFetchInterval = 3600
+            remoteConfig.configSettings = settings
+        }
     }
 
     func fetchRemoteConfig(_ completion: @escaping () -> Void) {
@@ -25,7 +30,7 @@ class RemoteConfigManager {
         }
     }
 
-    func getData() {
+    private func getData() {
         var data = AppDataProperties()
         data.alertMessage = remoteConfig["alertMessage"].stringValue
         data.alertTitle = remoteConfig["alertTitle"].stringValue

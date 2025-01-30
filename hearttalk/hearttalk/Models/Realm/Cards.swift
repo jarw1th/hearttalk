@@ -14,6 +14,7 @@ class Card: Object, Identifiable {
     @Persisted var answer: String
     @Persisted var notes: List<Note>
     @Persisted var language: String = "none"
+    @Persisted var link: String = ""
     @Persisted var creator: String = "ht"
     @Persisted var isFlipCard: Bool
     @Persisted(originProperty: "cards") var parentPack: LinkingObjects<Pack>

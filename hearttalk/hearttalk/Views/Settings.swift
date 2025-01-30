@@ -5,12 +5,14 @@ import SafariServices
 struct Settings: View {
     
     @EnvironmentObject var viewModel: ViewModel
+    @EnvironmentObject var onlineViewModel: OnlineViewModel
     @Environment(\.dismiss) var dismiss
     
     @State private var isShowWhatIs: Bool = false
     @State private var isShowContacts: Bool = false
     @State private var isClearAlert: Bool = false
     @State private var isShowLanguage: Bool = false
+    @State private var isShowSignIn: Bool = false
     @State private var link: String?
     
     @State private var isVibrations: Bool = false
@@ -68,6 +70,10 @@ struct Settings: View {
                         buttons: makeActionSheetButtons()
                     )
                 }
+                .fullScreenCover(isPresented: $isShowSignIn) {
+                    SignScreen()
+                        .environmentObject(onlineViewModel)
+                }
         }
     }
     
@@ -80,6 +86,36 @@ struct Settings: View {
             
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 40) {
+                    if viewModel.isOnline && viewModel.network.isNetworkAvailable {
+                        if onlineViewModel.isSignedIn {
+                            OnlineProfile(image: onlineViewModel.getUser()?.photoURL, name: onlineViewModel.getUser()?.displayName ?? "Unknown user") {
+                                onlineViewModel.signOut()
+                            }
+                        } else {
+                            LoginButton {
+                                isShowSignIn.toggle()
+                            }
+                        }
+                    }
+                    SettingsButton(text: viewModel.isOnline ? "Go offline" : "Go online") {
+                        viewModel.networkMode()
+                    }
+                    .contextMenu {
+                        Button {
+                            HapticManager.shared.triggerHapticFeedback(.light)
+                            SoundManager.shared.sound(.click1)
+                            viewModel.setOfflineHour()
+                        } label: {
+                            Text("Offline for 1 hour")
+                        }
+                        Button {
+                            HapticManager.shared.triggerHapticFeedback(.light)
+                            SoundManager.shared.sound(.click1)
+                            viewModel.setOffline()
+                        } label: {
+                            Text("Offline forever")
+                        }
+                    }
                     makeButtonsList()
                     makeSettingsList()
                 }

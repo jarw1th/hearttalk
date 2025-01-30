@@ -11,8 +11,9 @@ final class ViewModel: ObservableObject {
     
     private var realmManager: RealmManager = RealmManager()
     private var userDefaultsManager: UserDefaultsManager = UserDefaultsManager()
+    private(set) var network: RequestManager = RequestManager.shared
     private var textFileManager: TextFileManager
-    private(set) var remoteConfigManager: RemoteConfigManager = RemoteConfigManager()
+    private(set) var remoteConfigManager: RemoteConfigManager
     
     @Published var myPacks: [Pack] = []
     @Published var htPacks: [Pack] = []
@@ -33,28 +34,37 @@ final class ViewModel: ObservableObject {
     @Published var selectedCards: [Card] = []
     @Published var selectedNotes: [Note] = []
     
+    @Published var isOnline: Bool = false
+    
     private(set) var isShowAd: Bool = (Locale.current.regionCode == "RU")
     
     init() {
         self.textFileManager = TextFileManager(realmManager)
-       
-        self.remoteConfigManager.fetchRemoteConfig {
-            if !UserDefaultsManager.shared.hasValidData || (self.remoteConfigManager.appData?.isUpdateContent ?? false) {
+        self.remoteConfigManager = RemoteConfigManager(network.isConnected)
+        
+        if network.isConnected {
+            self.remoteConfigManager.fetchRemoteConfig {}
+        }
+        
+        if userDefaultsManager.isOnline && userDefaultsManager.offlineHourDate?.isMoreHour() != false {
+            self.isOnline = true
+        }
+        
+        if !UserDefaultsManager.shared.hasValidData {
+            self.realmManager.deleteAll()
+            self.textFileManager.parseCards {
+                self.fetchAll()
+                self.getDailyCard()
+            }
+            UserDefaultsManager.shared.hasValidData = true
+        } else {
+            self.fetchAll()
+            self.getDailyCard()
+            if self.htPacks.isEmpty {
                 self.realmManager.deleteAll()
                 self.textFileManager.parseCards {
                     self.fetchAll()
                     self.getDailyCard()
-                }
-                UserDefaultsManager.shared.hasValidData = true
-            } else {
-                self.fetchAll()
-                self.getDailyCard()
-                if self.htPacks.isEmpty {
-                    self.realmManager.deleteAll()
-                    self.textFileManager.parseCards {
-                        self.fetchAll()
-                        self.getDailyCard()
-                    }
                 }
             }
         }
@@ -67,7 +77,12 @@ final class ViewModel: ObservableObject {
         
         let lang = userDefaultsManager.appleLanguage
         self.htPacks = Array(packsResults).filter { ($0.language == lang || $0.language == "none") && $0.creator == "ht" }.sorted(by: { $0.name > $1.name })
-        self.myPacks = Array(packsResults).filter { ($0.language == lang || $0.language == "none") && $0.creator == "me" }.sorted(by: { $0.name > $1.name })
+        self.myPacks = Array(packsResults).filter { ($0.language == lang || $0.language == "none") && $0.creator == "me" }.sorted {
+            if $0.isFavorite != $1.isFavorite {
+                return $0.isFavorite
+            }
+            return $0.name < $1.name
+        }
         self.quizPacks = Array(packsResults).filter { ($0.language == lang || $0.language == "none") && $0.creator == "htq" }.sorted(by: { $0.name > $1.name })
         self.favoriteType = Array(packsResults).filter { ($0.language == lang || $0.language == "none") && $0.isFavorite }.first
         self.selectedSavingType = myPacks.first
@@ -131,6 +146,36 @@ final class ViewModel: ObservableObject {
             self.realmManager.update {
                 packInstance.name = newPack.name
                 packInstance.text = newPack.text
+            }
+        }
+    }
+    
+    func updateCard(_ newCard: Card) {
+        if let cardInstance = self.realmManager.getCard(forId: newCard.id) {
+            self.realmManager.update {
+                cardInstance.question = newCard.question
+                if cardInstance.isFlipCard {
+                    cardInstance.answer = newCard.answer
+                }
+            }
+        }
+    }
+    
+    func removeLink(_ card: Card) {
+        if let cardInstance = self.realmManager.getCard(forId: card.id) {
+            self.realmManager.update {
+                cardInstance.link = ""
+            }
+            if let index = cards.firstIndex(where: { $0 == card }) {
+                self.cards[index] = cardInstance
+            }
+        }
+    }
+    
+    func addLink(_ link: String, for card: Card) {
+        if let cardInstance = self.realmManager.getCard(forId: card.id) {
+            self.realmManager.update {
+                cardInstance.link = link
             }
         }
     }
@@ -361,6 +406,28 @@ final class ViewModel: ObservableObject {
             self.notes.removeAll(where: { self.selectedNotes.contains($0) })
             self.selectedNotes = []
         }
+    }
+    
+    func networkMode() {
+        guard !isOnline else {
+            isOnline = false
+            return
+        }
+        if network.isConnected {
+            isOnline = true
+            userDefaultsManager.isOnline = true
+            userDefaultsManager.offlineHourDate = Date.distantPast
+        }
+    }
+    
+    func setOfflineHour() {
+        userDefaultsManager.offlineHourDate = Date()
+        isOnline = false
+    }
+    
+    func setOffline() {
+        userDefaultsManager.isOnline = false
+        isOnline = false
     }
     
 }

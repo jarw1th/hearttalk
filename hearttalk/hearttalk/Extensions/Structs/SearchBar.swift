@@ -19,14 +19,14 @@ struct SearchBar: View {
             if text.isEmpty {
                 Text(placeholder)
                     .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24))
-                    .foregroundColor(.lightBlack)
+                    .foregroundColor(.darkWhite)
                     .opacity(0.5)
             }
             TextField("", text: $text)
                 .autocapitalization(.sentences)
                 .disableAutocorrection(true)
                 .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24))
-                .foregroundStyle(.lightBlack)
+                .foregroundStyle(.darkWhite)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .focused($isFocused)
             if isFocused {
@@ -47,7 +47,8 @@ struct SearchBar: View {
         .padding(.vertical, UIDevice.current.userInterfaceIdiom == .phone ? 8 : 16)
         .background(
             RoundedRectangle(cornerRadius: 12)
-                .fill(.darkWhite)
+                .stroke(.darkWhite, lineWidth: 1)
+                .opacity(0.75)
         )
     }
     

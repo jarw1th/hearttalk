@@ -24,7 +24,8 @@
 	</dict>
 	<key>UIAppFonts</key>
 	<array>
-		<string>PlayfairDisplay-Regular.ttf</string>
+		<string>Poppins-Regular.ttf</string>
+		<string>Poppins-SemiBold.ttf</string>
 	</array>
 </dict>
 </plist>

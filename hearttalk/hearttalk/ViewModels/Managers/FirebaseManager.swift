@@ -18,14 +18,24 @@ final class FirebaseManager {
         self.user = Auth.auth().currentUser
     }
     
-    func signIn(email: String, password: String, completion: @escaping (Bool) -> Void) {
+    func signIn(email: String, password: String, completion: @escaping (Bool, Bool) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
+            if let error,
+               let authError = error as? NSError,
+               authError.code == AuthErrorCode.wrongPassword.rawValue {
+                completion(false, false)
+                return
+            }
+            if error != nil {
+                completion(false, true)
+                return
+            }
             guard let self else {
-                completion(false)
+                completion(false, true)
                 return
             }
             self.user = authResult?.user
-            completion(authResult?.user != nil)
+            completion(authResult?.user != nil, true)
         }
     }
     
@@ -59,6 +69,16 @@ final class FirebaseManager {
         }
     }
     
+    func reset(for email: String, completion: @escaping (Bool) -> Void) {
+        Auth.auth().sendPasswordReset(withEmail: email) { error in
+            if let _ = error {
+                completion(false)
+            } else {
+                completion(true)
+            }
+        }
+    }
+    
     func signOut() {
         try? Auth.auth().signOut()
         user = nil
@@ -80,6 +100,7 @@ final class FirebaseManager {
                 "id": pack.id,
                 "name": pack.name,
                 "description": pack.text,
+                "creator": pack.creator,
                 "color": pack.color,
                 "language": pack.language,
                 "tags": tags,
@@ -110,14 +131,18 @@ final class FirebaseManager {
                 completion?(false)
                 return
             }
-            let data: [String: Any] = [
+            var data: [String: Any] = [
                 "id": question.id,
                 "packId": pack.id,
-                "text": question.question,
+                "question": question.question,
+                "isFlipCard": question.isFlipCard,
                 "language": question.language,
                 "createdAt": Timestamp(date: Date()),
                 "lastModifiedAt": Timestamp(date: Date())
             ]
+            if question.isFlipCard {
+                data["answer"] = question.answer
+            }
             
             path.document(pack.id).collection(contentKey).document(question.id).setData(data) { error in
                 if let error = error {
@@ -138,13 +163,17 @@ final class FirebaseManager {
         }
         let path = users.document(user.uid).collection(favsKey)
         
-        let data: [String: Any] = [
+        var data: [String: Any] = [
             "id": question.id,
-            "text": question.question,
+            "question": question.question,
+            "isFlipCard": question.isFlipCard,
             "language": question.language,
             "createdAt": Timestamp(date: Date()),
             "lastModifiedAt": Timestamp(date: Date())
         ]
+        if question.isFlipCard {
+            data["answer"] = question.answer
+        }
 
         path.document(question.id).setData(data) { error in
             if let error = error {
@@ -235,15 +264,29 @@ final class FirebaseManager {
             for document in querySnapshot.documents {
                 let data = document.data()
                 let id = data["id"] as? String ?? UUID().uuidString
-                let text = data["text"] as? String ?? "Unknown question"
+                let question = data["question"] as? String ?? "Unknown question"
+                let isFlipCard = data["isFlipCard"] as? Bool ?? false
+                let answer = data["answer"] as? String
                 let language = data["language"] as? String ?? "en"
                 
-                let card = Card(id: id, question: text)
+                let card = Card(id: id, question: question)
+                card.isFlipCard = isFlipCard
+                if let answer, isFlipCard {
+                    card.answer = answer
+                }
                 card.language = language
                 packs.append(card)
             }
             completion(packs)
         }
+    }
+    
+    func fetchMyPacks(completion: @escaping ([FirebasePack]) -> Void) {
+        guard let user else {
+            completion([])
+            return
+        }
+        fetchPacksFor(user.uid, completion: completion)
     }
     
     func fetchPacks(_ userId: String? = nil, completion: @escaping ([FirebasePack]) -> Void) {
@@ -297,11 +340,13 @@ final class FirebaseManager {
                 let name = data["name"] as? String ?? "Unknown Name"
                 let description = data["description"] as? String ?? "Unknown description"
                 let color = data["color"] as? String ?? "Unknown color"
+                let creator = data["creator"] as? String ?? "me"
                 let language = data["language"] as? String ?? "en"
                 let tags = data["tags"] as? [String] ?? []
                 
                 let pack = Pack(id: id, name: name, text: description)
                 pack.color = color
+                pack.creator = creator
                 pack.language = language
                 let firebasePack = FirebasePack(pack: pack, tags: tags)
                 packs.append(firebasePack)
@@ -335,10 +380,16 @@ final class FirebaseManager {
             for document in querySnapshot.documents {
                 let data = document.data()
                 let id = data["id"] as? String ?? UUID().uuidString
-                let text = data["text"] as? String ?? "Unknown question"
+                let question = data["question"] as? String ?? "Unknown question"
+                let isFlipCard = data["isFlipCard"] as? Bool ?? false
+                let answer = data["answer"] as? String
                 let language = data["language"] as? String ?? "en"
                 
-                let card = Card(id: id, question: text)
+                let card = Card(id: id, question: question)
+                card.isFlipCard = isFlipCard
+                if let answer, isFlipCard {
+                    card.answer = answer
+                }
                 card.language = language
                 packs.append(card)
             }

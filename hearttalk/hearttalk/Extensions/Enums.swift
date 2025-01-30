@@ -215,3 +215,48 @@ enum OnlineSearchType: String, Identifiable, CaseIterable {
     }
     
 }
+
+enum OnlineAlertType: Identifiable, Hashable {
+    
+    case password
+    case email
+    case server
+    case successReset(String)
+    case wrongPassword(String)
+    case noEmail(String)
+    
+    var id: String {
+        switch self {
+        case .password:
+            "password"
+        case .email:
+            "email"
+        case .server:
+            "server"
+        case .successReset(_):
+            "successReset"
+        case .wrongPassword(_):
+            "wrongPassword"
+        case .noEmail(_):
+            "noEmail"
+        }
+    }
+    
+    var text: String {
+        switch self {
+        case .password:
+            "Password should have: special symbols, numbers, length is more than 8."
+        case .email:
+            "Wrong email"
+        case .server:
+            "Server error"
+        case .successReset(let email):
+            "We sent reset link to \(email)"
+        case .wrongPassword(let email):
+            "Wrong password for \(email)"
+        case .noEmail(let email):
+            "We do not have such email \(email)"
+        }
+    }
+    
+}

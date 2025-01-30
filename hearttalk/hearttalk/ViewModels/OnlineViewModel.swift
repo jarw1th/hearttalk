@@ -13,6 +13,7 @@ final class OnlineViewModel: ObservableObject {
     @Published var isSignedIn: Bool
     @Published var isLoading: Bool = false
     @Published var packs: [FirebasePack] = []
+    @Published var myPacks: [FirebasePack] = []
     @Published var questions: [Card] = []
     @Published var favorites: [Card] = []
     @Published var users: [FirebaseUser] = []
@@ -58,36 +59,66 @@ final class OnlineViewModel: ObservableObject {
         fetchQuestions { [weak self] in
             self?.fetchPacks {
                 self?.fetchUsers {
-                    self?.fetchFavorites {
-                        self?.isLoading = false
+                    self?.fetchMyPacks {
+                        self?.fetchFavorites {
+                            self?.isLoading = false
+                        }
                     }
                 }
             }
         }
     }
     
-    func sign(email: String, password: String, completion: @escaping (Bool) -> Void) {
+    private func fetchMyPacks(completion: @escaping () -> Void) {
+        packs = []
+        firebaseManager.fetchMyPacks { [weak self] packs in
+            self?.myPacks = packs
+            completion()
+        }
+    }
+    
+    func fetchMyContent() {
         isLoading = true
-        firebaseManager.signIn(email: email, password: password) { [weak self] successSignIn in
-            if successSignIn {
+        fetchMyPacks { [weak self] in
+            self?.fetchFavorites {
                 self?.isLoading = false
-                completion(true)
+            }
+        }
+    }
+    
+    func sign(email: String, password: String, completion: @escaping (Bool, Bool) -> Void) {
+        isLoading = true
+        firebaseManager.signIn(email: email, password: password) { [weak self] successSignIn, isRightPassword in
+            guard isRightPassword else {
+                completion(false, false)
+                return
+            }
+            if successSignIn {
+                self?.isSignedIn = true
+                self?.isLoading = false
+                completion(true, true)
             } else {
                 self?.firebaseManager.signUp(email: email, password: password) { successSignUp in
                     if successSignUp {
+                        self?.isSignedIn = true
                         self?.isLoading = false
-                        completion(true)
+                        completion(true, true)
                     } else {
                         self?.isLoading = false
-                        completion(false)
+                        completion(false, true)
                     }
                 }
             }
         }
+    }
+    
+    func resetPassword(email: String, completion: @escaping (Bool) -> Void) {
+        firebaseManager.reset(for: email, completion: completion)
     }
     
     func signOut() {
         firebaseManager.signOut()
+        isSignedIn = false
     }
     
     func createPack(_ pack: Pack, tags: [String]) {

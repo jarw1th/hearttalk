@@ -12,6 +12,8 @@ struct CardView: View {
     @EnvironmentObject var viewModel: ViewModel
     
     @Binding var isShowNotes: Bool
+    @Binding var isShowLink: Bool
+    @State private var link: String?
     
     @State private var frontCardOffset: CGSize = .zero
     @State private var backCardOffset: CGSize = CGSize(width: 400, height: 0)
@@ -149,6 +151,11 @@ struct CardView: View {
         .sheet(item: $shareImage) { identifiableImage in
             ActivityViewControllerRepresentableCenter(activityItems: [identifiableImage.image])
         }
+        .sheet(item: $link) { url in
+            if let url = URL(string: url) {
+                SafariViewController(url: url)
+            }
+        }
     }
     
     @ViewBuilder
@@ -183,6 +190,17 @@ struct CardView: View {
                     .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 48 : 64)
                 Spacer()
             }
+            .simultaneousGesture(
+                TapGesture()
+                    .onEnded {
+                        if card.isFlipCard {
+                            HapticManager.shared.triggerHapticFeedback(.light)
+                            SoundManager.shared.sound(.card)
+                            
+                            isFlipped = true
+                        }
+                    }
+            )
             VStack {
                 Spacer()
                 HStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 64 : 80) {
@@ -204,21 +222,18 @@ struct CardView: View {
                 viewModel.deleteCard(card)
             }), secondaryButton: .cancel(Text(Localization.cancel), action: {}))
         }
-        .simultaneousGesture(
-            TapGesture()
-                .onEnded {
-                    if card.isFlipCard {
-                        HapticManager.shared.triggerHapticFeedback(.light)
-                        SoundManager.shared.sound(.card)
-                        
-                        isFlipped = true
-                    }
-                }
-        )
     }
     
     private func backCardView(_ card: Card) -> some View {
         ZStack {
+            VStack {
+                Text("Answer")
+                    .font(.custom("Poppins-Regular", size: 16))
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(.lightBlack)
+                Spacer()
+            }
+            .padding(.top, 20)
             VStack {
                 Spacer()
                 Text(card.answer)
@@ -228,6 +243,38 @@ struct CardView: View {
                     .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 48 : 64)
                 Spacer()
             }
+            VStack {
+                Spacer()
+                if card.link.isEmpty {
+                    Button {
+                        linkAction(card)
+                    } label: {
+                        Icon(name: "link", size: .custom(16), color: .lightBlack)
+                    }
+                } else {
+                    Menu {
+                        Button {
+                            link = card.link
+                        } label: {
+                            Text("Open")
+                        }
+                        Button {
+                            linkAction(card)
+                        } label: {
+                            Text("Change")
+                        }
+                        Button(role: .destructive) {
+                            remvoeLinkAction(card)
+                        } label: {
+                            Text("Remove")
+                        }
+                    } label: {
+                        Icon(name: "link", size: .custom(16), color: .lightBlack)
+                    }
+                }
+            }
+            .padding(.bottom, 20)
+            .opacity(card.link.isEmpty ? 0.5 : 1)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(
@@ -392,6 +439,7 @@ struct CardView: View {
     
     private func moveToNextCard() {
         viewModel.cardIndex = viewModel.cardIndex + 1
+        isFlipped = false
     }
     
     private func resetCardPosition() {
@@ -416,6 +464,14 @@ struct CardView: View {
         viewModel.addCardToFavorites(card)
     }
     
+    private func linkAction(_ card: Card) {
+        isShowLink.toggle()
+    }
+    
+    private func remvoeLinkAction(_ card: Card) {
+        viewModel.removeLink(card)
+    }
+    
     private func swipeBack() {
         withAnimation(.easeInOut) {
             frontCardOffset = CGSize(width: cardWidth / 1.6, height: UIDevice.current.userInterfaceIdiom == .phone ? -24 : -36)
@@ -434,6 +490,7 @@ struct CardView: View {
         }
         
         viewModel.cardIndex = viewModel.cardIndex - 1
+        isFlipped = false
     }
     
 }

@@ -4,7 +4,8 @@ import SwiftUI
 struct HomeScreen: View {
     
     @EnvironmentObject var viewModel: ViewModel
-    @State private var requestManager: RequestManager = RequestManager()
+    @EnvironmentObject var onlineViewModel: OnlineViewModel
+    @State private var requestManager: RequestManager = RequestManager.shared
     
     @State private var isShowSettings: Bool = false
     @State private var isShowCreateCard: Bool = false
@@ -19,101 +20,117 @@ struct HomeScreen: View {
     @State private var selectedDescPack: Pack?
     
     var body: some View {
-        NavigationView {
-            makeContent()
-                .background(.lightBlack)
-        }
-        .onAppear {
-            isShowGlobalAlert = (viewModel.remoteConfigManager.appData?.isShowAlert) ?? false
-            if let action = QuickActionsManager.shared.quickAction {
-                switch action {
-                case .addCard:
-                    isShowCreateCard.toggle()
-                case .addPack:
-                    isShowCreatePack.toggle()
-                }
-            }
-        }
-        .fullScreenCover(isPresented: $isShowSettings) {
-            Settings()
-                .environmentObject(viewModel)
-        }
-        .fullScreenCover(isPresented: $isShowCreateCard) {
-            CreateCardScreen()
-                .environmentObject(viewModel)
-        }
-        .fullScreenCover(isPresented: $isShowCreatePack) {
-            CreatePackScreen()
-                .environmentObject(viewModel)
-        }
-        .fullScreenCover(isPresented: $isShowDailyCard) {
-            Questions(card: viewModel.dailyOriginalCard)
-                .environmentObject(viewModel)
-        }
-        .fullScreenCover(isPresented: $isShowOnlineScreen) {
-            OnlineScreen()
-                .environmentObject(viewModel)
-        }
-        .fullScreenCover(item: $selectedNamePack) { pack in
-            ChangeTextScreen(text: Binding(get: {
-                pack.name
-            }, set: {
-                let p = Pack(id: pack.id, name: $0, text: pack.text)
-                viewModel.updatePack(p)
-            }))
-        }
-        .fullScreenCover(item: $selectedDescPack) { pack in
-            ChangeTextScreen(text: Binding(get: {
-                pack.text
-            }, set: {
-                let p = Pack(id: pack.id, name: pack.name, text: $0)
-                viewModel.updatePack(p)
-            }))
-        }
-        .alert(isPresented: $isShowAgeAlert) {
-            Alert(title: Text(Localization.adultAlertTitle), message: Text(Localization.adultAlertMessage), primaryButton: .default(Text(Localization.confirm), action: {
-                UserDefaultsManager.shared.isShowAgeAlert = false
-            }), secondaryButton: .cancel(Text(Localization.cancel), action: {}))
-        }
-        .onOpenURL { url in
-            if url.scheme == "hearttalk" {
-                if url.host == "createScreen" {
-                    isShowCreateCard.toggle()
-                }
-                if url.host == "dailyWidgetOpen" {
-                    isShowDailyCard.toggle()
-                }
-                if url.host == "dailyTurningOn" {
-                    if !isShowSettings {
-                        isShowSettings.toggle()
+        makeContent()
+            .background(
+                Color.lightBlack
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        UIApplication.shared.endEditing()
+                    }
+            )
+            .onAppear {
+                isShowGlobalAlert = (viewModel.remoteConfigManager.appData?.isShowAlert) ?? false
+                if let action = QuickActionsManager.shared.quickAction {
+                    switch action {
+                    case .addCard:
+                        isShowCreateCard.toggle()
+                    case .addPack:
+                        isShowCreatePack.toggle()
                     }
                 }
             }
-        }
-        .alert(isPresented: $isShowGlobalAlert) {
-            Alert(title: Text(viewModel.remoteConfigManager.appData?.alertTitle ?? ""), message: Text(viewModel.remoteConfigManager.appData?.alertMessage ?? ""), dismissButton: .default(Text(Localization.confirm), action: {}))
-        }
+            .onChange(of: requestManager.isConnected) { newValue in
+                guard !newValue else { return }
+                viewModel.isOnline = false
+            }
+            .fullScreenCover(isPresented: $isShowSettings) {
+                Settings()
+                    .environmentObject(viewModel)
+                    .environmentObject(onlineViewModel)
+            }
+            .fullScreenCover(isPresented: $isShowCreateCard) {
+                CreateCardScreen()
+                    .environmentObject(viewModel)
+            }
+            .fullScreenCover(isPresented: $isShowCreatePack) {
+                CreatePackScreen()
+                    .environmentObject(viewModel)
+            }
+            .fullScreenCover(isPresented: $isShowDailyCard) {
+                Questions(card: viewModel.dailyOriginalCard)
+                    .environmentObject(viewModel)
+            }
+            .fullScreenCover(isPresented: $isShowOnlineScreen) {
+                OnlineScreen()
+                    .environmentObject(viewModel)
+                    .environmentObject(onlineViewModel)
+            }
+            .fullScreenCover(item: $selectedNamePack) { pack in
+                ChangeTextScreen(text: Binding(get: {
+                    pack.name
+                }, set: {
+                    let p = Pack(id: pack.id, name: $0, text: pack.text)
+                    viewModel.updatePack(p)
+                }))
+            }
+            .fullScreenCover(item: $selectedDescPack) { pack in
+                ChangeTextScreen(text: Binding(get: {
+                    pack.text
+                }, set: {
+                    let p = Pack(id: pack.id, name: pack.name, text: $0)
+                    viewModel.updatePack(p)
+                }))
+            }
+            .alert(isPresented: $isShowAgeAlert) {
+                Alert(title: Text(Localization.adultAlertTitle), message: Text(Localization.adultAlertMessage), primaryButton: .default(Text(Localization.confirm), action: {
+                    UserDefaultsManager.shared.isShowAgeAlert = false
+                }), secondaryButton: .cancel(Text(Localization.cancel), action: {}))
+            }
+            .onOpenURL { url in
+                if url.scheme == "hearttalk" {
+                    if url.host == "createScreen" {
+                        isShowCreateCard.toggle()
+                    }
+                    if url.host == "dailyWidgetOpen" {
+                        isShowDailyCard.toggle()
+                    }
+                    if url.host == "dailyTurningOn" {
+                        if !isShowSettings {
+                            isShowSettings.toggle()
+                        }
+                    }
+                }
+            }
+            .alert(isPresented: $isShowGlobalAlert) {
+                Alert(title: Text(viewModel.remoteConfigManager.appData?.alertTitle ?? ""), message: Text(viewModel.remoteConfigManager.appData?.alertMessage ?? ""), dismissButton: .default(Text(Localization.confirm), action: {}))
+            }
     }
     
     @ViewBuilder
     private func makeContent() -> some View {
         VStack(spacing: 40) {
-            HomeTopBar(text: "Home") {
+            HomeTopBar(text: viewModel.isOnline && requestManager.isConnected ? "Online" : "Home") {
                 isShowSettings.toggle()
             }
             .padding(.vertical, 16)
             .padding(.horizontal, 20)
             
             ScrollView(.vertical, showsIndicators: false) {
-                VStack(spacing: 24) {
-                    makeSection("My content", isCreatable: true) {
-                        makeMyFeed()
+                VStack(spacing: 100) {
+                    VStack(spacing: 24) {
+                        makeSection("My content", isCreatable: true) {
+                            makeMyFeed()
+                        }
+                        makeSection("Our choice") {
+                            makeHTFeed()
+                        }
+                        makeSection("Flip cards") {
+                            makeQuizFeed()
+                        }
                     }
-                    makeSection("Our choice") {
-                        makeHTFeed()
-                    }
-                    makeSection("Flip cards") {
-                        makeQuizFeed()
+                    if viewModel.isOnline && requestManager.isConnected {
+                        OnlineScreen()
+                            .environmentObject(viewModel)
                     }
                 }
             }
@@ -162,7 +179,7 @@ struct HomeScreen: View {
                         }
                     }
                     .fullScreenCover(item: $selectedPack) { pack in
-                        Questions(pack: selectedPack ?? pack)
+                        Questions(pack: pack)
                             .environmentObject(viewModel)
                             .navigationBarHidden(true)
                     }
@@ -206,7 +223,7 @@ struct HomeScreen: View {
                         }
                     }
                     .fullScreenCover(item: $selectedPack) { pack in
-                        Questions(pack: selectedPack ?? pack)
+                        Questions(pack: pack)
                             .environmentObject(viewModel)
                             .navigationBarHidden(true)
                     }
@@ -250,7 +267,7 @@ struct HomeScreen: View {
                         }
                     }
                     .fullScreenCover(item: $selectedPack) { pack in
-                        Questions(pack: selectedPack ?? pack)
+                        Questions(pack: pack)
                             .environmentObject(viewModel)
                             .navigationBarHidden(true)
                     }

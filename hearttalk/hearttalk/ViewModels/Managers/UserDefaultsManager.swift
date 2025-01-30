@@ -14,7 +14,8 @@ final class UserDefaultsManager {
     }
     private var standart: UserDefaults = UserDefaults.standard
     
-    private let isShowTipKey: String = "isShowTip"
+    private let isOnlineKey: String = "isOnline"
+    private let offlineHourDateKey: String = "offlineHourDate"
     private let CFBundleShortVersionKey: String = "CFBundleShortVersionString"
     private let isShowAgeAlertKey: String = "isShowAgeAlert"
     private let isVibrationsKey: String = "isVibrations"
@@ -30,15 +31,23 @@ final class UserDefaultsManager {
         }
         return "1.0"
     }
-    var isShowTip: Bool {
+    var isOnline: Bool {
         get {
-            if userDefaults.object(forKey: isShowTipKey) == nil {
+            if userDefaults.object(forKey: isOnlineKey) == nil {
                 return true
             }
-            return userDefaults.bool(forKey: isShowTipKey)
+            return userDefaults.bool(forKey: isOnlineKey)
         }
         set {
-            userDefaults.set(newValue, forKey: isShowTipKey)
+            userDefaults.set(newValue, forKey: isOnlineKey)
+        }
+    }
+    var offlineHourDate: Date? {
+        get {
+            return userDefaults.object(forKey: offlineHourDateKey) as? Date 
+        }
+        set {
+            userDefaults.set(newValue, forKey: offlineHourDateKey)
         }
     }
     var isShowAgeAlert: Bool {

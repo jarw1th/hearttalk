@@ -1,15 +1,15 @@
 //
-//  CreateCardScreen.swift
+//  OnlineCreateCardScreen.swift
 //  hearttalk
 //
-//  Created by Руслан Парастаев on 29.01.2025.
+//  Created by Руслан Парастаев on 30.01.2025.
 //
 
 import SwiftUI
 
-struct CreateCardScreen: View {
+struct OnlineCreateCardScreen: View {
     
-    @EnvironmentObject var viewModel: ViewModel
+    @EnvironmentObject var viewModel: OnlineViewModel
     @Environment(\.dismiss) var dismiss
     
     @State private var question: String = ""
@@ -17,7 +17,6 @@ struct CreateCardScreen: View {
     @State private var isFlipCard: Bool = false
     
     @State private var isShowAlert: Bool = false
-    @State private var isShowPackSelect: Bool = false
     
     var body: some View {
         makeContent()
@@ -29,17 +28,11 @@ struct CreateCardScreen: View {
             .alert(isPresented: $isShowAlert) {
                 Alert(title: Text(Localization.alert), message: Text("Question should be at least 10 characters long."), dismissButton: .default(Text(Localization.confirm), action: {}))
             }
-            .actionSheet(isPresented: $isShowPackSelect) {
-                ActionSheet(
-                    title: Text("Packs"),
-                    buttons: makeActionSheetButtons()
-                )
-            }
     }
     
     private func makeContent() -> some View {
         VStack(spacing: 40) {
-            SingleBackTopBar(text: "New card") {
+            SingleBackTopBar(text: "New pack") {
                 dismiss()
             }
             .padding(.vertical, 16)
@@ -52,9 +45,6 @@ struct CreateCardScreen: View {
                     }
                 }
                 QuestionToggle(text: "Flip card?", isOn: $isFlipCard)
-                SettingsButton(text: viewModel.selectedSavingType?.name ?? "Not set") {
-                    isShowPackSelect.toggle()
-                }
                 Spacer()
                 makeCreateButton()
             }
@@ -87,23 +77,12 @@ struct CreateCardScreen: View {
     }
     
     private func createAction() {
-        viewModel.createCard(question: question, answer: answer, isFlipCard: isFlipCard)
-    }
-    
-    private func makeActionSheetButtons() -> [ActionSheet.Button]  {
-        var buttons: [ActionSheet.Button] = []
-        
-        viewModel.myPacks.forEach { pack in
-            let button = ActionSheet.Button.default(Text(pack.name), action: {
-                viewModel.selectedSavingType = pack
-            })
-            buttons.append(button)
+        let card = Card(id: UUID().uuidString, question: question)
+        card.isFlipCard = isFlipCard
+        if isFlipCard {
+            card.answer = answer
         }
-                                                        
-        let button = ActionSheet.Button.cancel(Text(Localization.cancel))
-        buttons.append(button)
-        
-        return buttons
+        viewModel.createQuestion(card)
     }
     
 }

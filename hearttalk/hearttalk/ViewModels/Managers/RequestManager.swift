@@ -1,34 +1,34 @@
 
 import Foundation
-import SystemConfiguration
+import Network
 
 final class RequestManager: ObservableObject {
     
     static let shared = RequestManager()
+        
+    @Published var isConnected: Bool = true
+    private let monitor = NWPathMonitor()
+    private let queue = DispatchQueue.global(qos: .background)
     
-    @discardableResult
-    func checkInternetConnectivity() -> Bool {
-        var zeroAddress = sockaddr_in()
-        zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
-        zeroAddress.sin_family = sa_family_t(AF_INET)
-
-        guard let defaultRouteReachability = withUnsafePointer(to: &zeroAddress, {
-            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) { zeroSockAddress in
-                SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
+    private init() {
+        startMonitoring()
+    }
+    
+    private func startMonitoring() {
+        monitor.pathUpdateHandler = { [weak self] path in
+            DispatchQueue.main.async {
+                self?.isConnected = (path.status == .satisfied)
             }
-        }) else {
-            return false
         }
-
-        var flags: SCNetworkReachabilityFlags = []
-        if !SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags) {
-            return false
-        }
-
-        let isReachable = flags.contains(.reachable)
-        let needsConnection = flags.contains(.connectionRequired)
-
-        return (isReachable && !needsConnection)
+        monitor.start(queue: queue)
+    }
+    
+    func stopMonitoring() {
+        monitor.cancel()
+    }
+    
+    var isNetworkAvailable: Bool {
+        return monitor.currentPath.status == .satisfied
     }
     
 }

@@ -12,8 +12,13 @@ struct Questions: View {
     @State private var questionMode: QuestionMode = .cards
     @State private var isEdit: Bool = false
     
+    @State private var isShowDecription: Bool = false
     @State private var isShowNotes: Bool = false
+    @State private var isShowLink: Bool = false
     @State private var isShowChangeText: Bool = false
+    @State private var isShowChangeAnswer: Bool = false
+    
+    @State private var size: CGSize = .zero
     
     var body: some View {
         makeContent()
@@ -32,6 +37,33 @@ struct Questions: View {
             .fullScreenCover(isPresented: $isShowNotes) {
                 NotesScreen(card: viewModel.cards[viewModel.cardIndex])
                     .environmentObject(viewModel)
+            }
+            .fullScreenCover(isPresented: $isShowLink) {
+                CreateLinkScreen(card: viewModel.cards[viewModel.cardIndex])
+                    .environmentObject(viewModel)
+            }
+            .fullScreenCover(isPresented: $isShowChangeText) {
+                ChangeTextScreen(text: Binding(get: {
+                    viewModel.cards[viewModel.cardIndex].question
+                }, set: {
+                    let c = Card(id: viewModel.cards[viewModel.cardIndex].id, question: $0)
+                    if viewModel.cards[viewModel.cardIndex].isFlipCard {
+                        c.answer = viewModel.cards[viewModel.cardIndex].answer
+                    }
+                    viewModel.updateCard(c)
+                }))
+            }
+            .fullScreenCover(isPresented: $isShowChangeAnswer) {
+                ChangeTextScreen(text: Binding(get: {
+                    viewModel.cards[viewModel.cardIndex].answer
+                }, set: {
+                    let c = Card(id: viewModel.cards[viewModel.cardIndex].id, question: viewModel.cards[viewModel.cardIndex].question)
+                    c.answer = $0
+                    viewModel.updateCard(c)
+                }))
+            }
+            .alert(isPresented: $isShowDecription) {
+                Alert(title: Text("Description"), message: Text(pack?.text ?? "No description"), dismissButton: .default(Text("Ok")))
             }
     }
     
@@ -67,6 +99,16 @@ struct Questions: View {
                         } label: {
                             Text("List")
                         }
+                        if let pack,
+                           !pack.text.isEmpty {
+                            Button {
+                                HapticManager.shared.triggerHapticFeedback(.light)
+                                SoundManager.shared.sound(.click1)
+                                isShowDecription.toggle()
+                            } label: {
+                                Text("Description")
+                            }
+                        }
                         Button {
                             HapticManager.shared.triggerHapticFeedback(.light)
                             SoundManager.shared.sound(.click1)
@@ -74,26 +116,47 @@ struct Questions: View {
                         } label: {
                             Text("Shuffle")
                         }
-                        Button(role: .destructive) {
-                            HapticManager.shared.triggerHapticFeedback(.light)
-                            SoundManager.shared.sound(.click1)
-                            if let pack {
-                                dismiss()
-                                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
-                                    viewModel.deletePack(pack)
+                        if viewModel.cards.count != 0 {
+                            Button {
+                                HapticManager.shared.triggerHapticFeedback(.light)
+                                SoundManager.shared.sound(.click1)
+                                isShowChangeText.toggle()
+                            } label: {
+                                Text("Change question")
+                            }
+                            if viewModel.cards.count > viewModel.cardIndex,
+                               viewModel.cards[viewModel.cardIndex].isFlipCard {
+                                Button {
+                                    HapticManager.shared.triggerHapticFeedback(.light)
+                                    SoundManager.shared.sound(.click1)
+                                    isShowChangeAnswer.toggle()
+                                } label: {
+                                    Text("Change answer")
                                 }
                             }
-                        } label: {
-                            Text("Delete this pack")
-                        }
-                        Button(role: .destructive) {
-                            HapticManager.shared.triggerHapticFeedback(.light)
-                            SoundManager.shared.sound(.click1)
-                            if viewModel.cards.count > viewModel.cardIndex {
-                                viewModel.deleteCard(viewModel.cards[viewModel.cardIndex])
+                            Button(role: .destructive) {
+                                HapticManager.shared.triggerHapticFeedback(.light)
+                                SoundManager.shared.sound(.click1)
+                                if viewModel.cards.count > viewModel.cardIndex {
+                                    viewModel.deleteCard(viewModel.cards[viewModel.cardIndex])
+                                }
+                            } label: {
+                                Text("Delete current card")
                             }
-                        } label: {
-                            Text("Delete current card")
+                        }
+                        if viewModel.favoriteType != pack {
+                            Button(role: .destructive) {
+                                HapticManager.shared.triggerHapticFeedback(.light)
+                                SoundManager.shared.sound(.click1)
+                                if let pack {
+                                    dismiss()
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
+                                        viewModel.deletePack(pack)
+                                    }
+                                }
+                            } label: {
+                                Text("Delete this pack")
+                            }
                         }
                     }
                 } closeTapAction: {
@@ -105,15 +168,15 @@ struct Questions: View {
                 }
                 .padding(.vertical, 16)
                 .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
+                .background(Rectangle().fill(.lightBlack))
                 
                 ZStack(alignment: .bottom) {
-                    CardView(isShowNotes: $isShowNotes)
+                    CardView(isShowNotes: $isShowNotes, isShowLink: $isShowLink)
                         .environmentObject(viewModel)
-                    makeDescriptionButton()
                 }
             }
             .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 8 : 24)
-            .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 70 : 120)
+            .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 120)
         }
     }
     
@@ -139,12 +202,15 @@ struct Questions: View {
                             } label: {
                                 Text("Cards")
                             }
-                            Button {
-                                HapticManager.shared.triggerHapticFeedback(.light)
-                                SoundManager.shared.sound(.click1)
-                                isShowChangeText.toggle()
-                            } label: {
-                                Text("Change question")
+                            if let pack,
+                               !pack.text.isEmpty {
+                                Button {
+                                    HapticManager.shared.triggerHapticFeedback(.light)
+                                    SoundManager.shared.sound(.click1)
+                                    isShowDecription.toggle()
+                                } label: {
+                                    Text("Description")
+                                }
                             }
                             Button {
                                 HapticManager.shared.triggerHapticFeedback(.light)
@@ -174,7 +240,7 @@ struct Questions: View {
                     VStack {
                         Spacer()
                         Text("Empty.")
-                            .font(.custom("PlayfairDisplay-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32))
+                            .font(.custom("Poppins-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32))
                             .multilineTextAlignment(.center)
                             .foregroundStyle(.darkWhite)
                             .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 48 : 100)
@@ -200,12 +266,15 @@ struct Questions: View {
                             } label: {
                                 Text("Cards")
                             }
-                            Button {
-                                HapticManager.shared.triggerHapticFeedback(.light)
-                                SoundManager.shared.sound(.click1)
-                                isShowChangeText.toggle()
-                            } label: {
-                                Text("Change question")
+                            if let pack,
+                               !pack.text.isEmpty {
+                                Button {
+                                    HapticManager.shared.triggerHapticFeedback(.light)
+                                    SoundManager.shared.sound(.click1)
+                                    isShowDecription.toggle()
+                                } label: {
+                                    Text("Description")
+                                }
                             }
                             Button {
                                 HapticManager.shared.triggerHapticFeedback(.light)
@@ -253,16 +322,6 @@ struct Questions: View {
                 }
                 .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
             }
-        }
-    }
-    
-    @ViewBuilder
-    private func makeDescriptionButton() -> some View {
-        Button {
-            HapticManager.shared.triggerHapticFeedback(.light)
-            SoundManager.shared.sound(.click1)
-        } label: {
-            Icon(name: "upArrow")
         }
     }
     

@@ -25,7 +25,7 @@ struct QuestionToggle: View {
                     .foregroundStyle(.darkWhite)
                     .opacity(isOn ? 1 : 0.5)
                 Spacer()
-                Text(isOn ? "Yes" : "No")
+                Text(isOn ? Localization.yes : Localization.no)
                     .font(.custom("Poppins-Regular", size: 16))
                     .multilineTextAlignment(.trailing)
                     .foregroundStyle(.darkWhite)

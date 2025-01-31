@@ -63,7 +63,7 @@ struct Questions: View {
                 }))
             }
             .alert(isPresented: $isShowDecription) {
-                Alert(title: Text("Description"), message: Text(pack?.text ?? "No description"), dismissButton: .default(Text("Ok")))
+                Alert(title: Text(Localization.description), message: Text(pack?.text ?? Localization.empty), dismissButton: .default(Text(Localization.ok)))
             }
     }
     
@@ -82,7 +82,7 @@ struct Questions: View {
     private func makeCards() -> some View {
         ZStack {
             VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 40 : 32) {
-                BackTopBar(text: pack?.name ?? "Pack", isEdit: isEdit, isSelected: viewModel.isSelected()) {
+                BackTopBar(text: pack?.name ?? "", isEdit: isEdit, isSelected: viewModel.isSelected()) {
                     if !viewModel.isSelected() {
                         viewModel.selectedCards = viewModel.cards
                     } else {
@@ -97,7 +97,7 @@ struct Questions: View {
                             SoundManager.shared.sound(.click1)
                             questionMode = .list
                         } label: {
-                            Text("List")
+                            Text(Localization.list)
                         }
                         if let pack,
                            !pack.text.isEmpty {
@@ -106,7 +106,7 @@ struct Questions: View {
                                 SoundManager.shared.sound(.click1)
                                 isShowDecription.toggle()
                             } label: {
-                                Text("Description")
+                                Text(Localization.description)
                             }
                         }
                         Button {
@@ -114,7 +114,7 @@ struct Questions: View {
                             SoundManager.shared.sound(.click1)
                             viewModel.shuffle()
                         } label: {
-                            Text("Shuffle")
+                            Text(Localization.shuffle)
                         }
                         if viewModel.cards.count != 0 {
                             Button {
@@ -122,7 +122,7 @@ struct Questions: View {
                                 SoundManager.shared.sound(.click1)
                                 isShowChangeText.toggle()
                             } label: {
-                                Text("Change question")
+                                Text(Localization.changeQ)
                             }
                             if viewModel.cards.count > viewModel.cardIndex,
                                viewModel.cards[viewModel.cardIndex].isFlipCard {
@@ -131,7 +131,7 @@ struct Questions: View {
                                     SoundManager.shared.sound(.click1)
                                     isShowChangeAnswer.toggle()
                                 } label: {
-                                    Text("Change answer")
+                                    Text(Localization.changeA)
                                 }
                             }
                             Button(role: .destructive) {
@@ -141,7 +141,7 @@ struct Questions: View {
                                     viewModel.deleteCard(viewModel.cards[viewModel.cardIndex])
                                 }
                             } label: {
-                                Text("Delete current card")
+                                Text(Localization.deleteCurrent)
                             }
                         }
                         if viewModel.favoriteType != pack {
@@ -155,7 +155,7 @@ struct Questions: View {
                                     }
                                 }
                             } label: {
-                                Text("Delete this pack")
+                                Text(Localization.deleteThisPack)
                             }
                         }
                     }
@@ -185,61 +185,66 @@ struct Questions: View {
         VStack {
             if viewModel.cards.count == 0 {
                 ZStack {
-                    BackTopBar(text: pack?.name ?? "Pack", isEdit: isEdit, isSelected: viewModel.isSelected()) {
-                        if !viewModel.isSelected() {
-                            viewModel.selectedCards = viewModel.cards
-                        } else {
-                            viewModel.selectedCards = []
-                        }
-                    } deleteTapAction: {
-                        viewModel.deleteCards()
-                    } optionButtons: {
-                        VStack {
-                            Button {
-                                HapticManager.shared.triggerHapticFeedback(.light)
-                                SoundManager.shared.sound(.click1)
-                                questionMode = .cards
-                            } label: {
-                                Text("Cards")
+                    VStack {
+                        BackTopBar(text: pack?.name ?? "", isEdit: isEdit, isSelected: viewModel.isSelected()) {
+                            if !viewModel.isSelected() {
+                                viewModel.selectedCards = viewModel.cards
+                            } else {
+                                viewModel.selectedCards = []
                             }
-                            if let pack,
-                               !pack.text.isEmpty {
+                        } deleteTapAction: {
+                            viewModel.deleteCards()
+                        } optionButtons: {
+                            VStack {
                                 Button {
                                     HapticManager.shared.triggerHapticFeedback(.light)
                                     SoundManager.shared.sound(.click1)
-                                    isShowDecription.toggle()
+                                    questionMode = .cards
                                 } label: {
-                                    Text("Description")
+                                    Text(Localization.cardsSection)
+                                }
+                                if let pack,
+                                   !pack.text.isEmpty {
+                                    Button {
+                                        HapticManager.shared.triggerHapticFeedback(.light)
+                                        SoundManager.shared.sound(.click1)
+                                        isShowDecription.toggle()
+                                    } label: {
+                                        Text(Localization.description)
+                                    }
+                                }
+                                Button {
+                                    HapticManager.shared.triggerHapticFeedback(.light)
+                                    SoundManager.shared.sound(.click1)
+                                    viewModel.shuffle()
+                                } label: {
+                                    Text(Localization.shuffle)
+                                }
+                                if !viewModel.cards.isEmpty {
+                                    Button(role: .destructive) {
+                                        HapticManager.shared.triggerHapticFeedback(.light)
+                                        SoundManager.shared.sound(.click1)
+                                        isEdit.toggle()
+                                    } label: {
+                                        Text(Localization.delete)
+                                    }
                                 }
                             }
-                            Button {
-                                HapticManager.shared.triggerHapticFeedback(.light)
-                                SoundManager.shared.sound(.click1)
-                                viewModel.shuffle()
-                            } label: {
-                                Text("Shuffle")
-                            }
-                            Button(role: .destructive) {
-                                HapticManager.shared.triggerHapticFeedback(.light)
-                                SoundManager.shared.sound(.click1)
-                                isEdit.toggle()
-                            } label: {
-                                Text("Delete")
+                        } closeTapAction: {
+                            if isEdit {
+                                isEdit = false
+                            } else {
+                                dismiss()
                             }
                         }
-                    } closeTapAction: {
-                        if isEdit {
-                            isEdit = false
-                        } else {
-                            dismiss()
-                        }
+                        .padding(.vertical, 16)
+                        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
+                        Spacer()
                     }
-                    .padding(.vertical, 16)
-                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
                     
                     VStack {
                         Spacer()
-                        Text("Empty.")
+                        Text(Localization.emptyPack)
                             .font(.custom("Poppins-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32))
                             .multilineTextAlignment(.center)
                             .foregroundStyle(.darkWhite)
@@ -249,7 +254,7 @@ struct Questions: View {
                 }
             } else {
                 VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32) {
-                    BackTopBar(text: pack?.name ?? "Pack", isEdit: isEdit, isSelected: viewModel.isSelected()) {
+                    BackTopBar(text: pack?.name ?? "", isEdit: isEdit, isSelected: viewModel.isSelected()) {
                         if !viewModel.isSelected() {
                             viewModel.selectedCards = viewModel.cards
                         } else {
@@ -264,7 +269,7 @@ struct Questions: View {
                                 SoundManager.shared.sound(.click1)
                                 questionMode = .cards
                             } label: {
-                                Text("Cards")
+                                Text(Localization.cardsSection)
                             }
                             if let pack,
                                !pack.text.isEmpty {
@@ -273,7 +278,7 @@ struct Questions: View {
                                     SoundManager.shared.sound(.click1)
                                     isShowDecription.toggle()
                                 } label: {
-                                    Text("Description")
+                                    Text(Localization.description)
                                 }
                             }
                             Button {
@@ -281,14 +286,16 @@ struct Questions: View {
                                 SoundManager.shared.sound(.click1)
                                 viewModel.shuffle()
                             } label: {
-                                Text("Shuffle")
+                                Text(Localization.shuffle)
                             }
-                            Button(role: .destructive) {
-                                HapticManager.shared.triggerHapticFeedback(.light)
-                                SoundManager.shared.sound(.click1)
-                                isEdit.toggle()
-                            } label: {
-                                Text("Delete")
+                            if !viewModel.cards.isEmpty {
+                                Button(role: .destructive) {
+                                    HapticManager.shared.triggerHapticFeedback(.light)
+                                    SoundManager.shared.sound(.click1)
+                                    isEdit.toggle()
+                                } label: {
+                                    Text(Localization.delete)
+                                }
                             }
                         }
                     } closeTapAction: {

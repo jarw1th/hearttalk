@@ -25,145 +25,6 @@ enum QuestionMode {
     
 }
 
-enum AboutAppType: CaseIterable {
-    
-    case whatis, share, review, terms, privacy, contact, settings
-    
-    func imageName() -> String {
-        switch self {
-        case .whatis:
-            return "whatIs"
-        case .share:
-            return "share"
-        case .review:
-            return "review"
-        case .terms:
-            return "terms"
-        case .privacy:
-            return "privacy"
-        case .contact:
-            return "contact"
-        case .settings:
-            return "settings"
-        }
-    }
-    
-    func text() -> String {
-        switch self {
-        case .whatis:
-            return Localization.whatIs
-        case .share:
-            return Localization.share
-        case .review:
-            return Localization.review
-        case .terms:
-            return Localization.terms
-        case .privacy:
-            return Localization.privacy
-        case .contact:
-            return Localization.contact
-        case .settings:
-            return Localization.settings
-        }
-    }
-    
-    func isSpecial() -> Bool {
-        switch self {
-        case .settings:
-            return true
-        default:
-            return false
-        }
-    }
-    
-}
-
-enum SettingsType: CaseIterable {
-    
-    case vibrations, sounds, dailyCard, theme, language, clear
-    
-    func imageName() -> String {
-        switch self {
-        case .vibrations:
-            return ""
-        case .sounds:
-            return ""
-        case .dailyCard:
-            return ""
-        case .theme:
-            return ""
-        case .language:
-            return "language"
-        case .clear:
-            return "trash"
-        }
-    }
-    
-    func text() -> String {
-        switch self {
-        case .vibrations:
-            return Localization.vibrations
-        case .sounds:
-            return Localization.sounds
-        case .dailyCard:
-            return Localization.dailyCard
-        case .theme:
-            return Localization.darkMode
-        case .language:
-            let locale = Locale.current
-            if let language = locale.localizedString(forLanguageCode: UserDefaultsManager.shared.appleLanguage) {
-                return language.capitalized
-            }
-            return "English"
-        case .clear:
-            return Localization.clear
-        }
-    }
-    
-    func isSpecial() -> Bool {
-        switch self {
-        case .clear:
-            return true
-        default:
-            return false
-        }
-    }
-    
-}
-
-enum CreateScreenType {
-    
-    case card, pack
-    
-    func header() -> String {
-        switch self {
-        case .card:
-            return Localization.createCard
-        case .pack:
-            return Localization.createPack
-        }
-    }
-    
-    func placeholder() -> String {
-        switch self {
-        case .card:
-            return Localization.question
-        case .pack:
-            return Localization.name
-        }
-    }
-    
-    func alert() -> String {
-        switch self {
-        case .card:
-            return Localization.alertCard
-        case .pack:
-            return Localization.alertPack
-        }
-    }
-    
-}
-
 enum PDFType {
     
     case terms, privacy
@@ -245,18 +106,107 @@ enum OnlineAlertType: Identifiable, Hashable {
     var text: String {
         switch self {
         case .password:
-            "Password should have: special symbols, numbers, length is more than 8."
+            Localization.passwordAlert
         case .email:
-            "Wrong email"
+            Localization.emailAlert
         case .server:
-            "Server error"
+            Localization.serverAlert
         case .successReset(let email):
-            "We sent reset link to \(email)"
+            Localization.successResetAlert
         case .wrongPassword(let email):
-            "Wrong password for \(email)"
+            Localization.wrongPasswordAlert
         case .noEmail(let email):
-            "We do not have such email \(email)"
+            Localization.noEmailAlert
         }
     }
     
+}
+
+enum ImportAlertType: Identifiable, Hashable {
+    
+    case packName
+    case txt
+    
+    var id: String {
+        switch self {
+        case .packName:
+            "packName"
+        case .txt:
+            "txt"
+        }
+    }
+    
+    var text: String {
+        switch self {
+        case .packName:
+            Localization.packNameAlert
+        case .txt:
+            Localization.txtAlertMessage
+        }
+    }
+    
+}
+
+enum GenerateAlertType: Identifiable, Hashable {
+    
+    case packName
+    case cardNumber
+    case propmt
+    
+    var id: String {
+        switch self {
+        case .packName:
+            "packName"
+        case .cardNumber:
+            "cardNumber"
+        case .propmt:
+            "propmt"
+        }
+    }
+    
+    var text: String {
+        switch self {
+        case .packName:
+            Localization.packNameAlert
+        case .cardNumber:
+            Localization.cardNumberAlert
+        case .propmt:
+            Localization.promptAlert
+        }
+    }
+    
+}
+
+enum SettingsActionSheetType: Identifiable, Hashable {
+    
+    case language
+    case contacts
+
+    var id: String {
+        switch self {
+        case .language:
+            "language"
+        case .contacts:
+            "contacts"
+        }
+    }
+    
+    var title: String {
+        switch self {
+        case .language:
+            Localization.languageAlertTitle
+        case .contacts:
+            Localization.contactsAlertTitle
+        }
+    }
+
+    var text: String {
+        switch self {
+        case .language:
+            Localization.languageAlertMessage
+        case .contacts:
+            Localization.contactsAlertMessage
+        }
+    }
+
 }

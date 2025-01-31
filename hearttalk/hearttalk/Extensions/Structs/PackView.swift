@@ -25,8 +25,8 @@ struct PackView: View {
                     .foregroundStyle(.darkWhite)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 Spacer()
-                let value = (numberOfCards == 1 ? "card" : "cards")
-                let text = numberOfCards <= 0 ? "empty" : "\(numberOfCards) \(value)"
+                let value = (numberOfCards == 1 ? Localization.card : Localization.cards)
+                let text = numberOfCards <= 0 ? Localization.empty : "\(numberOfCards) \(value)"
                 Text(text)
                     .font(.custom("Poppins-Regular", size: 12))
                     .multilineTextAlignment(.trailing)

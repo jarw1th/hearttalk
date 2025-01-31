@@ -22,14 +22,14 @@ struct NoteImageField: View {
                     SoundManager.shared.sound(.click1)
                     onChange()
                 } label: {
-                    Text("Change")
+                    Text(Localization.change)
                 }
                 Button {
                     HapticManager.shared.triggerHapticFeedback(.light)
                     SoundManager.shared.sound(.click1)
                     onCrop()
                 } label: {
-                    Text("Crop")
+                    Text(Localization.crop)
                 }
             } label: {
                 ZStack {
@@ -57,6 +57,8 @@ struct NoteImageField: View {
             }
             .padding(16)
         }
+        .frame(height: 180)
+        .frame(maxWidth: .infinity)
     }
     
 }

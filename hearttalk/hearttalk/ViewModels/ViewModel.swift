@@ -104,7 +104,7 @@ final class ViewModel: ObservableObject {
         }
     }
     
-    func createPack(name: String, color: String, description: String, cardQuestions: [String]) {
+    func createPack(name: String, color: String, description: String, cardQuestions: [String]) -> Pack {
         let lang = userDefaultsManager.appleLanguage
         let pack = Pack()
         pack.id = UUID().uuidString
@@ -129,6 +129,8 @@ final class ViewModel: ObservableObject {
         DispatchQueue.main.async {
             self.fetchAll()
         }
+        
+        return pack
     }
     
     func deletePack(_ pack: Pack) {
@@ -428,6 +430,41 @@ final class ViewModel: ObservableObject {
     func setOffline() {
         userDefaultsManager.isOnline = false
         isOnline = false
+    }
+    
+    func importFrom(_ file: URL, for pack: Pack) {
+        guard file.isFileURL else { return }
+        let lines = readLines(from: file.relativePath)
+        
+        for line in lines {
+            let separatedTexts = line.components(separatedBy: "/")
+            let card = Card(id: UUID().uuidString, question: separatedTexts.isEmpty ? line : separatedTexts[0])
+            card.isFlipCard = separatedTexts.count > 1
+            if separatedTexts.count > 1 {
+                card.answer = separatedTexts[1]
+            }
+            card.language = pack.language
+            if let packInstance = self.realmManager.getPack(forId: pack.id) {
+                realmManager.update {
+                    packInstance.cards.append(card)
+                }
+            }
+        }
+    }
+    
+    private func readLines(from filePath: String) -> [String] {
+        do {
+            let fileContents = try String(contentsOfFile: filePath, encoding: .utf8)
+            let lines = fileContents.components(separatedBy: .newlines)
+            return lines.filter { !$0.isEmpty }
+        } catch {
+            print("Error reading file: \(error.localizedDescription)")
+            return []
+        }
+    }
+    
+    func generate(from prompt: String, using pack: Pack, with cards: Int) {
+        
     }
     
 }

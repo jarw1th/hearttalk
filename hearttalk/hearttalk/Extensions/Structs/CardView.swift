@@ -23,7 +23,6 @@ struct CardView: View {
     
     @State private var isShare: Bool = false
     @State private var isFlipped: Bool = false
-    @State private var isClearAlert: Bool = false
     @State private var shareImage: IdentifiableImage?
     
     var body: some View {
@@ -137,7 +136,7 @@ struct CardView: View {
             } else {
                 VStack {
                     Spacer()
-                    Text("Empty.")
+                    Text(Localization.emptyPack)
                         .font(.custom("Poppins-SemiBold", size: 20))
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.darkWhite)
@@ -190,17 +189,6 @@ struct CardView: View {
                     .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 48 : 64)
                 Spacer()
             }
-            .simultaneousGesture(
-                TapGesture()
-                    .onEnded {
-                        if card.isFlipCard {
-                            HapticManager.shared.triggerHapticFeedback(.light)
-                            SoundManager.shared.sound(.card)
-                            
-                            isFlipped = true
-                        }
-                    }
-            )
             VStack {
                 Spacer()
                 HStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 64 : 80) {
@@ -216,18 +204,24 @@ struct CardView: View {
             RoundedRectangle(cornerRadius: 20)
                 .fill(.darkWhite)
                 .shadow(color: .shadow, radius: 5)
+                .simultaneousGesture(
+                    TapGesture()
+                        .onEnded {
+                            if card.isFlipCard {
+                                HapticManager.shared.triggerHapticFeedback(.light)
+                                SoundManager.shared.sound(.card)
+                                
+                                isFlipped = true
+                            }
+                        }
+                )
         )
-        .alert(isPresented: $isClearAlert) {
-            Alert(title: Text(Localization.deletingCard), primaryButton: .destructive(Text(Localization.delete), action: {
-                viewModel.deleteCard(card)
-            }), secondaryButton: .cancel(Text(Localization.cancel), action: {}))
-        }
     }
     
     private func backCardView(_ card: Card) -> some View {
         ZStack {
             VStack {
-                Text("Answer")
+                Text(Localization.answerCard)
                     .font(.custom("Poppins-Regular", size: 16))
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.lightBlack)
@@ -256,17 +250,17 @@ struct CardView: View {
                         Button {
                             link = card.link
                         } label: {
-                            Text("Open")
+                            Text(Localization.open)
                         }
                         Button {
                             linkAction(card)
                         } label: {
-                            Text("Change")
+                            Text(Localization.change)
                         }
                         Button(role: .destructive) {
                             remvoeLinkAction(card)
                         } label: {
-                            Text("Remove")
+                            Text(Localization.remove)
                         }
                     } label: {
                         Icon(name: "link", size: .custom(16), color: .lightBlack)
@@ -282,11 +276,6 @@ struct CardView: View {
                 .fill(.white)
                 .shadow(color: .shadow, radius: 5)
         )
-        .alert(isPresented: $isClearAlert) {
-            Alert(title: Text(Localization.deletingCard), primaryButton: .destructive(Text(Localization.delete), action: {
-                viewModel.deleteCard(card)
-            }), secondaryButton: .cancel(Text(Localization.cancel), action: {}))
-        }
         .simultaneousGesture(
             TapGesture()
                 .onEnded {
@@ -370,14 +359,14 @@ struct CardView: View {
                         SoundManager.shared.sound(.click1)
                         viewModel.addCard(card, to: pack)
                     } label: {
-                        Text("Add to \(pack.name)")
+                        Text("\(Localization.addTo) \(pack.name)")
                     }
                 } else {
                     Button {
                         HapticManager.shared.triggerHapticFeedback(.light)
                         SoundManager.shared.sound(.click1)
                     } label: {
-                        Text("Remove from \(pack.name)")
+                        Text("\(Localization.removeFrom) \(pack.name)")
                             .foregroundStyle(.destruct)
                     }
                 }

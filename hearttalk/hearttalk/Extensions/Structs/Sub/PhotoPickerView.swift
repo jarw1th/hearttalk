@@ -30,7 +30,6 @@ struct PhotoPickerView: UIViewControllerRepresentable {
                     }
                 }
             } else {
-                // Handle the case where the user cancels without picking anything
                 DispatchQueue.main.async {
                     self.parent.selectedImage.wrappedValue = nil
                 }

@@ -1,107 +1,225 @@
 
-"defaultPacks" = "Default packs";
+"home" = "Home";
 
-"hearTalkPack" = "Hear Talk packs";
+"myContent" = "My content";
 
-"simple" = "Simple";
+"ourChoice" = "Our choice";
 
-"simpleDesc" = "Engage in light-hearted, meaningful conversations. A perfect starting point for anyone.";
+"flipCards" = "Flip cards";
 
-"couples" = "Couples";
+"card" = "card";
 
-"close" = "Close";
+"cards" = "cards";
 
-"closeDesc" = "This pack is a good choice for just started or planned relationship.";
+"empty" = "empty";
 
-"closer" = "Closer";
+"addCard" = "Add card";
 
-"closerDesc" = "This pack is a good choice for relationship that belongs less than a year or just started one.";
+"addPack" = "Add pack";
 
-"closest" = "Closest";
+"importCards" = "Import cards";
 
-"to" = "To";
+"generateAI" = "Generate with AI";
 
-"color" = "Color";
+"settings" = "Settings";
 
-"closestDesc" = "This pack is a good choice for relationship that belongs more than a year.";
+"goOnline" = "Go online";
 
-"18+" = "18+";
+"goOffline" = "Go offline";
+
+"whatIsHT" = "What is Heart Talk?";
+
+"terms" = "Terms of use";
+
+"policy" = "Privacy policy";
+
+"contacts" = "Contact us";
+
+"vibrations" = "Vibrations";
+
+"sounds" = "Sound effects";
+
+"dailyCards" = "Daily cards";
+
+"language" = "Language";
+
+"data" = "Data";
+
+"clearAll" = "Clear all";
+
+"on" = "On";
+
+"off" = "Off";
+
+"contactsAlertTitle" = "Contacts";
+
+"contactsAlertMessage" = "You can find us here:";
+
+"cancel" = "Cancel";
+
+"languageAlertTitle" = "Choose language";
+
+"languageAlertMessage" = "Restart app to apply changes";
+
+"newCard" = "New card";
+
+"questionPlaceholder" = "Question";
+
+"answerPlaceholder" = "Answer";
+
+"flipCard" = "Flip card?";
+
+"yes" = "Yes";
+
+"no" = "No";
+
+"create" = "Create";
+
+"packName" = "Name";
+
+"packDescription" = "Description";
+
+"newPack" = "New pack";
+
+"newImport" = "New import";
+
+"createNewPack" = "Create a new pack?";
+
+"alert" = "Alert";
+
+"txtAlertMessage" = "Format for txt:\nQuestion\nQuestion\nFormat flip cards for txt:\nQuestion/Answer\nQuestion/Answer";
+
+"confirm" = "Confirm";
+
+"ok" = "Ok";
+
+"promptPlaceholder" = "Prompt";
+
+"createOneCard" = "Create one card?";
+
+"numberPlaceholder" = "Number";
 
 "adultAlertTitle" = "Age Verification";
 
 "adultAlertMessage" = "You must be at least 18 years old to access this content. Please confirm your age.";
 
-"confirm" = "Confirm";
+"description" = "Description";
 
-"taboo" = "Taboo";
+"list" = "List";
 
-"tabooDesc" = "Break the ice on forbidden topics with bold, unfiltered questions that challenge boundaries and open up daring conversations.";
+"shuffle" = "Shuffle";
 
-"sex" = "Sex";
+"changeQ" = "Change question";
 
-"sexDesc" = "Explore intimacy on a deeper level with candid questions focused on sexuality, desire, and personal connection in romantic relationships.";
+"changeA" = "Change answer";
 
-"family" = "Family";
+"deleteCurrent" = "Delete current card";
 
-"familyDesc" = "Bring your family closer with questions designed to spark laughter, understanding, and deeper connections across generations.";
+"deleteThisPack" = "Delete this pack";
 
-"favorites" = "Favorites";
+"cardsSection" = "Cards";
 
-"created" = "Created";
+"delete" = "Delete";
 
-"unsorted" = "Unsorted";
+"answerCard" = "Answer";
 
-"unsortedDesc" = "Your cards that are not sorted to packs.";
+"emptyPack" = "Empty.";
 
-"generateAction" = "Generate";
+"youAreFantastic" = "You are fantastic";
 
-"cards" = "cards";
+"notes" = "Notes";
 
-"card" = "card";
+"addNew" = "Add new";
 
-"packs" = "packs";
+"newNote" = "New note";
 
-"pack" = "pack";
+"writeSmth" = "Write something";
 
-"goBack" = "Go back";
+"drawSmth" = "Draw something";
 
-"aboutTheApp" = "About the app";
+"or" = "or";
 
-"whatIs" = "What is Heart Talk?";
+"uploadImage" = "upload image";
 
-"share" = "Share Heart Talk";
+"notePlaceholder" = "This question made me feel like...";
 
-"review" = "Write a review";
+"tapEdit" = "Tap to edit";
 
-"terms" = "Terms of Use";
+"crop" = "Crop";
 
-"privacy" = "Privacy Policy";
+"change" = "Change";
 
-"contact" = "Contact us";
+"changeName" = "Change name";
+
+"changeDescription" = "Change description";
+
+"selectAll" = "Select all";
+
+"deselectAll" = "Deselect all";
+
+"open" = "Open";
+
+"remove" = "Remove";
+
+"addTo" = "Add to";
+
+"removeFrom" = "Remove from";
+
+"changeText" = "Change text";
+
+"valuePlaceholder" = "Value";
+
+"import" = "Import";
+
+"generate" = "Generate";
+
+"offlineHour" = "Offline for 1 hour";
+
+"offlineForever" = "Offline forever";
+
+"deleting" = "You are gonna delete all data after restart";
 
 "credential" = "Ruslan Parastaev";
 
-"checkOut" = "Check out";
-
 "version" = "version";
 
-"createPack" = "Create pack";
+"packs" = "Packs";
 
-"createCard" = "Create card";
+"notSet" = "Not set";
 
-"name" = "Name";
+"questionAlertMessage" = "Question should be at least 6 characters long.";
 
-"question" = "Question";
+"noteAlertMessage" = "Note should be at least 6 characters long.";
 
-"create" = "Create";
+"linkAlert" = "Wrong link.";
 
-"thatIsAll" = "That’s all";
+"linkAttach" = "Link attach";
 
-"prompt" = "Prompt";
+"writeLink" = "Write link";
 
-"generateNoun" = "Generate";
+"attach" = "Attach";
 
-"clear" = "Clear data";
+"searchFor" = "search for it";
+
+"browser" = "Web browser";
+
+"passwordAlert" = "Password should have: special symbols, numbers, length is more than 8.";
+
+"emailAlert" = "Wrong email";
+
+"serverAlert" = "Server error";
+
+"successResetAlert" = "We sent reset link to";
+
+"wrongPasswordAlert" = "Wrong password for";
+
+"noEmailAlert" = "We do not have such email";
+
+"packNameAlert" = "Pack name should be at least 4 characters long.";
+
+"cardNumberAlert" = "Invalid card number";
+
+"promptAlert" = "Prompt should be at least 4 characters long.";
 
 "whatIs1Header" = "What is Heart talk?";
 
@@ -119,64 +237,8 @@
 
 "whatIs4Name" = "The app also features an advanced AI that generates custom questions based on user prompts. This personalized approach allows users to explore topics that are particularly relevant to their own experiences and interests, further enhancing the quality of their conversations.";
 
-"deleting" = "You are going to delete all data after app restart";
-
-"deletingCard" = "You are going to delete card";
-
-"deletingNote" = "You are going to delete note";
-
-"delete" = "Delete";
-
-"cancel" = "Cancel";
-
-"perfect" = "You are perfect!";
-
-"empty" = "empty";
-
-"description" = "Description";
-
-"descriptionPlaceholder" = "Your created pack.";
-
-"notePlaceholder" = "Write your note";
-
-"notes" = "Notes";
-
-"createNote" = "Create note";
-
-"settings" = "Settings";
-
-"vibrations" = "Vibrations";
-
-"sounds" = "Sounds";
-
-"dailyCard" = "Daily card";
-
-"packActionSheetTitle" = "Select a pack";
-
-"packActionSheetMessage" = "This card will be added to selected pack.";
-
-"languageActionSheetTitle" = "Select language";
-
-"languageActionSheetMessage" = "Your custom packs is linked to selected language.";
-
-"dailyWidgetPlaceholder" = "Who are you?";
-
-"dailyWidgetNoCard" = "No card for today";
-
-"darkMode" = "Dark theme";
-
-"alert" = "Alert";
-
-"alertCard" = "Question should be more than 10 characters";
-
-"alertPack" = "Pack name should be more than 4 characters";
-
-"alertNote" = "Note should be more than 10 characters";
-
-"addCard" = "Add card";
-
-"addPack" = "Add pack";
-
 "addCardSub" = "Add a new card";
 
 "addPackSub" = "Add a new pack";
+
+"checkOut" = "Check this cool app. Let's get closer with each other with";

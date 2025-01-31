@@ -29,7 +29,7 @@ struct WebBrowser: View {
     @ViewBuilder
     private func makeContent() -> some View {
         VStack(spacing: 40) {
-            WebBrowserTopBar(text: "Web browser", canGoBack: canGoBack, canGoForward: canGoForward) {
+            WebBrowserTopBar(text: Localization.browser, canGoBack: canGoBack, canGoForward: canGoForward) {
                 link = ""
                 dismiss()
             } backTapAction: {
@@ -57,7 +57,7 @@ struct WebBrowser: View {
         Button {
             dismiss()
         } label: {
-            Text("Attach")
+            Text(Localization.attach)
                 .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32))
                 .underline()
                 .multilineTextAlignment(.center)

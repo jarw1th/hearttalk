@@ -81,6 +81,9 @@
 		215187622D4C243A00FFB614 /* WebBrowserTopBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215187612D4C243500FFB614 /* WebBrowserTopBar.swift */; };
 		215187642D4C27EB00FFB614 /* OnlineProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215187632D4C27E600FFB614 /* OnlineProfile.swift */; };
 		215187662D4C2C7200FFB614 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215187652D4C2C7000FFB614 /* Date+.swift */; };
+		215187682D4CA9F000FFB614 /* ImportCardsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215187672D4CA9E000FFB614 /* ImportCardsScreen.swift */; };
+		2151876A2D4CACDA00FFB614 /* ImportOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215187692D4CACD700FFB614 /* ImportOption.swift */; };
+		2151876C2D4CB45A00FFB614 /* GenerateCardsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2151876B2D4CB45800FFB614 /* GenerateCardsScreen.swift */; };
 		21835FB32CA1545A002A17E9 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21835FB22CA1545A002A17E9 /* String+.swift */; };
 		21835FB52CA16B57002A17E9 /* Sound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21835FB42CA16B57002A17E9 /* Sound.swift */; };
 		21835FB82CA16C60002A17E9 /* CardSwipe.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 21835FB72CA16C60002A17E9 /* CardSwipe.mp3 */; };
@@ -227,6 +230,9 @@
 		215187612D4C243500FFB614 /* WebBrowserTopBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebBrowserTopBar.swift; sourceTree = "<group>"; };
 		215187632D4C27E600FFB614 /* OnlineProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineProfile.swift; sourceTree = "<group>"; };
 		215187652D4C2C7000FFB614 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
+		215187672D4CA9E000FFB614 /* ImportCardsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportCardsScreen.swift; sourceTree = "<group>"; };
+		215187692D4CACD700FFB614 /* ImportOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportOption.swift; sourceTree = "<group>"; };
+		2151876B2D4CB45800FFB614 /* GenerateCardsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateCardsScreen.swift; sourceTree = "<group>"; };
 		21835FB22CA1545A002A17E9 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		21835FB42CA16B57002A17E9 /* Sound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sound.swift; sourceTree = "<group>"; };
 		21835FB72CA16C60002A17E9 /* CardSwipe.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = CardSwipe.mp3; sourceTree = "<group>"; };
@@ -520,6 +526,7 @@
 				2151873E2D4A652F00FFB614 /* SearchBar.swift */,
 				215187442D4A7B8700FFB614 /* TextNoteView.swift */,
 				215187462D4A7BD800FFB614 /* ImageNoteView.swift */,
+				215187692D4CACD700FFB614 /* ImportOption.swift */,
 				2151874E2D4B767500FFB614 /* Online */,
 				21F4DCB22CA99CB9008B3589 /* Sub */,
 			);
@@ -581,6 +588,8 @@
 				21BDB40F2C89C2B50097F90E /* Questions.swift */,
 				21BDB4152C89CA440097F90E /* Settings.swift */,
 				2151873A2D4A4FC500FFB614 /* CreatePackScreen.swift */,
+				215187672D4CA9E000FFB614 /* ImportCardsScreen.swift */,
+				2151876B2D4CB45800FFB614 /* GenerateCardsScreen.swift */,
 				2151873C2D4A50DF00FFB614 /* CreateCardScreen.swift */,
 				2103FEC02CA0457A0020D1AE /* CreateNoteScreen.swift */,
 				2151875B2D4C188300FFB614 /* CreateLinkScreen.swift */,
@@ -892,6 +901,8 @@
 				215187432D4A769500FFB614 /* NoteDrawField.swift in Sources */,
 				215187212D4A24B500FFB614 /* SettingsButton.swift in Sources */,
 				219979752CAED2D3008688A5 /* AppDelegate.swift in Sources */,
+				2151876C2D4CB45A00FFB614 /* GenerateCardsScreen.swift in Sources */,
+				215187682D4CA9F000FFB614 /* ImportCardsScreen.swift in Sources */,
 				215187162D4A210200FFB614 /* HomeTopBar.swift in Sources */,
 				2151872D2D4A2A2D00FFB614 /* CustomTextField.swift in Sources */,
 				21BDB3DE2C899ADD0097F90E /* ViewModel.swift in Sources */,
@@ -930,6 +941,7 @@
 				21F4DCBF2CA99E0C008B3589 /* UserDefaultsManager.swift in Sources */,
 				215187192D4A213700FFB614 /* Icon.swift in Sources */,
 				215187252D4A260E00FFB614 /* SettingsValueButton.swift in Sources */,
+				2151876A2D4CACDA00FFB614 /* ImportOption.swift in Sources */,
 				215187312D4A2B4A00FFB614 /* QuestionToggle.swift in Sources */,
 				215187542D4B77F100FFB614 /* OnlineProfilePreview.swift in Sources */,
 				2151872B2D4A279400FFB614 /* CardView.swift in Sources */,

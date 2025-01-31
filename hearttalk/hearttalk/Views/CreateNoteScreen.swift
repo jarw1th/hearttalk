@@ -31,7 +31,7 @@ struct CreateNoteScreen: View {
             }
             .edgesIgnoringSafeArea(.bottom)
             .alert(isPresented: $isShowAlert) {
-                Alert(title: Text(Localization.alert), message: Text("Note should be at least 10 characters long."), dismissButton: .default(Text(Localization.confirm), action: {}))
+                Alert(title: Text(Localization.alert), message: Text(Localization.noteAlertMessage), dismissButton: .default(Text(Localization.confirm), action: {}))
             }
             .sheet(isPresented: $isShowImportImage) {
                 PhotoPickerView(selectedImage: $imageFromGallery, configuration: configuration)
@@ -41,16 +41,16 @@ struct CreateNoteScreen: View {
     @ViewBuilder
     private func makeContent() -> some View {
         VStack(spacing: 40) {
-            SingleBackTopBar(text: "New note") {
+            SingleBackTopBar(text: Localization.newNote) {
                 dismiss()
             }
             .padding(.vertical, 16)
             
             VStack(spacing: 24) {
-                makeSection("Write something") {
-                    NoteTextField(placeholder: "This question made me feel like...", text: $text)
+                makeSection(Localization.writeSmth) {
+                    NoteTextField(placeholder: Localization.notePlaceholder, text: $text)
                 }
-                makeSection(imageFromGallery != nil ? "Tap to edit" : "Draw something", isImage: true) {
+                makeSection(imageFromGallery != nil ? Localization.tapEdit : Localization.drawSmth, isImage: true) {
                     VStack(spacing: 16) {
                         if let imageFromGallery {
                             NoteImageField(image: imageFromGallery) {
@@ -108,7 +108,7 @@ struct CreateNoteScreen: View {
     private func makeSection<Content: View>(_ text: String, isImage: Bool = false, content: () -> Content) -> some View {
         VStack(spacing: 16) {
             HStack(spacing: 0) {
-                Text("\(text)\(isImage && imageFromGallery == nil ? " or " : "")")
+                Text("\(text)\(isImage && imageFromGallery == nil ? " \(Localization.or) " : "")")
                     .font(.custom("Poppins-Regular", size: 16))
                     .multilineTextAlignment(.leading)
                     .foregroundStyle(.darkWhite)
@@ -116,7 +116,7 @@ struct CreateNoteScreen: View {
                     Button {
                         isShowImportImage.toggle()
                     } label: {
-                        Text("upload image")
+                        Text(Localization.uploadImage)
                             .font(.custom("Poppins-Regular", size: 16))
                             .multilineTextAlignment(.leading)
                             .foregroundStyle(.blue)

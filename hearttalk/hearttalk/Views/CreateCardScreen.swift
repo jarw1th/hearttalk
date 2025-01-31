@@ -27,11 +27,11 @@ struct CreateCardScreen: View {
             }
             .edgesIgnoringSafeArea(.bottom)
             .alert(isPresented: $isShowAlert) {
-                Alert(title: Text(Localization.alert), message: Text("Question should be at least 10 characters long."), dismissButton: .default(Text(Localization.confirm), action: {}))
+                Alert(title: Text(Localization.alert), message: Text(Localization.questionAlertMessage), dismissButton: .default(Text(Localization.confirm), action: {}))
             }
             .actionSheet(isPresented: $isShowPackSelect) {
                 ActionSheet(
-                    title: Text("Packs"),
+                    title: Text(Localization.packs),
                     buttons: makeActionSheetButtons()
                 )
             }
@@ -39,20 +39,20 @@ struct CreateCardScreen: View {
     
     private func makeContent() -> some View {
         VStack(spacing: 40) {
-            SingleBackTopBar(text: "New card") {
+            SingleBackTopBar(text: Localization.newCard) {
                 dismiss()
             }
             .padding(.vertical, 16)
             
             VStack(spacing: 40) {
                 VStack(spacing: 16) {
-                    CustomTextField(placeholder: "Question", text: $question)
+                    CustomTextField(placeholder: Localization.questionPlaceholder, text: $question)
                     if isFlipCard {
-                        CustomTextField(placeholder: "Answer", text: $answer)
+                        CustomTextField(placeholder: Localization.answerPlaceholder, text: $answer)
                     }
                 }
-                QuestionToggle(text: "Flip card?", isOn: $isFlipCard)
-                SettingsButton(text: viewModel.selectedSavingType?.name ?? "Not set") {
+                QuestionToggle(text: Localization.flipCard, isOn: $isFlipCard)
+                SettingsButton(text: viewModel.selectedSavingType?.name ?? Localization.notSet) {
                     isShowPackSelect.toggle()
                 }
                 Spacer()

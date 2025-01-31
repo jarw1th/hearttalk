@@ -9,11 +9,10 @@ struct Settings: View {
     @Environment(\.dismiss) var dismiss
     
     @State private var isShowWhatIs: Bool = false
-    @State private var isShowContacts: Bool = false
     @State private var isClearAlert: Bool = false
-    @State private var isShowLanguage: Bool = false
     @State private var isShowSignIn: Bool = false
     @State private var link: String?
+    @State private var actionSheetType: SettingsActionSheetType?
     
     @State private var isVibrations: Bool = false
     @State private var isDailyCard: Bool = false
@@ -31,12 +30,6 @@ struct Settings: View {
                 }
                 .fullScreenCover(isPresented: $isShowWhatIs) {
                     WhatIsTheApp()
-                }
-                .actionSheet(isPresented: $isShowContacts) {
-                    ActionSheet(
-                        title: Text(""),
-                        buttons: makeActionSheetButtons()
-                    )
                 }
                 .onAppear {
                     isVibrations = UserDefaultsManager.shared.isVibrations
@@ -57,17 +50,18 @@ struct Settings: View {
                         viewModel.clearData()
                     }), secondaryButton: .cancel(Text(Localization.cancel), action: {}))
                 }
-                .actionSheet(isPresented: $isShowLanguage) {
+                .actionSheet(item: $actionSheetType) { type in
                     ActionSheet(
-                        title: Text(Localization.languageActionSheetTitle),
-                        message: Text(Localization.languageActionSheetMessage),
-                        buttons: makeLangActionSheetButtons()
-                    )
-                }
-                .actionSheet(isPresented: $isShowContacts) {
-                    ActionSheet(
-                        title: Text("Contacts"),
-                        buttons: makeActionSheetButtons()
+                        title: Text(type.title),
+                        message: Text(type.text),
+                        buttons: { () -> [Alert.Button] in
+                            switch type {
+                            case .language:
+                                makeLangActionSheetButtons()
+                            case .contacts:
+                                makeActionSheetButtons()
+                            }
+                        }()
                     )
                 }
                 .fullScreenCover(isPresented: $isShowSignIn) {
@@ -79,7 +73,7 @@ struct Settings: View {
     
     private func makeContent() -> some View {
         VStack(spacing: 40) {
-            SingleBackTopBar(text: "Settings") {
+            SingleBackTopBar(text: Localization.settings) {
                 dismiss()
             }
             .padding(.vertical, 16)
@@ -88,7 +82,7 @@ struct Settings: View {
                 VStack(spacing: 40) {
                     if viewModel.isOnline && viewModel.network.isNetworkAvailable {
                         if onlineViewModel.isSignedIn {
-                            OnlineProfile(image: onlineViewModel.getUser()?.photoURL, name: onlineViewModel.getUser()?.displayName ?? "Unknown user") {
+                            OnlineProfile(image: onlineViewModel.getUser()?.photoURL, name: onlineViewModel.getUser()?.displayName ?? "") {
                                 onlineViewModel.signOut()
                             }
                         } else {
@@ -97,7 +91,7 @@ struct Settings: View {
                             }
                         }
                     }
-                    SettingsButton(text: viewModel.isOnline ? "Go offline" : "Go online") {
+                    SettingsButton(text: viewModel.isOnline ? Localization.goOffline : Localization.goOnline) {
                         viewModel.networkMode()
                     }
                     .contextMenu {
@@ -106,14 +100,14 @@ struct Settings: View {
                             SoundManager.shared.sound(.click1)
                             viewModel.setOfflineHour()
                         } label: {
-                            Text("Offline for 1 hour")
+                            Text(Localization.offlineHour)
                         }
                         Button {
                             HapticManager.shared.triggerHapticFeedback(.light)
                             SoundManager.shared.sound(.click1)
                             viewModel.setOffline()
                         } label: {
-                            Text("Offline forever")
+                            Text(Localization.offlineForever)
                         }
                     }
                     makeButtonsList()
@@ -153,16 +147,16 @@ struct Settings: View {
     @ViewBuilder
     private func makeButtonsList() -> some View {
         VStack(spacing: 16) {
-            SettingsButton(text: "What is Heart Talk?") {
+            SettingsButton(text: Localization.whatIsHT) {
                 whatIsAction()
             }
-            SettingsButton(text: "Terms of use") {
+            SettingsButton(text: Localization.terms) {
                 termsAction()
             }
-            SettingsButton(text: "Privacy policy") {
+            SettingsButton(text: Localization.policy) {
                 privacyAction()
             }
-            SettingsButton(text: "Contact us") {
+            SettingsButton(text: Localization.contacts) {
                 contactAction()
             }
         }
@@ -171,14 +165,13 @@ struct Settings: View {
     @ViewBuilder
     private func makeSettingsList() -> some View {
         VStack(spacing: 16) {
-            SettingsToggle(text: "Vibrations", isOn: $isVibrations)
-            SettingsToggle(text: "Sound effects", isOn: $isSounds)
-            SettingsToggle(text: "Daily cards", isOn: $isDailyCard)
-            SettingsValueButton(text: "Language", selectedItem: selectedLang()) {
-                print(1)
-                isShowLanguage.toggle()
+            SettingsToggle(text: Localization.vibrations, isOn: $isVibrations)
+            SettingsToggle(text: Localization.sounds, isOn: $isSounds)
+            SettingsToggle(text: Localization.dailyCards, isOn: $isDailyCard)
+            SettingsValueButton(text: Localization.language, selectedItem: selectedLang()) {
+                actionSheetType = .language
             }
-            SettingsEraseButton(text: "Data") {
+            SettingsEraseButton(text: Localization.data) {
                 isClearAlert.toggle()
             }
         }
@@ -197,7 +190,7 @@ struct Settings: View {
     }
     
     private func contactAction() {
-        isShowContacts.toggle()
+        actionSheetType = .contacts
     }
     
     private func termsAction() {

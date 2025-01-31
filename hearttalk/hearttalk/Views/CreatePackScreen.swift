@@ -28,7 +28,7 @@ struct CreatePackScreen: View {
             }
             .edgesIgnoringSafeArea(.bottom)
             .alert(isPresented: $isShowAlert) {
-                Alert(title: Text(Localization.alert), message: Text("Name should be at least 4 characters long."), dismissButton: .default(Text(Localization.confirm), action: {}))
+                Alert(title: Text(Localization.alert), message: Text(Localization.packNameAlert), dismissButton: .default(Text(Localization.confirm), action: {}))
             }
     }
     
@@ -41,8 +41,8 @@ struct CreatePackScreen: View {
             
             VStack(spacing: 40) {
                 VStack(spacing: 16) {
-                    CustomTextField(placeholder: "Name", text: $name)
-                    CustomTextField(placeholder: "Description", text: $description)
+                    CustomTextField(placeholder: Localization.packName, text: $name)
+                    CustomTextField(placeholder: Localization.packDescription, text: $description)
                 }
                 ColorPicker(colors: colors, color: $color)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -78,7 +78,7 @@ struct CreatePackScreen: View {
     }
     
     private func createAction() {
-        viewModel.createPack(name: name, color: color.hex() ?? "", description: description.isEmpty ? Localization.descriptionPlaceholder : description, cardQuestions: [])
+        let _ = viewModel.createPack(name: name, color: color.hex() ?? "", description: description, cardQuestions: [])
     }
     
 }

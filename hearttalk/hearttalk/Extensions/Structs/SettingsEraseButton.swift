@@ -10,7 +10,7 @@ import SwiftUI
 struct SettingsEraseButton: View {
     
     var text: String
-    var buttonTitle: String = "Clear all"
+    var buttonTitle: String = Localization.clearAll
     var tapAction: () -> Void
     
     var body: some View {

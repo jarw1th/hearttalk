@@ -29,7 +29,7 @@ struct NotesScreen: View {
     
     private func makeContent() -> some View {
         VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32) {
-            BackTopBar(text: "Notes", isEdit: isEdit, isSelected: viewModel.selectedNotes == viewModel.notes) {
+            BackTopBar(text: Localization.notes, isEdit: isEdit, isSelected: viewModel.selectedNotes == viewModel.notes) {
                 if viewModel.selectedNotes != viewModel.notes {
                     viewModel.selectedNotes = viewModel.notes
                 } else {
@@ -46,14 +46,14 @@ struct NotesScreen: View {
                         SoundManager.shared.sound(.click1)
                         isShowCreateNote.toggle()
                     } label: {
-                        Text("Add new")
+                        Text(Localization.addNew)
                     }
                     Button(role: .destructive) {
                         HapticManager.shared.triggerHapticFeedback(.light)
                         SoundManager.shared.sound(.click1)
                         isEdit.toggle()
                     } label: {
-                        Text("Delete")
+                        Text(Localization.delete)
                     }
                 }
             } closeTapAction: {

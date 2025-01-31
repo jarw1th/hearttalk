@@ -23,7 +23,7 @@ struct WhatIsTheApp: View {
     private func makeCards() -> some View {
         ZStack {
             VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 24 : 32) {
-                SingleBackTopBar(text: "What is Heart Talk?") {
+                SingleBackTopBar(text: Localization.whatIsHT) {
                     dismiss()
                 }
                 .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)

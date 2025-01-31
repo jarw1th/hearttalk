@@ -24,7 +24,7 @@ struct BackTopBar<Content: View>: View {
                 SoundManager.shared.sound(.click1)
                 selectTapAction()
             } label: {
-                let text = isEdit ? (isSelected ? "Deselect all" : "Select all") : text
+                let text = isEdit ? (isSelected ? Localization.deselectAll : Localization.selectAll) : text
                 Text(text)
                     .font(.custom("Poppins-Regular", size: 24))
                     .multilineTextAlignment(.leading)

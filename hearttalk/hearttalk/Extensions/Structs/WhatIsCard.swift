@@ -128,7 +128,7 @@ struct WhatIsCardView: View {
             } else {
                 VStack {
                     Spacer()
-                    Text(Localization.perfect)
+                    Text(Localization.youAreFantastic)
                         .font(.custom("Poppins-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 32))
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.darkWhite)

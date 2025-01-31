@@ -28,7 +28,7 @@ struct CreateLinkScreen: View {
             }
             .edgesIgnoringSafeArea(.bottom)
             .alert(isPresented: $isShowAlert) {
-                Alert(title: Text(Localization.alert), message: Text("Wrong link."), dismissButton: .default(Text(Localization.confirm), action: {}))
+                Alert(title: Text(Localization.alert), message: Text(Localization.linkAlert), dismissButton: .default(Text(Localization.confirm), action: {}))
             }
             .sheet(isPresented: $isShowWeb) {
                 WebBrowser(link: $link)
@@ -38,13 +38,13 @@ struct CreateLinkScreen: View {
     @ViewBuilder
     private func makeContent() -> some View {
         VStack(spacing: 40) {
-            SingleBackTopBar(text: "Link attach") {
+            SingleBackTopBar(text: Localization.linkAttach) {
                 dismiss()
             }
             .padding(.vertical, 16)
             
             VStack(spacing: 24) {
-                makeSection("Write link") {
+                makeSection(Localization.writeLink) {
                     CustomTextField(placeholder: "https://www.hearttalk.com", text: $link)
                 }
                 Spacer()
@@ -67,7 +67,7 @@ struct CreateLinkScreen: View {
                 isShowAlert.toggle()
             }
         } label: {
-            Text("Attach")
+            Text(Localization.attach)
                 .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32))
                 .underline()
                 .multilineTextAlignment(.center)
@@ -87,14 +87,14 @@ struct CreateLinkScreen: View {
     private func makeSection<Content: View>(_ text: String, content: () -> Content) -> some View {
         VStack(spacing: 16) {
             HStack(spacing: 0) {
-                Text("\(text) or ")
+                Text("\(text) \(Localization.or) ")
                     .font(.custom("Poppins-Regular", size: 16))
                     .multilineTextAlignment(.leading)
                     .foregroundStyle(.darkWhite)
                 Button {
                     isShowWeb.toggle()
                 } label: {
-                    Text("search for it")
+                    Text(Localization.searchFor)
                         .font(.custom("Poppins-Regular", size: 16))
                         .multilineTextAlignment(.leading)
                         .foregroundStyle(.blue)

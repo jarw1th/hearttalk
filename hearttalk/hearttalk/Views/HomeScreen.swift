@@ -14,6 +14,8 @@ struct HomeScreen: View {
     @State private var isShowGlobalAlert: Bool = false
     @State private var isShowOnlineScreen: Bool = false
     @State private var isShowAgeAlert: Bool = false
+    @State private var isShowImportCards: Bool = false
+    @State private var isShowGenerateCards: Bool = false
     
     @State private var selectedPack: Pack?
     @State private var selectedNamePack: Pack?
@@ -54,6 +56,14 @@ struct HomeScreen: View {
             }
             .fullScreenCover(isPresented: $isShowCreatePack) {
                 CreatePackScreen()
+                    .environmentObject(viewModel)
+            }
+            .fullScreenCover(isPresented: $isShowImportCards) {
+                ImportCardsScreen()
+                    .environmentObject(viewModel)
+            }
+            .fullScreenCover(isPresented: $isShowGenerateCards) {
+                GenerateCardsScreen()
                     .environmentObject(viewModel)
             }
             .fullScreenCover(isPresented: $isShowDailyCard) {
@@ -109,7 +119,7 @@ struct HomeScreen: View {
     @ViewBuilder
     private func makeContent() -> some View {
         VStack(spacing: 40) {
-            HomeTopBar(text: viewModel.isOnline && requestManager.isConnected ? "Online" : "Home") {
+            HomeTopBar(text: viewModel.isOnline && requestManager.isConnected ? "Online" : Localization.home) {
                 isShowSettings.toggle()
             }
             .padding(.vertical, 16)
@@ -118,13 +128,13 @@ struct HomeScreen: View {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 100) {
                     VStack(spacing: 24) {
-                        makeSection("My content", isCreatable: true) {
+                        makeSection(Localization.myContent, isCreatable: true) {
                             makeMyFeed()
                         }
-                        makeSection("Our choice") {
+                        makeSection(Localization.ourChoice) {
                             makeHTFeed()
                         }
-                        makeSection("Flip cards") {
+                        makeSection(Localization.flipCard) {
                             makeQuizFeed()
                         }
                     }
@@ -161,21 +171,21 @@ struct HomeScreen: View {
                             SoundManager.shared.sound(.click1)
                             viewModel.deletePack(pack)
                         } label: {
-                            Text("Delete")
+                            Text(Localization.delete)
                         }
                         Button {
                             HapticManager.shared.triggerHapticFeedback(.light)
                             SoundManager.shared.sound(.click1)
                             selectedNamePack = pack
                         } label: {
-                            Text("Change name")
+                            Text(Localization.changeName)
                         }
                         Button {
                             HapticManager.shared.triggerHapticFeedback(.light)
                             SoundManager.shared.sound(.click1)
                             selectedDescPack = pack
                         } label: {
-                            Text("Change description")
+                            Text(Localization.changeDescription)
                         }
                     }
                     .fullScreenCover(item: $selectedPack) { pack in
@@ -205,21 +215,21 @@ struct HomeScreen: View {
                             SoundManager.shared.sound(.click1)
                             viewModel.deletePack(pack)
                         } label: {
-                            Text("Delete")
+                            Text(Localization.delete)
                         }
                         Button {
                             HapticManager.shared.triggerHapticFeedback(.light)
                             SoundManager.shared.sound(.click1)
                             selectedNamePack = pack
                         } label: {
-                            Text("Change name")
+                            Text(Localization.changeName)
                         }
                         Button {
                             HapticManager.shared.triggerHapticFeedback(.light)
                             SoundManager.shared.sound(.click1)
                             selectedDescPack = pack
                         } label: {
-                            Text("Change description")
+                            Text(Localization.changeDescription)
                         }
                     }
                     .fullScreenCover(item: $selectedPack) { pack in
@@ -249,21 +259,21 @@ struct HomeScreen: View {
                             SoundManager.shared.sound(.click1)
                             viewModel.deletePack(pack)
                         } label: {
-                            Text("Delete")
+                            Text(Localization.delete)
                         }
                         Button {
                             HapticManager.shared.triggerHapticFeedback(.light)
                             SoundManager.shared.sound(.click1)
                             selectedNamePack = pack
                         } label: {
-                            Text("Change name")
+                            Text(Localization.changeName)
                         }
                         Button {
                             HapticManager.shared.triggerHapticFeedback(.light)
                             SoundManager.shared.sound(.click1)
                             selectedDescPack = pack
                         } label: {
-                            Text("Change description")
+                            Text(Localization.changeDescription)
                         }
                     }
                     .fullScreenCover(item: $selectedPack) { pack in
@@ -288,11 +298,17 @@ struct HomeScreen: View {
                 Spacer()
                 if isCreatable {
                     Menu {
-                        Button("Add card") {
+                        Button(Localization.addCard) {
                             isShowCreateCard.toggle()
                         }
-                        Button("Add pack") {
+                        Button(Localization.addPack) {
                             isShowCreatePack.toggle()
+                        }
+                        Button(Localization.importCards) {
+                            isShowImportCards.toggle()
+                        }
+                        Button(Localization.generateAI) {
+                            isShowGenerateCards.toggle()
                         }
                     } label: {
                         Icon(name: "add")

@@ -25,7 +25,7 @@ struct SettingsToggle: View {
                     .foregroundStyle(.darkWhite)
                     .opacity(isOn ? 1 : 0.5)
                 Spacer()
-                Text(isOn ? "On" : "Off")
+                Text(isOn ? Localization.on : Localization.off)
                     .font(.custom("Poppins-Regular", size: 16))
                     .multilineTextAlignment(.trailing)
                     .foregroundStyle(.darkWhite)

@@ -20,13 +20,13 @@ struct ChangeTextScreen: View {
     @ViewBuilder
     private func makeContent() -> some View {
         VStack(spacing: 40) {
-            SingleBackTopBar(text: "Chage text") {
+            SingleBackTopBar(text: Localization.changeText) {
                 dismiss()
             }
             .padding(.vertical, 16)
             
             VStack(spacing: 24) {
-                CustomTextField(placeholder: "Value", text: $value)
+                CustomTextField(placeholder: Localization.valuePlaceholder, text: $value)
                 Spacer()
                 makeCreateButton()
             }
@@ -43,7 +43,7 @@ struct ChangeTextScreen: View {
             text = value
             dismiss()
         } label: {
-            Text("Change")
+            Text(Localization.change)
                 .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32))
                 .underline()
                 .multilineTextAlignment(.center)

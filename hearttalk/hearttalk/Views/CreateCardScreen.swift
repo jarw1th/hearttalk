@@ -83,7 +83,7 @@ struct CreateCardScreen: View {
     }
     
     private func checkText() -> Bool {
-        question.count > 10
+        question.count > 6
     }
     
     private func createAction() {

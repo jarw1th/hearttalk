@@ -39,20 +39,20 @@ struct OnlineScreen: View {
     private func makeContent() -> some View {
         if onlineViewModel.isSignedIn {
             VStack(spacing: 40) {
-                SearchBar(placeholder: "Search...", text: $searchText)
+                SearchBar(placeholder: Localization.onlineSearch, text: $searchText)
                     .padding(.horizontal, 20)
                 
                 VStack(spacing: 24) {
-                    makeSection("Online content", isCreatable: true) {
+                    makeSection(Localization.onlineContent, isCreatable: true) {
                         makeMyFeed()
                     }
-                    makeSection("Cards") {
+                    makeSection(Localization.onlineCards) {
                         makeCardsFeed()
                     }
-                    makeSection("Packs") {
+                    makeSection(Localization.onlinePacks) {
                         makePacksFeed()
                     }
-                    makeSection("Accounts") {
+                    makeSection(Localization.onlineAccounts) {
                         makeAccountsFeed()
                     }
                 }
@@ -64,7 +64,7 @@ struct OnlineScreen: View {
     private func makeMyFeed() -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 16) {
-                PackView(color: "D44A13", name: "Favorites", numberOfCards: onlineViewModel.favorites.count)
+                PackView(color: "D44A13", name: Localization.onlineFavorites, numberOfCards: onlineViewModel.favorites.count)
                 ForEach(formatedMyContent()) { pack in
                     OnlinePreviewPack(color: pack.pack.color, name: pack.pack.name, tags: pack.tags) {
                         
@@ -131,10 +131,10 @@ struct OnlineScreen: View {
                 Spacer()
                 if isCreatable {
                     Menu {
-                        Button("Add card") {
+                        Button(Localization.addCard) {
                             isShowCreateCard.toggle()
                         }
-                        Button("Add pack") {
+                        Button(Localization.addPack) {
                             isShowCreatePack.toggle()
                         }
                     } label: {

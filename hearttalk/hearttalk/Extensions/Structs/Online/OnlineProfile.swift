@@ -34,7 +34,7 @@ struct OnlineProfile: View {
                 SoundManager.shared.sound(.click1)
                 tapAction()
             } label: {
-                Text("Log out")
+                Text(Localization.logOut)
                     .font(.custom("Poppins-Regular", size: 16))
                     .foregroundStyle(.destruct)
             }
@@ -60,7 +60,7 @@ struct LoginButton: View {
             SoundManager.shared.sound(.click1)
             tapAction()
         } label: {
-            Text("Log in")
+            Text(Localization.logIn)
                 .font(.custom("Poppins-Regular", size: 16))
                 .multilineTextAlignment(.leading)
                 .foregroundStyle(.lightBlack)

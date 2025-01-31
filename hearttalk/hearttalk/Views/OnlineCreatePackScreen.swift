@@ -29,22 +29,22 @@ struct OnlineCreatePackScreen: View {
             }
             .edgesIgnoringSafeArea(.bottom)
             .alert(isPresented: $isShowAlert) {
-                Alert(title: Text(Localization.alert), message: Text("Name should be at least 4 characters long."), dismissButton: .default(Text(Localization.confirm), action: {}))
+                Alert(title: Text(Localization.alert), message: Text(Localization.packNameAlert), dismissButton: .default(Text(Localization.confirm), action: {}))
             }
     }
     
     private func makeContent() -> some View {
         VStack(spacing: 40) {
-            SingleBackTopBar(text: "New pack") {
+            SingleBackTopBar(text: Localization.newPack) {
                 dismiss()
             }
             .padding(.vertical, 16)
             
             VStack(spacing: 40) {
                 VStack(spacing: 16) {
-                    CustomTextField(placeholder: "Name", text: $name)
-                    CustomTextField(placeholder: "Description", text: $description)
-                    TagsTextField(placeholder: "funny", tags: $tags)
+                    CustomTextField(placeholder: Localization.packName, text: $name)
+                    CustomTextField(placeholder: Localization.packDescription, text: $description)
+                    TagsTextField(placeholder: Localization.onlineTagsPlaceholder, tags: $tags)
                 }
                 ColorPicker(colors: colors, color: $color)
                     .frame(maxWidth: .infinity, alignment: .leading)

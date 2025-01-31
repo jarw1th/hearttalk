@@ -96,7 +96,7 @@ struct CreateNoteScreen: View {
     }
     
     private func checkText() -> Bool {
-        text.count > 10
+        text.count > 4
     }
     
     private func createAction() {

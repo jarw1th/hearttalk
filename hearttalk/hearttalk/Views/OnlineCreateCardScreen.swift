@@ -26,25 +26,25 @@ struct OnlineCreateCardScreen: View {
             }
             .edgesIgnoringSafeArea(.bottom)
             .alert(isPresented: $isShowAlert) {
-                Alert(title: Text(Localization.alert), message: Text("Question should be at least 10 characters long."), dismissButton: .default(Text(Localization.confirm), action: {}))
+                Alert(title: Text(Localization.alert), message: Text(Localization.questionAlertMessage), dismissButton: .default(Text(Localization.confirm), action: {}))
             }
     }
     
     private func makeContent() -> some View {
         VStack(spacing: 40) {
-            SingleBackTopBar(text: "New pack") {
+            SingleBackTopBar(text: Localization.newCard) {
                 dismiss()
             }
             .padding(.vertical, 16)
             
             VStack(spacing: 40) {
                 VStack(spacing: 16) {
-                    CustomTextField(placeholder: "Question", text: $question)
+                    CustomTextField(placeholder: Localization.questionPlaceholder, text: $question)
                     if isFlipCard {
-                        CustomTextField(placeholder: "Answer", text: $answer)
+                        CustomTextField(placeholder: Localization.answerPlaceholder, text: $answer)
                     }
                 }
-                QuestionToggle(text: "Flip card?", isOn: $isFlipCard)
+                QuestionToggle(text: Localization.flipCard, isOn: $isFlipCard)
                 Spacer()
                 makeCreateButton()
             }
@@ -73,7 +73,7 @@ struct OnlineCreateCardScreen: View {
     }
     
     private func checkText() -> Bool {
-        question.count > 10
+        question.count > 6
     }
     
     private func createAction() {

@@ -75,6 +75,9 @@ struct TagsTextField: View {
                 text = ""
             }
         }
+        .onChange(of: text) { _ in
+            text = text.replacingOccurrences(of: "[^a-zA-Z0-9]", with: "", options: .regularExpression)
+        }
     }
     
 }

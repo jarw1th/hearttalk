@@ -242,3 +242,36 @@
 "addPackSub" = "Создать новый пак";
 
 "checkOut" = "Качай это приложение. Давай сблизимся вместе с";
+
+"favorites" = "Сохраненые";
+
+
+"online" = "Онлайн";
+
+"onlineSearch" = "Поиск...";
+ 
+"onlineContent" = "Онлайн наборы";
+
+"onlineCards" = "Карты";
+
+"onlinePacks" = "Наборы";
+
+"onlineAccounts" = "Аккаунты";
+
+"onlineAlert" = "Что-то пошло не так";
+
+"onlineFavorites" = "Сохраненые";
+
+"onlineEmail" = "Почта";
+
+"onlinePassword" = "Пароль";
+
+"onlineSignIn" = "Вход";
+
+"onlineResetPass" = "Сбросить пароль";
+
+"onlineTagsPlaceholder" = "смешной";
+
+"logOut" = "Выйти";
+
+"logIn" = "Войти";

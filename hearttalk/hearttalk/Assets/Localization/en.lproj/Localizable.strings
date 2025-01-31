@@ -242,3 +242,36 @@
 "addPackSub" = "Add a new pack";
 
 "checkOut" = "Check this cool app. Let's get closer with each other with";
+
+"favorites" = "Favorites";
+
+
+"online" = "Online";
+
+"onlineSearch" = "Search...";
+ 
+"onlineContent" = "Online content";
+
+"onlineCards" = "Cards";
+
+"onlinePacks" = "Packs";
+
+"onlineAccounts" = "Accounts";
+
+"onlineAlert" = "Something wrong";
+
+"onlineFavorites" = "Favorites";
+
+"onlineEmail" = "Email";
+
+"onlinePassword" = "Password";
+
+"onlineSignIn" = "Sign in";
+
+"onlineResetPass" = "Reset password";
+
+"onlineTagsPlaceholder" = "funny";
+
+"logOut" = "Log out";
+
+"logIn" = "Log in";

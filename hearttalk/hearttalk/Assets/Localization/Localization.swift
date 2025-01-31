@@ -125,6 +125,21 @@ enum Localization {
     static let addCardSub: String = .localized("addCardSub", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     static let addPackSub: String = .localized("addPackSub", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     static let checkOut: String = .localized("checkOut", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let favorites: String = .localized("favorites", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let onlineSearch: String = .localized("onlineSearch", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let onlineContent: String = .localized("onlineContent", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let onlineCards: String = .localized("onlineCards", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let onlinePacks: String = .localized("onlinePacks", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let onlineAccounts: String = .localized("onlineAccounts", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let onlineAlert: String = .localized("onlineAlert", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let onlineFavorites: String = .localized("onlineFavorites", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let onlineEmail: String = .localized("onlineEmail", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let onlinePassword: String = .localized("onlinePassword", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let onlineSignIn: String = .localized("onlineSignIn", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let onlineResetPass: String = .localized("onlineResetPass", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let onlineTagsPlaceholder: String = .localized("onlineTagsPlaceholder", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let online: String = .localized("online", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let logOut: String = .localized("logOut", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let logIn: String = .localized("logIn", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     
 }
-

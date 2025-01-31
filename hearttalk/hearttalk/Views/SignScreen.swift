@@ -19,7 +19,7 @@ struct SignScreen: View {
             }
             .edgesIgnoringSafeArea(.bottom)
             .alert(item: $alertType) { type in
-                Alert(title: Text("Something wrong"), message: Text(type.text), dismissButton: .default(Text(Localization.confirm), action: {}))
+                Alert(title: Text(Localization.onlineAlert), message: Text(type.text), dismissButton: .default(Text(Localization.confirm), action: {}))
             }
     }
     
@@ -32,8 +32,8 @@ struct SignScreen: View {
             
             VStack(spacing: 40) {
                 VStack(spacing: 16) {
-                    CustomTextField(placeholder: "Email", text: $email)
-                    CustomTextField(placeholder: "Password", text: $password)
+                    CustomTextField(placeholder: Localization.onlineEmail, text: $email)
+                    PasswordTextField(placeholder: Localization.onlinePassword, text: $password)
                     makeResetButton()
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -62,7 +62,7 @@ struct SignScreen: View {
                 return
             }
         } label: {
-            Text("Sign in")
+            Text(Localization.onlineSignIn)
                 .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32))
                 .underline()
                 .multilineTextAlignment(.center)
@@ -76,7 +76,7 @@ struct SignScreen: View {
             SoundManager.shared.sound(.click1)
             resetAction()
         } label: {
-            Text("Reset password")
+            Text(Localization.onlineResetPass)
                 .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32))
                 .multilineTextAlignment(.leading)
                 .foregroundStyle(.blue)

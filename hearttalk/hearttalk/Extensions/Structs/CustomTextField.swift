@@ -16,12 +16,15 @@ struct CustomTextField: View {
     enum TextFieldType {
         case def
         case numeric
+        case cardNumber
         
         var keyboard: UIKeyboardType {
             switch self {
             case .def:
                 .default
             case .numeric:
+                .numberPad
+            case .cardNumber:
                 .numberPad
             }
         }
@@ -46,13 +49,25 @@ struct CustomTextField: View {
         .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
         .padding(.vertical, UIDevice.current.userInterfaceIdiom == .phone ? 8 : 16)
         .onChange(of: text) { newValue in
-            guard type == .numeric else { return }
-            text = text.filter({ $0.isNumber })
+            if type == .numeric {
+                text = text.filter({ $0.isNumber })
+            }
+            if type == .cardNumber {
+                text = text.filter({ $0.isNumber })
+                if !isLess49(text) {
+                    text = "1"
+                }
+            }
         }
         .background(
             RoundedRectangle(cornerRadius: 12)
                 .fill(.darkWhite)
         )
+    }
+    
+    private func isLess49(_ string: String) -> Bool {
+        guard let num = Int(string) else { return false }
+        return num < 49 && num > 0
     }
     
 }

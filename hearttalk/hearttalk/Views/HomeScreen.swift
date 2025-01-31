@@ -119,7 +119,7 @@ struct HomeScreen: View {
     @ViewBuilder
     private func makeContent() -> some View {
         VStack(spacing: 40) {
-            HomeTopBar(text: viewModel.isOnline && requestManager.isConnected ? "Online" : Localization.home) {
+            HomeTopBar(text: viewModel.isOnline && requestManager.isConnected ? Localization.online : Localization.home) {
                 isShowSettings.toggle()
             }
             .padding(.vertical, 16)
@@ -134,7 +134,7 @@ struct HomeScreen: View {
                         makeSection(Localization.ourChoice) {
                             makeHTFeed()
                         }
-                        makeSection(Localization.flipCard) {
+                        makeSection(Localization.flipCards) {
                             makeQuizFeed()
                         }
                     }

@@ -84,6 +84,7 @@
 		215187682D4CA9F000FFB614 /* ImportCardsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215187672D4CA9E000FFB614 /* ImportCardsScreen.swift */; };
 		2151876A2D4CACDA00FFB614 /* ImportOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215187692D4CACD700FFB614 /* ImportOption.swift */; };
 		2151876C2D4CB45A00FFB614 /* GenerateCardsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2151876B2D4CB45800FFB614 /* GenerateCardsScreen.swift */; };
+		215187712D4D4CEC00FFB614 /* PasswordTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215187702D4D4CE700FFB614 /* PasswordTextField.swift */; };
 		21835FB32CA1545A002A17E9 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21835FB22CA1545A002A17E9 /* String+.swift */; };
 		21835FB52CA16B57002A17E9 /* Sound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21835FB42CA16B57002A17E9 /* Sound.swift */; };
 		21835FB82CA16C60002A17E9 /* CardSwipe.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 21835FB72CA16C60002A17E9 /* CardSwipe.mp3 */; };
@@ -233,6 +234,7 @@
 		215187672D4CA9E000FFB614 /* ImportCardsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportCardsScreen.swift; sourceTree = "<group>"; };
 		215187692D4CACD700FFB614 /* ImportOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportOption.swift; sourceTree = "<group>"; };
 		2151876B2D4CB45800FFB614 /* GenerateCardsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateCardsScreen.swift; sourceTree = "<group>"; };
+		215187702D4D4CE700FFB614 /* PasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextField.swift; sourceTree = "<group>"; };
 		21835FB22CA1545A002A17E9 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		21835FB42CA16B57002A17E9 /* Sound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sound.swift; sourceTree = "<group>"; };
 		21835FB72CA16C60002A17E9 /* CardSwipe.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = CardSwipe.mp3; sourceTree = "<group>"; };
@@ -516,6 +518,7 @@
 				215187282D4A26D600FFB614 /* CardsListItem.swift */,
 				2151872A2D4A279100FFB614 /* CardView.swift */,
 				2151872C2D4A2A1C00FFB614 /* CustomTextField.swift */,
+				215187702D4D4CE700FFB614 /* PasswordTextField.swift */,
 				215187592D4B801900FFB614 /* TagsTextField.swift */,
 				2103FEBE2C9EA0A80020D1AE /* ColorPicker.swift */,
 				215187302D4A2B3C00FFB614 /* QuestionToggle.swift */,
@@ -881,6 +884,7 @@
 				215187352D4A307100FFB614 /* NoteImageField.swift in Sources */,
 				215187502D4B768500FFB614 /* OnlinePreviewCard.swift in Sources */,
 				215187522D4B774300FFB614 /* OnlinePreviewPack.swift in Sources */,
+				215187712D4D4CEC00FFB614 /* PasswordTextField.swift in Sources */,
 				219979772CAED8F3008688A5 /* QuickActions.swift in Sources */,
 				2103FEBF2C9EA0A80020D1AE /* ColorPicker.swift in Sources */,
 				2151871B2D4A22C200FFB614 /* SingleBackTopBar.swift in Sources */,

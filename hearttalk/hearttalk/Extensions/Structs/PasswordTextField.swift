@@ -19,7 +19,7 @@ struct PasswordTextField: View {
             if text.isEmpty {
                 Text(placeholder)
                     .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24))
-                    .foregroundColor(.lightBlack)
+                    .foregroundColor(.darkWhite)
                     .opacity(0.5)
             }
             if isShowPassword {
@@ -27,14 +27,14 @@ struct PasswordTextField: View {
                     .autocapitalization(.none)
                     .disableAutocorrection(true)
                     .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24))
-                    .foregroundStyle(.lightBlack)
+                    .foregroundStyle(.darkWhite)
                     .frame(maxWidth: .infinity, alignment: .leading)
             } else {
                 SecureField("", text: $text)
                     .autocapitalization(.none)
                     .disableAutocorrection(true)
                     .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24))
-                    .foregroundStyle(.lightBlack)
+                    .foregroundStyle(.darkWhite)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             HStack {
@@ -42,7 +42,7 @@ struct PasswordTextField: View {
                 Button {
                     isShowPassword.toggle()
                 } label: {
-                    Icon(name: isShowPassword ? "eyeCrossed" : "eye", size: .custom(20), color: .lightBlack)
+                    Icon(name: isShowPassword ? "eyeCrossed" : "eye", size: .custom(16), color: .darkWhite)
                         .opacity(isShowPassword ? 0.5 : 1)
                 }
             }
@@ -51,7 +51,7 @@ struct PasswordTextField: View {
         .padding(.vertical, UIDevice.current.userInterfaceIdiom == .phone ? 8 : 16)
         .background(
             RoundedRectangle(cornerRadius: 12)
-                .fill(.darkWhite)
+                .stroke(.darkWhite, lineWidth: 1)
         )
     }
     

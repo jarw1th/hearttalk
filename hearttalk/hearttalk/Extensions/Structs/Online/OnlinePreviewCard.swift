@@ -9,8 +9,8 @@ import SwiftUI
 
 struct OnlinePreviewCard: View {
     
-    var isLiked: Bool
-    var question: String
+    var favorites: FirebasePack
+    var question: Card
     var tapAction: () -> Void
     
     var body: some View {
@@ -19,17 +19,16 @@ struct OnlinePreviewCard: View {
             SoundManager.shared.sound(.click1)
             tapAction()
         } label: {
-            Text(question)
+            Text(question.question)
                 .font(.custom("Poppins-Regular", size: 12))
                 .multilineTextAlignment(.leading)
                 .foregroundStyle(.lightBlack)
-                .opacity(isLiked ? 1 : 0.7)
                 .frame(width: 120, height: 140)
                 .padding(16)
                 .background(
                     RoundedRectangle(cornerRadius: 12)
-                        .fill(.darkWhite)
-                        .opacity(isLiked ? 1 : 0.7)
+                        .fill(.white)
+                        .opacity(favorites.pack.cards.contains(question) ? 1 : 0.5)
                 )
         }
     }

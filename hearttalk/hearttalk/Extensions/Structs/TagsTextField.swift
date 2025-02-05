@@ -16,7 +16,7 @@ struct TagsTextField: View {
     @FocusState private var isFocused: Bool
     
     var body: some View {
-        HStack {
+        VStack(alignment: .leading, spacing: 8) {
             ScrollView(.horizontal) {
                 HStack {
                     ForEach(tags) { tag in
@@ -25,42 +25,44 @@ struct TagsTextField: View {
                         } label: {
                             Text(tag)
                                 .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24))
-                                .foregroundColor(.darkWhite)
+                                .foregroundColor(.lightBlack)
                                 .padding(.horizontal, 8)
                                 .frame(maxHeight: .infinity)
                                 .background(
                                     RoundedRectangle(cornerRadius: 12)
-                                        .fill(.lightBlack)
+                                        .fill(.darkWhite)
                                 )
                         }
                     }
                 }
             }
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity, alignment: .leading)
             .frame(height: 30)
+            
             ZStack(alignment: .leading) {
                 if text.isEmpty {
                     Text(placeholder)
                         .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24))
-                        .foregroundColor(.lightBlack)
+                        .foregroundColor(.darkWhite)
                         .opacity(0.5)
                 }
                 TextField("", text: $text)
                     .autocapitalization(.sentences)
                     .disableAutocorrection(true)
                     .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24))
-                    .foregroundStyle(.lightBlack)
+                    .foregroundStyle(.darkWhite)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .focused($isFocused)
             }
             .frame(maxWidth: .infinity)
+            .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
+            .padding(.vertical, UIDevice.current.userInterfaceIdiom == .phone ? 8 : 16)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(.darkWhite, lineWidth: 1)
+                    .opacity(!text.isEmpty || !tags.isEmpty ? 1 : 0.5)
+            )
         }
-        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
-        .padding(.vertical, UIDevice.current.userInterfaceIdiom == .phone ? 8 : 16)
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(.darkWhite)
-        )
         .onChange(of: isFocused) { newValue in
             guard !newValue,
                   !tags.contains(text),
@@ -74,9 +76,6 @@ struct TagsTextField: View {
                 tags.append(text)
                 text = ""
             }
-        }
-        .onChange(of: text) { _ in
-            text = text.replacingOccurrences(of: "[^a-zA-Z0-9]", with: "", options: .regularExpression)
         }
     }
     

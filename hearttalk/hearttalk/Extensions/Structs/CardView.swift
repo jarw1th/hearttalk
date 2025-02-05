@@ -442,11 +442,11 @@ struct CardView: View {
     }
     
     private func shareAction(_ card: Card) {
-        shareImage = viewModel.createCardImage(card.question)
+        shareImage = createCardImage(card.question)
     }
     
     private func speakAction(_ card: Card) {
-        viewModel.speak(text: card.question)
+        speak(text: card.question)
     }
     
     private func likeAction(_ card: Card) {

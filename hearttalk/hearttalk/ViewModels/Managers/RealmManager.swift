@@ -81,6 +81,18 @@ final class RealmManager {
         }
     }
     
+    func deleteAll<T: Object>(_ objectType: T.Type, where reason: @escaping (T) -> Bool) {
+        do {
+            try realm.write {
+                let objects = realm.objects(objectType)
+                let objs = objects.filter({ reason($0) })
+                realm.delete(objs)
+            }
+        } catch let error {
+            print("Error deleting object from Realm: \(error.localizedDescription)")
+        }
+    }
+    
     func deleteAll() {
         do {
             try realm.write {

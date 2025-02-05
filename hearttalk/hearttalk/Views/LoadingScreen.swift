@@ -8,6 +8,7 @@ struct LoadingScreen: View {
     
     @State private var isLoading: Bool = true
     @State private var isShowNext: Bool = false
+    @State private var isShowOnboarding: Bool = false
     @State private var rotation: Double = 0
     
     var body: some View {
@@ -16,13 +17,17 @@ struct LoadingScreen: View {
             .ignoresSafeArea()
             .preferredColorScheme(UserDefaultsManager.shared.isDarkMode ? .dark : .light)
             .onChange(of: viewModel.htPacks) { value in
-                if !value.isEmpty {
+                if !value.isEmpty && UserDefaultsManager.shared.isOnboarded {
                     isShowNext = true
                 }
             }
             .onAppear {
-                if !viewModel.htPacks.isEmpty {
-                    isShowNext = true
+                if !UserDefaultsManager.shared.isOnboarded {
+                    isShowOnboarding.toggle()
+                } else {
+                    if !viewModel.htPacks.isEmpty {
+                        isShowNext = true
+                    }
                 }
             }
     }
@@ -33,9 +38,16 @@ struct LoadingScreen: View {
             makeText()
         }
         .fullScreenCover(isPresented: $isShowNext) {
-            HomeScreen()
+            TabScreen()
                 .environmentObject(viewModel)
                 .environmentObject(onlineViewModel)
+        }
+        .fullScreenCover(isPresented: $isShowOnboarding) {
+            if !viewModel.htPacks.isEmpty {
+                isShowNext = true
+            }
+        } content: {
+            WhatIsTheApp()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }

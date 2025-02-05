@@ -7,11 +7,12 @@
 
 import Foundation
 
-struct FirebaseUser: Identifiable {
+struct FirebaseUser: Identifiable, Equatable {
     
     var id: String
     var email: String
     var displayName: String
     var photoURL: URL?
+    var lastSeen: Date?
     
 }

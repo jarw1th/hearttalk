@@ -15,31 +15,33 @@ struct SearchBar: View {
     @FocusState private var isFocused: Bool
     
     var body: some View {
-        ZStack(alignment: .leading) {
-            if text.isEmpty {
-                Text(placeholder)
-                    .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24))
-                    .foregroundColor(.darkWhite)
-                    .opacity(0.5)
+        HStack(spacing: 16) {
+            if !isFocused {
+                Icon(name: "search", size: .custom(16), color: .darkWhite.opacity(0.5))
             }
-            TextField("", text: $text)
-                .autocapitalization(.sentences)
-                .disableAutocorrection(true)
-                .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24))
-                .foregroundStyle(.darkWhite)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .focused($isFocused)
+            ZStack(alignment: .leading) {
+                if text.isEmpty {
+                    Text(placeholder)
+                        .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24))
+                        .foregroundColor(.darkWhite)
+                        .opacity(0.5)
+                }
+                TextField("", text: $text)
+                    .autocapitalization(.sentences)
+                    .disableAutocorrection(true)
+                    .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24))
+                    .foregroundStyle(.darkWhite)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .focused($isFocused)
+            }
             if isFocused {
-                HStack {
-                    Spacer()
-                    Button {
-                        HapticManager.shared.triggerHapticFeedback(.light)
-                        SoundManager.shared.sound(.click1)
-                        text = ""
-                        isFocused = false
-                    } label: {
-                        Icon(name: "cross", color: .destruct)
-                    }
+                Button {
+                    HapticManager.shared.triggerHapticFeedback(.light)
+                    SoundManager.shared.sound(.click1)
+                    text = ""
+                    isFocused = false
+                } label: {
+                    Icon(name: "cross", size: .custom(16), color: .destruct)
                 }
             }
         }
@@ -48,7 +50,7 @@ struct SearchBar: View {
         .background(
             RoundedRectangle(cornerRadius: 12)
                 .stroke(.darkWhite, lineWidth: 1)
-                .opacity(0.75)
+                .opacity(text.isEmpty ? 0.5 : 1)
         )
     }
     

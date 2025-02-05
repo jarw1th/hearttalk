@@ -99,14 +99,12 @@ struct NoteDrawField: View {
     
     func getImage(size: CGSize) -> UIImage {
         let renderer = UIGraphicsImageRenderer(size: size)
-        print(uiPaths.count)
         
         return renderer.image { context in
             UIColor.darkWhite.setFill()
             context.fill(CGRect(origin: .zero, size: size))
             
             for path in uiPaths {
-                print(path)
                 UIColor.lightBlack.setStroke()
                 path.lineWidth = 2
                 path.stroke()

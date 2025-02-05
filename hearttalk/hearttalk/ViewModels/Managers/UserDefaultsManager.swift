@@ -14,6 +14,7 @@ final class UserDefaultsManager {
     }
     private var standart: UserDefaults = UserDefaults.standard
     
+    private let isOnboardedKey: String = "isOnboarded"
     private let isOnlineKey: String = "isOnline"
     private let offlineHourDateKey: String = "offlineHourDate"
     private let CFBundleShortVersionKey: String = "CFBundleShortVersionString"
@@ -30,6 +31,17 @@ final class UserDefaultsManager {
             return version
         }
         return "1.0"
+    }
+    var isOnboarded: Bool {
+        get {
+            if userDefaults.object(forKey: isOnboardedKey) == nil {
+                return false
+            }
+            return userDefaults.bool(forKey: isOnboardedKey)
+        }
+        set {
+            userDefaults.set(newValue, forKey: isOnboardedKey)
+        }
     }
     var isOnline: Bool {
         get {

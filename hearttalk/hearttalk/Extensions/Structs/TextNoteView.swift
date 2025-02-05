@@ -22,12 +22,12 @@ struct TextNoteView: View {
             Text(text)
                 .font(.custom("Poppins-Regular", size: 20))
                 .multilineTextAlignment(.leading)
-                .foregroundStyle(.lightBlack)
+                .foregroundStyle(.darkWhite)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(16)
                 .background(
                     RoundedRectangle(cornerRadius: 12)
-                        .fill(.darkWhite)
+                        .stroke(.darkWhite, lineWidth: 1)
                 )
                 .opacity(isSelected ? 1 : 0.5)
         }

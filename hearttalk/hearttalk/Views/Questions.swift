@@ -4,9 +4,10 @@ import SwiftUI
 struct Questions: View {
     
     @EnvironmentObject var viewModel: ViewModel
+    @EnvironmentObject var onlineViewModel: OnlineViewModel
     @Environment(\.dismiss) var dismiss
     
-    var pack: Pack? = nil
+    @State var pack: Pack? = nil
     var card: Card? = nil
     
     @State private var questionMode: QuestionMode = .cards
@@ -50,7 +51,7 @@ struct Questions: View {
                     if viewModel.cards[viewModel.cardIndex].isFlipCard {
                         c.answer = viewModel.cards[viewModel.cardIndex].answer
                     }
-                    viewModel.updateCard(c)
+                    viewModel.updateCard(c, for: pack)
                 }))
             }
             .fullScreenCover(isPresented: $isShowChangeAnswer) {
@@ -59,7 +60,7 @@ struct Questions: View {
                 }, set: {
                     let c = Card(id: viewModel.cards[viewModel.cardIndex].id, question: viewModel.cards[viewModel.cardIndex].question)
                     c.answer = $0
-                    viewModel.updateCard(c)
+                    viewModel.updateCard(c, for: pack)
                 }))
             }
             .alert(isPresented: $isShowDecription) {
@@ -80,104 +81,111 @@ struct Questions: View {
     
     @ViewBuilder
     private func makeCards() -> some View {
-        ZStack {
-            VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 40 : 32) {
-                BackTopBar(text: pack?.name ?? "", isEdit: isEdit, isSelected: viewModel.isSelected()) {
-                    if !viewModel.isSelected() {
-                        viewModel.selectedCards = viewModel.cards
-                    } else {
-                        viewModel.selectedCards = []
+        VStack(spacing: UIDevice.current.userInterfaceIdiom == .phone ? 40 : 32) {
+            BackTopBar(text: pack?.name ?? "", isEdit: isEdit, isSelected: viewModel.isSelected()) {
+                if !viewModel.isSelected() {
+                    viewModel.selectedCards = viewModel.cards
+                } else {
+                    viewModel.selectedCards = []
+                }
+            } deleteTapAction: {
+                viewModel.deleteCards()
+            } optionButtons: {
+                VStack {
+                    Button {
+                        HapticManager.shared.triggerHapticFeedback(.light)
+                        SoundManager.shared.sound(.click1)
+                        questionMode = .list
+                    } label: {
+                        Text(Localization.list)
                     }
-                } deleteTapAction: {
-                    viewModel.deleteCards()
-                } optionButtons: {
-                    VStack {
+                    if let pack,
+                       !pack.text.isEmpty {
                         Button {
                             HapticManager.shared.triggerHapticFeedback(.light)
                             SoundManager.shared.sound(.click1)
-                            questionMode = .list
+                            isShowDecription.toggle()
                         } label: {
-                            Text(Localization.list)
+                            Text(Localization.description)
                         }
-                        if let pack,
-                           !pack.text.isEmpty {
-                            Button {
-                                HapticManager.shared.triggerHapticFeedback(.light)
-                                SoundManager.shared.sound(.click1)
-                                isShowDecription.toggle()
-                            } label: {
-                                Text(Localization.description)
-                            }
-                        }
+                    }
+                    Button {
+                        HapticManager.shared.triggerHapticFeedback(.light)
+                        SoundManager.shared.sound(.click1)
+                        viewModel.shuffle()
+                    } label: {
+                        Text(Localization.shuffle)
+                    }
+                    if viewModel.cards.count != 0 && viewModel.cards.count != viewModel.cardIndex  {
                         Button {
                             HapticManager.shared.triggerHapticFeedback(.light)
                             SoundManager.shared.sound(.click1)
-                            viewModel.shuffle()
+                            isShowChangeText.toggle()
                         } label: {
-                            Text(Localization.shuffle)
+                            Text(Localization.changeQ)
                         }
-                        if viewModel.cards.count != 0 {
+                        if viewModel.cards.count > viewModel.cardIndex,
+                           viewModel.cards[viewModel.cardIndex].isFlipCard {
                             Button {
                                 HapticManager.shared.triggerHapticFeedback(.light)
                                 SoundManager.shared.sound(.click1)
-                                isShowChangeText.toggle()
+                                isShowChangeAnswer.toggle()
                             } label: {
-                                Text(Localization.changeQ)
-                            }
-                            if viewModel.cards.count > viewModel.cardIndex,
-                               viewModel.cards[viewModel.cardIndex].isFlipCard {
-                                Button {
-                                    HapticManager.shared.triggerHapticFeedback(.light)
-                                    SoundManager.shared.sound(.click1)
-                                    isShowChangeAnswer.toggle()
-                                } label: {
-                                    Text(Localization.changeA)
-                                }
-                            }
-                            Button(role: .destructive) {
-                                HapticManager.shared.triggerHapticFeedback(.light)
-                                SoundManager.shared.sound(.click1)
-                                if viewModel.cards.count > viewModel.cardIndex {
-                                    viewModel.deleteCard(viewModel.cards[viewModel.cardIndex])
-                                }
-                            } label: {
-                                Text(Localization.deleteCurrent)
+                                Text(Localization.changeA)
                             }
                         }
-                        if viewModel.favoriteType != pack {
+                        Button(role: .destructive) {
+                            HapticManager.shared.triggerHapticFeedback(.light)
+                            SoundManager.shared.sound(.click1)
+                            if viewModel.cards.count > viewModel.cardIndex {
+                                viewModel.deleteCard(viewModel.cards[viewModel.cardIndex])
+                            }
+                        } label: {
+                            Text(Localization.deleteCurrent)
+                        }
+                    }
+                    if viewModel.favoriteType != pack {
+                        if let pack {
                             Button(role: .destructive) {
                                 HapticManager.shared.triggerHapticFeedback(.light)
                                 SoundManager.shared.sound(.click1)
-                                if let pack {
-                                    dismiss()
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
-                                        viewModel.deletePack(pack)
-                                    }
-                                }
+                                viewModel.deletePack(pack)
+                                self.pack = nil
+                                dismiss()
                             } label: {
                                 Text(Localization.deleteThisPack)
                             }
+                            
+                            if viewModel.isOnline && onlineViewModel.isSignedIn {
+                                Button(role: .destructive) {
+                                    HapticManager.shared.triggerHapticFeedback(.light)
+                                    SoundManager.shared.sound(.click1)
+                                    onlineViewModel.uploadPack(pack)
+                                } label: {
+                                    Text(Localization.uploadPack)
+                                }
+                            }
                         }
                     }
-                } closeTapAction: {
-                    if isEdit {
-                        isEdit = false
-                    } else {
-                        dismiss()
-                    }
                 }
-                .padding(.vertical, 16)
-                .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
-                .background(Rectangle().fill(.lightBlack))
-                
-                ZStack(alignment: .bottom) {
-                    CardView(isShowNotes: $isShowNotes, isShowLink: $isShowLink)
-                        .environmentObject(viewModel)
+            } closeTapAction: {
+                if isEdit {
+                    isEdit = false
+                } else {
+                    dismiss()
                 }
             }
-            .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 8 : 24)
-            .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 120)
+            .padding(.vertical, 16)
+            .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 100)
+            .background(Rectangle().fill(.lightBlack))
+            
+            ZStack(alignment: .bottom) {
+                CardView(isShowNotes: $isShowNotes, isShowLink: $isShowLink)
+                    .environmentObject(viewModel)
+            }
         }
+        .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 8 : 24)
+        .padding(.bottom, UIDevice.current.userInterfaceIdiom == .phone ? 20 : 120)
     }
     
     @ViewBuilder

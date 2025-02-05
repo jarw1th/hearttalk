@@ -105,13 +105,11 @@ final class ViewModel: ObservableObject {
     }
     
     func createPack(name: String, color: String, description: String, cardQuestions: [String]) -> Pack {
-        let lang = userDefaultsManager.appleLanguage
         let pack = Pack()
         pack.id = UUID().uuidString
         pack.name = name
         pack.color = color
         pack.text = description
-        pack.language = lang
         pack.creator = "me"
         pack.isCustom = true
         
@@ -138,6 +136,10 @@ final class ViewModel: ObservableObject {
             self.realmManager.delete(packInstance)
             
             DispatchQueue.main.async {
+                self.myPacks.removeAll(where: { $0 == pack })
+                self.htPacks.removeAll(where: { $0 == pack })
+                self.quizPacks.removeAll(where: { $0 == pack })
+                self.cards = []
                 self.fetchAll()
             }
         }
@@ -149,16 +151,20 @@ final class ViewModel: ObservableObject {
                 packInstance.name = newPack.name
                 packInstance.text = newPack.text
             }
+            fetchAll()
         }
     }
     
-    func updateCard(_ newCard: Card) {
+    func updateCard(_ newCard: Card, for pack: Pack?) {
         if let cardInstance = self.realmManager.getCard(forId: newCard.id) {
             self.realmManager.update {
                 cardInstance.question = newCard.question
                 if cardInstance.isFlipCard {
                     cardInstance.answer = newCard.answer
                 }
+            }
+            if let pack {
+                fetchCards(forPackId: pack.id)
             }
         }
     }
@@ -242,21 +248,6 @@ final class ViewModel: ObservableObject {
         }
     }
     
-    func createCardImage(_ question: String) -> IdentifiableImage? {
-        let hostingController = UIHostingController(rootView: CardForShare(question: question))
-        let view = hostingController.view
-        let targetSize = CGSize(width: 300, height: 600) 
-        
-        view?.bounds = CGRect(origin: .zero, size: targetSize)
-        view?.backgroundColor = .clear
-        
-        let renderer = UIGraphicsImageRenderer(size: targetSize)
-        let identifiableImage = IdentifiableImage(image: renderer.image { _ in
-            view?.drawHierarchy(in: CGRect(origin: .zero, size: targetSize), afterScreenUpdates: true)
-        })
-        return identifiableImage
-    }
-    
     func shareApp() -> String {
         let appName = Bundle.main.infoDictionary?[kCFBundleNameKey as String] as? String ?? "MyApp"
         let appURL = "https://apps.apple.com/app/idYOUR_APP_ID"
@@ -319,19 +310,6 @@ final class ViewModel: ObservableObject {
         if cardIndex < cards.count {
             isCardFavorite = favoritesCardType.cards.contains { $0.id == cards[cardIndex].id }
         }
-    }
-    
-    func speak(text: String) {
-        let currentLocale = NSLocale.current
-        let languageCode = currentLocale.languageCode ?? "en"
-        let languageName = currentLocale.localizedString(forLanguageCode: languageCode) ?? "en-US"
-        
-        let utterance = AVSpeechUtterance(string: text)
-        utterance.voice = AVSpeechSynthesisVoice(language: languageName)
-        utterance.rate = AVSpeechUtteranceDefaultSpeechRate
-
-        let synthesizer = AVSpeechSynthesizer()
-        synthesizer.speak(utterance)
     }
     
     func clearData() {
@@ -433,8 +411,13 @@ final class ViewModel: ObservableObject {
     }
     
     func importFrom(_ file: URL, for pack: Pack) {
-        guard file.isFileURL else { return }
-        let lines = readLines(from: file.relativePath)
+        guard file.startAccessingSecurityScopedResource() else {
+            print("Ошибка доступа к файлу")
+            return
+        }
+        defer { file.stopAccessingSecurityScopedResource() }
+        
+        let lines = readLines(from: file.path)
         
         for line in lines {
             let separatedTexts = line.components(separatedBy: "/")
@@ -450,6 +433,8 @@ final class ViewModel: ObservableObject {
                 }
             }
         }
+        
+        fetchAll()
     }
     
     private func readLines(from filePath: String) -> [String] {
@@ -465,6 +450,14 @@ final class ViewModel: ObservableObject {
     
     func generate(from prompt: String, using pack: Pack, with cards: Int) {
         
+    }
+    
+    func savePack(_ pack: Pack) {
+        realmManager.add(pack)
+        
+        DispatchQueue.main.async {
+            self.fetchAll()
+        }
     }
     
 }

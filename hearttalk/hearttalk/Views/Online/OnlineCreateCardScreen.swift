@@ -17,6 +17,7 @@ struct OnlineCreateCardScreen: View {
     @State private var isFlipCard: Bool = false
     
     @State private var isShowAlert: Bool = false
+    @State private var isShowPackSelect: Bool = false
     
     var body: some View {
         makeContent()
@@ -27,6 +28,12 @@ struct OnlineCreateCardScreen: View {
             .edgesIgnoringSafeArea(.bottom)
             .alert(isPresented: $isShowAlert) {
                 Alert(title: Text(Localization.alert), message: Text(Localization.questionAlertMessage), dismissButton: .default(Text(Localization.confirm), action: {}))
+            }
+            .actionSheet(isPresented: $isShowPackSelect) {
+                ActionSheet(
+                    title: Text(Localization.packs),
+                    buttons: makeActionSheetButtons()
+                )
             }
     }
     
@@ -45,6 +52,11 @@ struct OnlineCreateCardScreen: View {
                     }
                 }
                 QuestionToggle(text: Localization.flipCard, isOn: $isFlipCard)
+                SettingsButton(text: viewModel.selectedSavingType?.name ?? Localization.notSet) {
+                    viewModel.fetchMyContent {
+                        isShowPackSelect.toggle()
+                    }
+                }
                 Spacer()
                 makeCreateButton()
             }
@@ -73,7 +85,7 @@ struct OnlineCreateCardScreen: View {
     }
     
     private func checkText() -> Bool {
-        question.count > 6
+        question.count > 6 && viewModel.selectedSavingType != nil
     }
     
     private func createAction() {
@@ -83,6 +95,22 @@ struct OnlineCreateCardScreen: View {
             card.answer = answer
         }
         viewModel.createQuestion(card)
+    }
+    
+    private func makeActionSheetButtons() -> [ActionSheet.Button]  {
+        var buttons: [ActionSheet.Button] = []
+        
+        viewModel.myPacks.forEach { pack in
+            let button = ActionSheet.Button.default(Text(pack.pack.name), action: {
+                viewModel.selectedSavingType = pack.pack
+            })
+            buttons.append(button)
+        }
+                                                        
+        let button = ActionSheet.Button.cancel(Text(Localization.cancel))
+        buttons.append(button)
+        
+        return buttons
     }
     
 }

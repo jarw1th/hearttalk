@@ -28,13 +28,16 @@ struct ColorPicker: View {
             SoundManager.shared.sound(.click1)
             self.color = color
         } label: {
-            RoundedRectangle(cornerRadius: 12)
-                .fill(color)
-                .overlay(  
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(self.color == color ? Color(white: 1.0) : .clear, lineWidth: 2)
-                )
-                .frame(width: 48, height: 48)
+            ZStack {
+                Rectangle()
+                    .fill(.clear)
+                    .frame(width: 48, height: 48)
+                
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(color)
+                    .frame(width: self.color == color ? 24 : 48, height: self.color == color ? 24 : 48)
+                    
+            }
         }
     }
     

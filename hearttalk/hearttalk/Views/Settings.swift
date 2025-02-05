@@ -5,12 +5,9 @@ import SafariServices
 struct Settings: View {
     
     @EnvironmentObject var viewModel: ViewModel
-    @EnvironmentObject var onlineViewModel: OnlineViewModel
     @Environment(\.dismiss) var dismiss
     
-    @State private var isShowWhatIs: Bool = false
     @State private var isClearAlert: Bool = false
-    @State private var isShowSignIn: Bool = false
     @State private var link: String?
     @State private var actionSheetType: SettingsActionSheetType?
     
@@ -27,9 +24,6 @@ struct Settings: View {
                     if let url = URL(string: url) {
                         SafariViewController(url: url)
                     }
-                }
-                .fullScreenCover(isPresented: $isShowWhatIs) {
-                    WhatIsTheApp()
                 }
                 .onAppear {
                     isVibrations = UserDefaultsManager.shared.isVibrations
@@ -64,33 +58,17 @@ struct Settings: View {
                         }()
                     )
                 }
-                .fullScreenCover(isPresented: $isShowSignIn) {
-                    SignScreen()
-                        .environmentObject(onlineViewModel)
-                }
         }
     }
     
     private func makeContent() -> some View {
-        VStack(spacing: 40) {
-            SingleBackTopBar(text: Localization.settings) {
-                dismiss()
-            }
-            .padding(.vertical, 16)
+        VStack(spacing: 8) {
+            TopBar(text: TabType.settings.text)
+                .padding(.vertical, 16)
+                .padding(.horizontal, 20)
             
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 40) {
-                    if viewModel.isOnline && viewModel.network.isNetworkAvailable {
-                        if onlineViewModel.isSignedIn {
-                            OnlineProfile(image: onlineViewModel.getUser()?.photoURL, name: onlineViewModel.getUser()?.displayName ?? "") {
-                                onlineViewModel.signOut()
-                            }
-                        } else {
-                            LoginButton {
-                                isShowSignIn.toggle()
-                            }
-                        }
-                    }
                     SettingsButton(text: viewModel.isOnline ? Localization.goOffline : Localization.goOnline) {
                         viewModel.networkMode()
                     }
@@ -114,50 +92,24 @@ struct Settings: View {
                     makeSettingsList()
                 }
             }
-            makeCridential()
-        }
-        .padding(.horizontal, 20)
-        .padding(.bottom, 16)
-    }
-    
-    @ViewBuilder
-    private func makeCridential() -> some View {
-        VStack(spacing: 4) {
-            Image("logoIcon")
-                .renderingMode(.template)
-                .resizable()
-                .foregroundStyle(.darkWhite)
-                .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 20 : 40, height: UIDevice.current.userInterfaceIdiom == .phone ? 18 : 34)
-                .opacity(0.5)
-            Text(Localization.credential)
-                .font(.custom("Poppins-SemiBold", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24))
-                .multilineTextAlignment(.center)
-                .foregroundStyle(.darkWhite)
-                .opacity(0.5)
-            if UIDevice.current.userInterfaceIdiom == .phone {
-                Text("\(Localization.version) \(UserDefaultsManager.shared.appVersion)")
-                    .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 10 : 14))
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(.darkWhite)
-                    .opacity(0.5)
-            }
+            .padding(.horizontal, 20)
         }
     }
     
     @ViewBuilder
     private func makeButtonsList() -> some View {
         VStack(spacing: 16) {
-            SettingsButton(text: Localization.whatIsHT) {
-                whatIsAction()
-            }
             SettingsButton(text: Localization.terms) {
-                termsAction()
+                link = ""
             }
             SettingsButton(text: Localization.policy) {
-                privacyAction()
+                link = ""
             }
             SettingsButton(text: Localization.contacts) {
-                contactAction()
+                actionSheetType = .contacts
+            }
+            SettingsButton(text: "Credential") {
+                
             }
         }
     }
@@ -183,22 +135,6 @@ struct Settings: View {
             return language.capitalized
         }
         return "English"
-    }
-    
-    private func whatIsAction() {
-        isShowWhatIs.toggle()
-    }
-    
-    private func contactAction() {
-        actionSheetType = .contacts
-    }
-    
-    private func termsAction() {
-        link = ""
-    }
-    
-    private func privacyAction() {
-        link = ""
     }
     
     private func makeActionSheetButtons() -> [ActionSheet.Button]  {

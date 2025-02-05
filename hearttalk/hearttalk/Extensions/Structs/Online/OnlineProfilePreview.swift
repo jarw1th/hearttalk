@@ -27,7 +27,7 @@ struct OnlineProfilePreview: View {
                     AsyncImage(url: image, content: { image in
                         image
                             .resizable()
-                            .frame(width: 40, height: 40)
+                            .frame(width: 36, height: 36)
                             .cornerRadius(12)
                     }, placeholder: {
                         
@@ -40,7 +40,7 @@ struct OnlineProfilePreview: View {
                 }
                 .padding(3)
             }
-            .frame(width: 200, height: 46)
+            .frame(width: 280, height: 42)
         }
     }
     

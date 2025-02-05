@@ -16,13 +16,14 @@ struct PackView: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 12)
-                .fill(Color(hex: color))
+                .stroke(Color(hex: color), lineWidth: 2)
+                .frame(width: 200, height: 140)
             
             VStack(alignment: .leading) {
                 Text(name)
                     .font(.custom("Poppins-Regular", size: 16))
                     .multilineTextAlignment(.leading)
-                    .foregroundStyle(.darkWhite)
+                    .foregroundStyle(Color(hex: color))
                     .frame(maxWidth: .infinity, alignment: .leading)
                 Spacer()
                 let value = (numberOfCards == 1 ? Localization.card : Localization.cards)
@@ -35,7 +36,7 @@ struct PackView: View {
             }
             .padding(16)
         }
-        .frame(width: 200, height: 140)
+        .frame(width: 200, height: 142)
     }
     
 }

@@ -1,6 +1,52 @@
 
 import Foundation
 
+enum TabType: String, CaseIterable, Identifiable {
+    
+    case home
+    case search
+    case add
+    case profile
+    case settings
+    
+    static let offlineAllCases = [TabType.home, TabType.add, TabType.settings]
+    
+    var id: String {
+        return self.rawValue
+    }
+    
+    var text: String {
+        switch self {
+        case .home:
+            return Localization.home
+        case .search:
+            return Localization.online
+        case .add:
+            return ""
+        case .profile:
+            return "Profile"
+        case .settings:
+            return "Settings"
+        }
+    }
+    
+    var imageName: String {
+        switch self {
+        case .home:
+            return "home"
+        case .search:
+            return "search"
+        case .add:
+            return "add"
+        case .profile:
+            return "profile"
+        case .settings:
+            return "settings"
+        }
+    }
+    
+}
+
 enum QuestionMode {
     
     case cards, list
@@ -112,11 +158,11 @@ enum OnlineAlertType: Identifiable, Hashable {
         case .server:
             Localization.serverAlert
         case .successReset(let email):
-            Localization.successResetAlert
+            "\(Localization.successResetAlert) \(email)"
         case .wrongPassword(let email):
-            Localization.wrongPasswordAlert
+            "\(Localization.wrongPasswordAlert) \(email)"
         case .noEmail(let email):
-            Localization.noEmailAlert
+            "\(Localization.noEmailAlert) \(email)"
         }
     }
     

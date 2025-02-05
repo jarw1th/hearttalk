@@ -7,15 +7,8 @@ struct HomeScreen: View {
     @EnvironmentObject var onlineViewModel: OnlineViewModel
     @State private var requestManager: RequestManager = RequestManager.shared
     
-    @State private var isShowSettings: Bool = false
-    @State private var isShowCreateCard: Bool = false
-    @State private var isShowCreatePack: Bool = false
-    @State private var isShowDailyCard: Bool = false
-    @State private var isShowGlobalAlert: Bool = false
-    @State private var isShowOnlineScreen: Bool = false
     @State private var isShowAgeAlert: Bool = false
-    @State private var isShowImportCards: Bool = false
-    @State private var isShowGenerateCards: Bool = false
+    @State private var searchText: String = ""
     
     @State private var selectedPack: Pack?
     @State private var selectedNamePack: Pack?
@@ -30,51 +23,6 @@ struct HomeScreen: View {
                         UIApplication.shared.endEditing()
                     }
             )
-            .onAppear {
-                isShowGlobalAlert = (viewModel.remoteConfigManager.appData?.isShowAlert) ?? false
-                if let action = QuickActionsManager.shared.quickAction {
-                    switch action {
-                    case .addCard:
-                        isShowCreateCard.toggle()
-                    case .addPack:
-                        isShowCreatePack.toggle()
-                    }
-                }
-            }
-            .onChange(of: requestManager.isConnected) { newValue in
-                guard !newValue else { return }
-                viewModel.isOnline = false
-            }
-            .fullScreenCover(isPresented: $isShowSettings) {
-                Settings()
-                    .environmentObject(viewModel)
-                    .environmentObject(onlineViewModel)
-            }
-            .fullScreenCover(isPresented: $isShowCreateCard) {
-                CreateCardScreen()
-                    .environmentObject(viewModel)
-            }
-            .fullScreenCover(isPresented: $isShowCreatePack) {
-                CreatePackScreen()
-                    .environmentObject(viewModel)
-            }
-            .fullScreenCover(isPresented: $isShowImportCards) {
-                ImportCardsScreen()
-                    .environmentObject(viewModel)
-            }
-            .fullScreenCover(isPresented: $isShowGenerateCards) {
-                GenerateCardsScreen()
-                    .environmentObject(viewModel)
-            }
-            .fullScreenCover(isPresented: $isShowDailyCard) {
-                Questions(card: viewModel.dailyOriginalCard)
-                    .environmentObject(viewModel)
-            }
-            .fullScreenCover(isPresented: $isShowOnlineScreen) {
-                OnlineScreen()
-                    .environmentObject(viewModel)
-                    .environmentObject(onlineViewModel)
-            }
             .fullScreenCover(item: $selectedNamePack) { pack in
                 ChangeTextScreen(text: Binding(get: {
                     pack.name
@@ -91,58 +39,49 @@ struct HomeScreen: View {
                     viewModel.updatePack(p)
                 }))
             }
+            .fullScreenCover(item: $selectedPack) { pack in
+                Questions(pack: pack)
+                    .environmentObject(viewModel)
+                    .environmentObject(onlineViewModel)
+            }
             .alert(isPresented: $isShowAgeAlert) {
                 Alert(title: Text(Localization.adultAlertTitle), message: Text(Localization.adultAlertMessage), primaryButton: .default(Text(Localization.confirm), action: {
                     UserDefaultsManager.shared.isShowAgeAlert = false
                 }), secondaryButton: .cancel(Text(Localization.cancel), action: {}))
             }
-            .onOpenURL { url in
-                if url.scheme == "hearttalk" {
-                    if url.host == "createScreen" {
-                        isShowCreateCard.toggle()
-                    }
-                    if url.host == "dailyWidgetOpen" {
-                        isShowDailyCard.toggle()
-                    }
-                    if url.host == "dailyTurningOn" {
-                        if !isShowSettings {
-                            isShowSettings.toggle()
-                        }
-                    }
-                }
-            }
-            .alert(isPresented: $isShowGlobalAlert) {
-                Alert(title: Text(viewModel.remoteConfigManager.appData?.alertTitle ?? ""), message: Text(viewModel.remoteConfigManager.appData?.alertMessage ?? ""), dismissButton: .default(Text(Localization.confirm), action: {}))
-            }
     }
     
     @ViewBuilder
     private func makeContent() -> some View {
-        VStack(spacing: 40) {
-            HomeTopBar(text: viewModel.isOnline && requestManager.isConnected ? Localization.online : Localization.home) {
-                isShowSettings.toggle()
-            }
-            .padding(.vertical, 16)
-            .padding(.horizontal, 20)
+        VStack(spacing: 8) {
+            TopBar(text: TabType.home.text)
+                .padding(.vertical, 16)
+                .padding(.horizontal, 20)
             
             ScrollView(.vertical, showsIndicators: false) {
-                VStack(spacing: 100) {
+                VStack(spacing: 40) {
+                    SearchBar(placeholder: Localization.onlineSearch, text: $searchText)
+                        .padding(.horizontal, 20)
+                    
                     VStack(spacing: 24) {
-                        makeSection(Localization.myContent, isCreatable: true) {
+                        makeSection(Localization.myContent) {
+                            
+                        } content: {
                             makeMyFeed()
                         }
                         makeSection(Localization.ourChoice) {
+                            
+                        } content: {
                             makeHTFeed()
                         }
                         makeSection(Localization.flipCards) {
+                            
+                        } content: {
                             makeQuizFeed()
                         }
                     }
-                    if viewModel.isOnline && requestManager.isConnected {
-                        OnlineScreen()
-                            .environmentObject(viewModel)
-                    }
                 }
+                .padding(.top, 16)
             }
         }
     }
@@ -151,10 +90,11 @@ struct HomeScreen: View {
     private func makeMyFeed() -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 16) {
-                ForEach(viewModel.myPacks) { pack in
+                ForEach(formatedMyPacks()) { pack in
                     Button {
                         HapticManager.shared.triggerHapticFeedback(.light)
                         SoundManager.shared.sound(.click1)
+                        guard selectedPack == nil else { return }
                         if pack.isAdult && UserDefaultsManager.shared.isShowAgeAlert {
                             isShowAgeAlert.toggle()
                         } else {
@@ -166,32 +106,29 @@ struct HomeScreen: View {
                         PackView(color: pack.color, name: pack.name, numberOfCards: pack.cards.count)
                     }
                     .contextMenu {
-                        Button(role: .destructive) {
-                            HapticManager.shared.triggerHapticFeedback(.light)
-                            SoundManager.shared.sound(.click1)
-                            viewModel.deletePack(pack)
-                        } label: {
-                            Text(Localization.delete)
+                        if !pack.isFavorite {
+                            Button(role: .destructive) {
+                                HapticManager.shared.triggerHapticFeedback(.light)
+                                SoundManager.shared.sound(.click1)
+                                viewModel.deletePack(pack)
+                            } label: {
+                                Text(Localization.delete)
+                            }
+                            Button {
+                                HapticManager.shared.triggerHapticFeedback(.light)
+                                SoundManager.shared.sound(.click1)
+                                selectedNamePack = pack
+                            } label: {
+                                Text(Localization.changeName)
+                            }
+                            Button {
+                                HapticManager.shared.triggerHapticFeedback(.light)
+                                SoundManager.shared.sound(.click1)
+                                selectedDescPack = pack
+                            } label: {
+                                Text(Localization.changeDescription)
+                            }
                         }
-                        Button {
-                            HapticManager.shared.triggerHapticFeedback(.light)
-                            SoundManager.shared.sound(.click1)
-                            selectedNamePack = pack
-                        } label: {
-                            Text(Localization.changeName)
-                        }
-                        Button {
-                            HapticManager.shared.triggerHapticFeedback(.light)
-                            SoundManager.shared.sound(.click1)
-                            selectedDescPack = pack
-                        } label: {
-                            Text(Localization.changeDescription)
-                        }
-                    }
-                    .fullScreenCover(item: $selectedPack) { pack in
-                        Questions(pack: pack)
-                            .environmentObject(viewModel)
-                            .navigationBarHidden(true)
                     }
                 }
             }
@@ -203,7 +140,7 @@ struct HomeScreen: View {
     private func makeHTFeed() -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 16) {
-                ForEach(viewModel.htPacks) { pack in
+                ForEach(formatedOurChoice()) { pack in
                     Button {
                         selectedPack = pack
                     } label: {
@@ -231,11 +168,6 @@ struct HomeScreen: View {
                         } label: {
                             Text(Localization.changeDescription)
                         }
-                    }
-                    .fullScreenCover(item: $selectedPack) { pack in
-                        Questions(pack: pack)
-                            .environmentObject(viewModel)
-                            .navigationBarHidden(true)
                     }
                 }
             }
@@ -247,7 +179,7 @@ struct HomeScreen: View {
     private func makeQuizFeed() -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 16) {
-                ForEach(viewModel.quizPacks) { pack in
+                ForEach(formatedFlipPacks()) { pack in
                     Button {
                         selectedPack = pack
                     } label: {
@@ -276,11 +208,6 @@ struct HomeScreen: View {
                             Text(Localization.changeDescription)
                         }
                     }
-                    .fullScreenCover(item: $selectedPack) { pack in
-                        Questions(pack: pack)
-                            .environmentObject(viewModel)
-                            .navigationBarHidden(true)
-                    }
                 }
             }
             .padding(.leading, 20)
@@ -288,36 +215,47 @@ struct HomeScreen: View {
     }
     
     @ViewBuilder
-    private func makeSection<Content: View>(_ text: String, isCreatable: Bool = false, content: () -> Content) -> some View {
+    private func makeSection<Content: View>(_ text: String, action: @escaping () -> Void, content: () -> Content) -> some View {
         VStack(spacing: 16) {
-            HStack {
-                Text(text)
-                    .font(.custom("Poppins-Regular", size: 16))
-                    .multilineTextAlignment(.leading)
-                    .foregroundStyle(.darkWhite)
-                Spacer()
-                if isCreatable {
-                    Menu {
-                        Button(Localization.addCard) {
-                            isShowCreateCard.toggle()
-                        }
-                        Button(Localization.addPack) {
-                            isShowCreatePack.toggle()
-                        }
-                        Button(Localization.importCards) {
-                            isShowImportCards.toggle()
-                        }
-                        Button(Localization.generateAI) {
-                            isShowGenerateCards.toggle()
-                        }
-                    } label: {
-                        Icon(name: "add")
-                    }
+            Button {
+                action()
+            } label: {
+                HStack {
+                    Text(text)
+                        .font(.custom("Poppins-Regular", size: 16))
+                        .multilineTextAlignment(.leading)
+                        .foregroundStyle(.darkWhite)
+                    Spacer()
+                    Icon(name: "rightArrow")
                 }
+                .padding(.horizontal, 20)
             }
-            .padding(.horizontal, 20)
             content()
-                .frame(height: 140)
+                .frame(height: 142)
+        }
+    }
+    
+    private func formatedMyPacks() -> [Pack] {
+        if searchText.isEmpty {
+            return viewModel.myPacks
+        } else {
+            return viewModel.myPacks.filter({ $0.name.lowercased().contains(searchText.lowercased()) || $0.description.lowercased().contains(searchText.lowercased()) || String($0.cards.count).contains(searchText.lowercased()) })
+        }
+    }
+    
+    private func formatedOurChoice() -> [Pack] {
+        if searchText.isEmpty {
+            return viewModel.htPacks
+        } else {
+            return viewModel.htPacks.filter({ $0.name.lowercased().contains(searchText.lowercased()) || $0.description.lowercased().contains(searchText.lowercased()) || String($0.cards.count).contains(searchText.lowercased()) })
+        }
+    }
+    
+    private func formatedFlipPacks() -> [Pack] {
+        if searchText.isEmpty {
+            return viewModel.quizPacks
+        } else {
+            return viewModel.quizPacks.filter({ $0.name.lowercased().contains(searchText.lowercased()) || $0.description.lowercased().contains(searchText.lowercased()) || String($0.cards.count).contains(searchText.lowercased()) })
         }
     }
     

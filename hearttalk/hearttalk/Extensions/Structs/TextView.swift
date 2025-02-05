@@ -11,8 +11,8 @@ struct TextView: UIViewRepresentable {
     
     @Binding var text: String
     var placeholder: String
-    var placeholderColor: UIColor = UIColor.lightBlack.withAlphaComponent(0.5) 
-    var textColor: UIColor = .lightBlack
+    var placeholderColor: UIColor = UIColor.darkWhite.withAlphaComponent(0.5) 
+    var textColor: UIColor = .darkWhite
     var backgroundColor: UIColor = .clear
     var font: UIFont? = UIFont(name: "Poppins-Regular", size: 16)
     var isScrollable: Bool = true

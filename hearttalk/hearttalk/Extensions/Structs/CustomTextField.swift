@@ -35,7 +35,7 @@ struct CustomTextField: View {
             if text.isEmpty {
                 Text(placeholder)
                     .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24))
-                    .foregroundColor(.lightBlack)
+                    .foregroundColor(.darkWhite)
                     .opacity(0.5)
             }
             TextField("", text: $text)
@@ -43,7 +43,7 @@ struct CustomTextField: View {
                 .keyboardType(type.keyboard)
                 .disableAutocorrection(true)
                 .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24))
-                .foregroundStyle(.lightBlack)
+                .foregroundStyle(.darkWhite)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
@@ -61,7 +61,8 @@ struct CustomTextField: View {
         }
         .background(
             RoundedRectangle(cornerRadius: 12)
-                .fill(.darkWhite)
+                .stroke(.darkWhite, lineWidth: 1)
+                .opacity(text.isEmpty ? 0.5 : 1)
         )
     }
     

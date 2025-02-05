@@ -22,7 +22,7 @@ struct NoteImageField: View {
                     SoundManager.shared.sound(.click1)
                     onChange()
                 } label: {
-                    Text(Localization.change)
+                    Text(Localization.changeImg)
                 }
                 Button {
                     HapticManager.shared.triggerHapticFeedback(.light)

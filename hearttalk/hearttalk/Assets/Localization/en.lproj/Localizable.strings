@@ -147,6 +147,8 @@
 
 "crop" = "Crop";
 
+"changeImg" = "Change";
+
 "change" = "Change";
 
 "changeName" = "Change name";
@@ -275,3 +277,54 @@
 "logOut" = "Log out";
 
 "logIn" = "Log in";
+
+
+"rooms" = "Rooms";
+
+"uploadPack" = "Upload pack to online";
+
+"savePack" = "Save current pack";
+
+"addToFav" = "Add to favorites";
+
+
+"ago" = "ago";
+
+"year" = "year";
+
+"years" = "years";
+
+"yearss" = "years";
+
+"month" = "month";
+
+"months" = "months";
+
+"monthss" = "months";
+
+"week" = "week";
+
+"weeks" = "weeks";
+
+"weekss" = "weeks";
+
+"day" = "day";
+
+"days" = "days";
+
+"dayss" = "days";
+
+"hour" = "hour";
+
+"hours" = "hours";
+
+"hourss" = "hours";
+
+"minute" = "minute";
+
+"minutes" = "minutes";
+
+"minutess" = "minutes";
+
+"justNow" = "Just now";
+

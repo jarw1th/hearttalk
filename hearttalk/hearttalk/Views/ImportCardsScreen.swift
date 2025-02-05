@@ -103,7 +103,7 @@ struct ImportCardsScreen: View {
     }
     
     private func checkText() -> Bool {
-        isCreateNewPack ? packName.count > 4 : true
+        isCreateNewPack ? packName.count > 4 : viewModel.selectedSavingType != nil
     }
     
     private func createAction() {

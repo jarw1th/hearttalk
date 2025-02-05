@@ -19,7 +19,8 @@ struct NoteTextField: View {
             .frame(maxWidth: .infinity)
             .background(
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(.darkWhite)
+                    .stroke(.darkWhite, lineWidth: 1)
+                    .opacity(text.isEmpty ? 0.5 : 1)
             )
     }
     

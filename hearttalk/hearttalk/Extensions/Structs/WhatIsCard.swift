@@ -4,6 +4,7 @@ import SwiftUI
 struct WhatIsCardView: View {
     
     @Binding var index: Int
+    @Binding var isLastCard: Bool
     
     @State private var frontCardOffset: CGSize = .zero
     @State private var backCardOffset: CGSize = CGSize(width: 400, height: 0)
@@ -173,6 +174,9 @@ struct WhatIsCardView: View {
     
     private func moveToNextCard() {
         index = index + 1
+        if index >= texts.count {
+            isLastCard = true
+        }
     }
     
     private func resetCardPosition() {

@@ -7,26 +7,18 @@
 
 import SwiftUI
 
-struct HomeTopBar: View {
+struct TopBar: View {
     
     var text: String
-    var tapAction: () -> Void
     
     var body: some View {
-        HStack {
+        HStack(spacing: 16) {
             Text(text)
                 .font(.custom("Poppins-Regular", size: 24))
                 .multilineTextAlignment(.leading)
                 .foregroundStyle(.darkWhite)
                 .lineLimit(1)
             Spacer()
-            Button {
-                HapticManager.shared.triggerHapticFeedback(.light)
-                SoundManager.shared.sound(.click1)
-                tapAction()
-            } label: {
-                Icon(name: "settings")
-            }
         }
     }
     

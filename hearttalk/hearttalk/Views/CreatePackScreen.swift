@@ -34,7 +34,7 @@ struct CreatePackScreen: View {
     
     private func makeContent() -> some View {
         VStack(spacing: 40) {
-            SingleBackTopBar(text: "New pack") {
+            SingleBackTopBar(text: Localization.newPack) {
                 dismiss()
             }
             .padding(.vertical, 16)

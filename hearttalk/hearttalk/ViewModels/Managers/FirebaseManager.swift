@@ -1,6 +1,7 @@
 
 import Foundation
 import FirebaseCore
+import FirebaseStorage
 import FirebaseFirestore
 import FirebaseAuth
 
@@ -9,7 +10,6 @@ final class FirebaseManager {
     private let db = Firestore.firestore()
     private let users = Firestore.firestore().collection("users")
     private let packKey = "packs"
-    private let questionKey = "questions"
     private let favsKey = "favs"
     private let contentKey = "content"
     
@@ -22,6 +22,7 @@ final class FirebaseManager {
         self.user = Auth.auth().currentUser
     }
     
+    // MARK: - Authorization
     func signIn(email: String, password: String, completion: @escaping (Bool, Bool) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
             if let error,
@@ -30,16 +31,28 @@ final class FirebaseManager {
                 completion(false, false)
                 return
             }
-            if error != nil {
-                completion(false, true)
-                return
-            }
-            guard let self else {
+            guard let self,
+                error == nil else {
                 completion(false, true)
                 return
             }
             self.user = authResult?.user
             completion(authResult?.user != nil, true)
+        }
+    }
+    
+    func updatePassword(newPassword: String, completion: @escaping (Bool) -> Void) {
+        guard let user else {
+            completion(false)
+            return
+        }
+        user.updatePassword(to: newPassword) { [weak self] error in
+            if error != nil {
+                completion(false)
+            } else {
+                self?.user = Auth.auth().currentUser
+                completion(true)
+            }
         }
     }
     
@@ -57,20 +70,15 @@ final class FirebaseManager {
                 "email": authResult.user.email ?? email,
                 "displayName": authResult.user.displayName ?? email,
                 "opens": 0,
+                "isShowEmail": false,
+                "isShowMyContent": false,
+                "isShowStatus": false,
                 "createdAt": Timestamp(date: Date())
             ]
             if let url = authResult.user.photoURL {
-                userData["photoURL"] = url
+                userData["photoURL"] = url.absoluteString
             }
-            self.users.document(authResult.user.uid).setData(userData) { error in
-                if let error = error {
-                    print("Error saving user to Firestore: \(error.localizedDescription)")
-                    completion(false)
-                } else {
-                    print("User added to Firestore successfully!")
-                    completion(true)
-                }
-            }
+            self.setData(userData, path: self.users.document(authResult.user.uid), completion: completion)
         }
     }
     
@@ -83,23 +91,71 @@ final class FirebaseManager {
         let changeRequest = user.createProfileChangeRequest()
         changeRequest.displayName = newName
         
-        changeRequest.commitChanges { error in
+        changeRequest.commitChanges { [weak self] error in
             if let error = error {
                 print("Error updating display name: \(error.localizedDescription)")
                 completion(false)
             } else {
-                self.users.document(user.uid).updateData([
-                    "displayName": newName
-                ]) { error in
-                    if let error = error {
-                        print("Error saving user to Firestore: \(error.localizedDescription)")
-                        completion(false)
-                    } else {
-                        print("User added to Firestore successfully!")
-                        completion(true)
+                self?.setData(["displayName": newName], path: self?.users.document(user.uid)) { success in
+                    if success {
+                        self?.user = Auth.auth().currentUser
                     }
+                    completion(success)
                 }
             }
+        }
+    }
+    
+    func updatePrivacy(_ privacy: [String: Any], completion: @escaping (Bool) -> Void) {
+        guard let user else {
+            completion(false)
+            return
+        }
+        
+        updateData(privacy, path: users.document(user.uid), completion: completion)
+    }
+    
+    func updateImage(_ image: UIImage, completion: @escaping (Bool) -> Void) {
+        guard let user else {
+            completion(false)
+            return
+        }
+        
+        uploadImage(image: image) { url in
+            guard let url else {
+                completion(false)
+                return
+            }
+            
+            setData(["photoUrl": url.absoluteString], path: users.document(user.uid), completion: completion)
+        }
+    }
+    
+    private func uploadImage(image: UIImage, completion: @escaping (URL?) -> Void) {
+        guard let user,
+              let imageData = image.jpegData(compressionQuality: 0.8) else {
+            completion(nil)
+            return
+        }
+        
+        let storageRef = Storage.storage().reference().child("images/\(user.uid).jpg")
+        let uploadTask = storageRef.putData(imageData, metadata: nil) { metadata, error in
+            if let error = error {
+                completion(nil)
+                return
+            }
+            
+            storageRef.downloadURL { url, error in
+                if let url = url {
+                    completion(url)
+                } else {
+                    completion(nil)
+                }
+            }
+        }
+        
+        uploadTask.observe(.progress) { snapshot in
+            let percentComplete = Double(snapshot.progress?.fractionCompleted ?? 0) * 100
         }
     }
     
@@ -118,6 +174,114 @@ final class FirebaseManager {
         user = nil
     }
     
+    // MARK: - Internal
+    private func setData(_ data: [String: Any], path: DocumentReference?, completion: ((Bool) -> Void)? = nil) {
+        guard let path else {
+            completion?(false)
+            return
+        }
+        path.setData(data) { error in
+            completion?(error != nil)
+        }
+    }
+    
+    private func updateData(_ data: [String: Any], path: DocumentReference?, completion: ((Bool) -> Void)? = nil) {
+        guard let path else {
+            completion?(false)
+            return
+        }
+        path.updateData(data) { error in
+            completion?(error != nil)
+        }
+    }
+    
+    private func getDocuments(_ path: CollectionReference?, completion: ((QuerySnapshot?) -> Void)? = nil) {
+        guard let path else {
+            completion?(nil)
+            return
+        }
+        path.getDocuments { (querySnapshot, error) in
+            guard let querySnapshot,
+                  error == nil,
+                  !querySnapshot.documents.isEmpty else {
+                completion?(nil)
+                return
+            }
+            completion?(querySnapshot)
+        }
+    }
+    
+    private func getDocuments(_ query: Query?, completion: ((QuerySnapshot?) -> Void)? = nil) {
+        guard let query else {
+            completion?(nil)
+            return
+        }
+        query.getDocuments { (querySnapshot, error) in
+            guard let querySnapshot,
+                  error == nil,
+                  !querySnapshot.documents.isEmpty else {
+                completion?(nil)
+                return
+            }
+            completion?(querySnapshot)
+        }
+    }
+    
+    private func getDocument(_ path: DocumentReference?, completion: ((DocumentSnapshot?) -> Void)? = nil) {
+        guard let path else {
+            completion?(nil)
+            return
+        }
+        path.getDocument { (documentSnapshot, error) in
+            guard let documentSnapshot,
+                  error == nil else {
+                completion?(nil)
+                return
+            }
+            completion?(documentSnapshot)
+        }
+    }
+    
+    private func delete(_ path: DocumentReference?, completion: ((Bool) -> Void)? = nil) {
+        guard let path else {
+            completion?(false)
+            return
+        }
+        path.delete { error in
+            completion?(error != nil)
+        }
+    }
+    
+    // MARK: - FireStore
+    func fetchMyUser(completion: @escaping (FirebaseUser?) -> Void) {
+        guard let user else {
+            completion(nil)
+            return
+        }
+        
+        getDocument(users.document(user.uid)) { documentSnapshot in
+            guard let documentSnapshot else {
+                completion(nil)
+                return
+            }
+            
+            let data = documentSnapshot.data()
+            let id = data?["id"] as? String ?? UUID().uuidString
+            let email = data?["email"] as? String ?? "Unknown email"
+            let displayName = data?["displayName"] as? String ?? email
+            let photoURLstring = data?["photoURL"] as? String ?? ""
+            let photoURL = URL(string: photoURLstring)
+            let isShowEmail = data?["isShowEmail"] as? Bool ?? false
+            let isShowMyContent = data?["isShowMyContent"] as? Bool ?? false
+            let isShowStatus = data?["isShowStatus"] as? Bool ?? false
+            let lastSeen = data?["lastSeen"] as? Timestamp
+            let lastSeenDate = lastSeen?.dateValue()
+            
+            let user = FirebaseUser(id: id, email: email, displayName: displayName, photoURL: photoURL, lastSeen: lastSeenDate, isShowEmail: isShowEmail, isShowMyContent: isShowMyContent, isShowStatus: isShowStatus)
+            completion(user)
+            print(user)
+        }
+    }
     
     func createPack(_ pack: Pack, tags: [String], completion: ((String?) -> Void)? = nil) {
         guard let user else {
@@ -141,23 +305,22 @@ final class FirebaseManager {
             "lastModifiedAt": Timestamp(date: Date())
         ]
 
-        path.document(packId).setData(data) { error in
-            if let error = error {
-                completion?(nil)
-                print("Error creating document: \(error.localizedDescription)")
+        setData(data, path: path.document(packId)) { success in
+            if success {
+                completion?(packId)
             } else {
-                self.db.collection(self.packKey).document(packId).setData(data) { error in
-                    if let error = error {
-                        completion?(nil)
-                        print("Error creating document: \(error.localizedDescription)")
-                    } else {
-                        completion?(packId)
-                        print("Document created successfully!")
-                    }
-                }
-                print("Document created successfully!")
+                completion?(nil)
             }
         }
+    }
+    
+    func updatePack(_ info: [String: Any], for pack: Pack, completion: @escaping (Bool) -> Void) {
+        guard let user else {
+            completion(false)
+            return
+        }
+        
+        updateData(info, path: users.document(user.uid).collection(packKey).document(pack.id), completion: completion)
     }
     
     func uploadPack(_ pack: Pack, completion: ((Bool) -> Void)? = nil) {
@@ -202,31 +365,16 @@ final class FirebaseManager {
             data["answer"] = question.answer
         }
         
-        path.document(packId).collection(contentKey).document(questionId).setData(data) { error in
-            if let error = error {
-                completion?(false)
-                print("Error creating document: \(error.localizedDescription)")
-            } else {
-                self.db.collection(self.packKey).document(packId).collection(self.contentKey).document(questionId).setData(data) { error in
-                    if let error = error {
-                        completion?(false)
-                        print("Error creating document: \(error.localizedDescription)")
-                    } else {
-                        self.db.collection(self.questionKey).document(questionId).setData(data) { error in
-                            if let error = error {
-                                completion?(false)
-                                print("Error creating document: \(error.localizedDescription)")
-                            } else {
-                                completion?(true)
-                                print("Document created successfully!")
-                            }
-                        }
-                        print("Document created successfully!")
-                    }
-                }
-                print("Document created successfully!")
-            }
+        setData(data, path: path.document(packId).collection(contentKey).document(questionId), completion: completion)
+    }
+    
+    func updateQuestion(_ info: [String: Any], for card: Card, and packId: String, completion: @escaping (Bool) -> Void) {
+        guard let user else {
+            completion(false)
+            return
         }
+        
+        updateData(info, path: users.document(user.uid).collection(packKey).document(packId).collection(contentKey).document(card.id), completion: completion)
     }
     
     func addQuestionToFavorites(_ question: Card, completion: ((Bool) -> Void)? = nil) {
@@ -283,23 +431,8 @@ final class FirebaseManager {
             return
         }
         let path = users.document(user.uid).collection(packKey)
-        path.document(cardTypeId).delete { error in
-            if let error = error {
-                completion?(false)
-                print("Error deleting document: \(error.localizedDescription)")
-            } else {
-                self.db.collection(self.packKey).document(cardTypeId).delete { error in
-                    if let error = error {
-                        completion?(false)
-                        print("Error creating document: \(error.localizedDescription)")
-                    } else {
-                        completion?(true)
-                        print("Document created successfully!")
-                    }
-                }
-                print("Document deleted successfully!")
-            }
-        }
+        
+        delete(path.document(cardTypeId), completion: completion)
     }
     
     func deleteQuestion(_ questionId: String, for pack: Pack, completion: ((Bool) -> Void)? = nil) {
@@ -309,31 +442,7 @@ final class FirebaseManager {
         }
         let path = users.document(user.uid).collection(packKey)
         
-        path.document(pack.id).collection(contentKey).document(questionId).delete { error in
-            if let error = error {
-                completion?(false)
-                print("Error deleting document: \(error.localizedDescription)")
-            } else {
-                self.db.collection(self.packKey).document(pack.id).collection(self.contentKey).document(questionId).delete { error in
-                    if let error = error {
-                        completion?(false)
-                        print("Error creating document: \(error.localizedDescription)")
-                    } else {
-                        self.db.collection(self.questionKey).document(questionId).delete { error in
-                            if let error = error {
-                                completion?(false)
-                                print("Error creating document: \(error.localizedDescription)")
-                            } else {
-                                completion?(true)
-                                print("Document created successfully!")
-                            }
-                        }
-                        print("Document created successfully!")
-                    }
-                }
-                print("Document deleted successfully!")
-            }
-        }
+        delete(path.document(pack.id).collection(contentKey).document(questionId), completion: completion)
     }
     
     func fetchFavorites(_ userId: String? = nil, completion: @escaping (FirebasePack) -> Void) {
@@ -346,13 +455,12 @@ final class FirebaseManager {
         }
         pack.user = userId
         let path = users.document(userId).collection(favsKey)
-        path.getDocuments { (querySnapshot, error) in
-            if let _ = error { return }
-            guard let querySnapshot,
-                  !querySnapshot.documents.isEmpty else {
+        getDocuments(path) { querySnapshot in
+            guard let querySnapshot else {
                 completion(pack)
                 return
             }
+            
             pack.cards = querySnapshot.documents.count
             
             var cards: [Card] = []
@@ -383,10 +491,8 @@ final class FirebaseManager {
             return
         }
         let path = users.document(user.uid).collection(packKey)
-        path.getDocuments { (querySnapshot, error) in
-            if let _ = error { return }
-            guard let querySnapshot,
-                  !querySnapshot.documents.isEmpty else {
+        getDocuments(path) { querySnapshot in
+            guard let querySnapshot else {
                 completion([])
                 return
             }
@@ -430,18 +536,15 @@ final class FirebaseManager {
     }
     
     private func fetchAllPacks(completion: @escaping ([FirebasePack]) -> Void) {
-        var query: Query = db.collection(packKey)
-            .order(by: "createdAt", descending: true)
+        var query: Query = db.collectionGroup(packKey)
             .limit(to: limit)
         
         if let last = lastDocuments["packs"] {
             query = query.start(afterDocument: last)
         }
-        query.getDocuments { [weak self] (querySnapshot, error) in
-            if let _ = error { return }
+        getDocuments(query) { [weak self] querySnapshot in
             guard let querySnapshot,
-                  let self,
-                  !querySnapshot.documents.isEmpty else {
+                  let self else {
                 completion([])
                 return
             }
@@ -464,7 +567,7 @@ final class FirebaseManager {
                 pack.color = color
                 pack.creator = creator
                 pack.language = language
-                self.getNumberOfCards(db.collection(packKey).document(document.documentID).collection(self.contentKey)) { count in
+                self.getNumberOfCards(users.document(userId).collection(packKey).document(document.documentID).collection(self.contentKey)) { count in
                     let firebasePack = FirebasePack(pack: pack, tags: tags, user: userId, cards: count)
                     packs.append(firebasePack)
                     group.leave()
@@ -487,10 +590,8 @@ final class FirebaseManager {
         if let last = lastDocuments["packs_\(userId)"] {
             query = query.start(afterDocument: last)
         }
-        query.getDocuments { (querySnapshot, error) in
-            if let _ = error { return }
-            guard let querySnapshot,
-                  !querySnapshot.documents.isEmpty else {
+        getDocuments(query) { querySnapshot in
+            guard let querySnapshot else {
                 completion([])
                 return
             }
@@ -527,10 +628,8 @@ final class FirebaseManager {
     }
     
     private func getNumberOfCards(_ path: CollectionReference, completion: @escaping (Int) -> Void) {
-        path.getDocuments { (querySnapshot, error) in
-            if let _ = error { return }
-            guard let querySnapshot,
-                  !querySnapshot.documents.isEmpty else {
+        getDocuments(path) { querySnapshot in
+            guard let querySnapshot else {
                 completion(0)
                 return
             }
@@ -553,10 +652,9 @@ final class FirebaseManager {
     
     private func fetchQuestionsFor(_ userId: String, and id: String, completion: @escaping ([Card]) -> Void) {
         let path = users.document(userId).collection(packKey).document(id).collection(contentKey)
-        path.getDocuments { (querySnapshot, error) in
-            if let _ = error { return }
-            guard let querySnapshot,
-                  !querySnapshot.documents.isEmpty else {
+        
+        getDocuments(path) { querySnapshot in
+            guard let querySnapshot else {
                 completion([])
                 return
             }
@@ -585,11 +683,8 @@ final class FirebaseManager {
     private func fetchQuestionsFor(_ userId: String, completion: @escaping ([Card]) -> Void) {
         let path = users.document(userId).collection(packKey)
         
-        path.getDocuments { [weak self] (querySnapshot, error) in
-            if let _ = error { return }
-            guard let querySnapshot,
-                  let self,
-                  !querySnapshot.documents.isEmpty else {
+        getDocuments(path) { [weak self] querySnapshot in
+            guard let querySnapshot else {
                 completion([])
                 return
             }
@@ -598,32 +693,28 @@ final class FirebaseManager {
             var packs: [Card] = []
             for document in querySnapshot.documents {
                 dispatchGroup.enter()
-                fetchQuestionsFor(userId, and: document.documentID) {
+                self?.fetchQuestionsFor(userId, and: document.documentID) {
                     packs.append(contentsOf: $0)
                     dispatchGroup.leave()
                 }
             }
             dispatchGroup.notify(queue: .main) {
-                self.lastDocuments["questions_\(userId)"] = querySnapshot.documents.last
+                self?.lastDocuments["questions_\(userId)"] = querySnapshot.documents.last
                 completion(packs)
             }
         }
     }
     
     private func fetchAllQuestions(completion: @escaping ([Card]) -> Void) {
-        var query: Query = db.collection(questionKey)
-            .order(by: "createdAt", descending: true)
+        var query: Query = db.collectionGroup(contentKey)
             .limit(to: limit)
         
         if let last = lastDocuments["questions"] {
             query = query.start(afterDocument: last)
         }
         
-        query.getDocuments { [weak self] (querySnapshot, error) in
-            if let _ = error { return }
-            guard let querySnapshot,
-                  let self,
-                  !querySnapshot.documents.isEmpty else {
+        getDocuments(query) { querySnapshot in
+            guard let querySnapshot else {
                 completion([])
                 return
             }
@@ -652,17 +743,14 @@ final class FirebaseManager {
     
     func fetchAllUsers(completion: @escaping ([FirebaseUser]) -> Void) {
         var query: Query = users
-            .order(by: "id", descending: true)
             .limit(to: limit)
         
         if let last = lastDocuments["users"] {
             query = query.start(afterDocument: last)
         }
         
-        query.getDocuments { (querySnapshot, error) in
-            if let _ = error { return }
-            guard let querySnapshot,
-                  !querySnapshot.documents.isEmpty else {
+        getDocuments(query) { querySnapshot in
+            guard let querySnapshot else {
                 completion([])
                 return
             }
@@ -673,11 +761,15 @@ final class FirebaseManager {
                 let id = data["id"] as? String ?? UUID().uuidString
                 let email = data["email"] as? String ?? "Unknown email"
                 let displayName = data["displayName"] as? String ?? email
-                let photoURL = data["photoURL"] as? URL
+                let photoURLstring = data?["photoURL"] as? String ?? ""
+                let photoURL = URL(string: photoURLstring)
+                let isShowEmail = data["isShowEmail"] as? Bool ?? false
+                let isShowMyContent = data["isShowMyContent"] as? Bool ?? false
+                let isShowStatus = data["isShowStatus"] as? Bool ?? false
                 let lastSeen = data["lastSeen"] as? Timestamp
                 let lastSeenDate = lastSeen?.dateValue()
                 
-                let user = FirebaseUser(id: id, email: email, displayName: displayName, photoURL: photoURL, lastSeen: lastSeenDate)
+                let user = FirebaseUser(id: id, email: email, displayName: displayName, photoURL: photoURL, lastSeen: lastSeenDate, isShowEmail: isShowEmail, isShowMyContent: isShowMyContent, isShowStatus: isShowStatus)
                 users.append(user)
             }
             self.lastDocuments["users"] = querySnapshot.documents.last

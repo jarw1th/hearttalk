@@ -10,7 +10,7 @@ import Speech
 import FirebaseAuth
 import FirebaseFirestore
 
-func createCardImage(_ question: String) -> IdentifiableImage? {
+func createCardImage(_ question: String) -> UIImage? {
     let hostingController = UIHostingController(rootView: CardForShare(question: question))
     let view = hostingController.view
     let targetSize = CGSize(width: 300, height: 600)
@@ -19,23 +19,9 @@ func createCardImage(_ question: String) -> IdentifiableImage? {
     view?.backgroundColor = .clear
     
     let renderer = UIGraphicsImageRenderer(size: targetSize)
-    let identifiableImage = IdentifiableImage(image: renderer.image { _ in
+    return renderer.image { _ in
         view?.drawHierarchy(in: CGRect(origin: .zero, size: targetSize), afterScreenUpdates: true)
-    })
-    return identifiableImage
-}
-
-func speak(text: String) {
-    let currentLocale = NSLocale.current
-    let languageCode = currentLocale.languageCode ?? "en"
-    let languageName = currentLocale.localizedString(forLanguageCode: languageCode) ?? "en-US"
-    
-    let utterance = AVSpeechUtterance(string: text)
-    utterance.voice = AVSpeechSynthesisVoice(language: languageName)
-    utterance.rate = AVSpeechUtteranceDefaultSpeechRate
-
-    let synthesizer = AVSpeechSynthesizer()
-    synthesizer.speak(utterance)
+    }
 }
 
 func setUserOnline() {

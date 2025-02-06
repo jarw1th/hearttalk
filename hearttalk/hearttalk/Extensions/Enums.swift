@@ -256,3 +256,26 @@ enum SettingsActionSheetType: Identifiable, Hashable {
     }
 
 }
+
+enum OnlineSectionType: String, Identifiable {
+    
+    case cards
+    case packs
+    case profiles
+
+    var id: String {
+        self.rawValue
+    }
+    
+    var title: String {
+        switch self {
+        case .cards:
+            Localization.onlineCards
+        case .packs:
+            Localization.onlinePacks
+        case .profiles:
+            "Profiles"
+        }
+    }
+
+}

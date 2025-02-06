@@ -210,9 +210,20 @@ final class ViewModel: ObservableObject {
         }
     }
     
-    func deleteCard(_ card: Card) {
-        if let cardInstance = self.realmManager.getCard(forId: card.id) {
+    func deleteCard(_ card: Card, from pack: Pack?) {
+        if card.parentPack.count == 1 || pack == nil,
+           let cardInstance = self.realmManager.getCard(forId: card.id) {
             self.realmManager.delete(cardInstance)
+            
+            DispatchQueue.main.async {
+                self.cards.removeAll(where: { $0 == card })
+            }
+        } else if let pack,
+                  let packInstance = self.realmManager.getPack(forId: pack.id),
+                  let index = packInstance.cards.firstIndex(of: card) {
+            self.realmManager.update {
+                packInstance.cards.remove(at: index)
+            }
             
             DispatchQueue.main.async {
                 self.cards.removeAll(where: { $0 == card })
@@ -283,6 +294,14 @@ final class ViewModel: ObservableObject {
     }
     
     func addCard(_ card: Card, to pack: Pack) {
+        realmManager.update {
+            pack.cards.append(card)
+        }
+        
+        updateCardFavoriteStatus()
+    }
+    
+    func removeCard(_ card: Card, from pack: Pack) {
         if let existingCard = pack.cards.first(where: { $0.id == card.id }) {
             realmManager.update {
                 if let index = pack.cards.firstIndex(of: existingCard) {
@@ -290,11 +309,8 @@ final class ViewModel: ObservableObject {
                 }
             }
             print("Card removed from Favorites.")
-        } else {
-            realmManager.update {
-                pack.cards.append(card)
-            }
-            print("Card added to Favorites.")
+            
+            
         }
         
         updateCardFavoriteStatus()
@@ -353,11 +369,18 @@ final class ViewModel: ObservableObject {
         }
     }
     
-    func deleteCards() {
+    func deleteCards(from pack: Pack?) {
         guard !selectedCards.isEmpty else { return }
         for card in selectedCards {
-            if let cardInstance = self.realmManager.getCard(forId: card.id) {
+            if card.parentPack.count == 1 || pack == nil,
+               let cardInstance = self.realmManager.getCard(forId: card.id) {
                 self.realmManager.delete(cardInstance)
+            } else if let pack,
+                      let packInstance = self.realmManager.getPack(forId: pack.id),
+                      let index = packInstance.cards.firstIndex(of: card) {
+                self.realmManager.update {
+                    packInstance.cards.remove(at: index)
+                }
             }
         }
         DispatchQueue.main.async {

@@ -20,16 +20,7 @@ final class OnlineViewModel: ObservableObject {
     @Published var favorites: FirebasePack
     @Published var users: [FirebaseUser] = []
     @Published var selectedSavingType: Pack?
-    var myUser: FirebaseUser? {
-        get {
-            guard let user = firebaseManager.user else { return nil }
-            let id = user.uid
-            let email = user.email ?? "Unknown"
-            let displayName = user.displayName ?? email
-            let photoURL = user.photoURL
-            return FirebaseUser(id: id, email: email, displayName: displayName, photoURL: photoURL, lastSeen: Date())
-        }
-    }
+    @Published var myUser: FirebaseUser?
     
     @Published var cards: [Card] = []
     @Published var selectedCards: [Card] = []
@@ -42,6 +33,13 @@ final class OnlineViewModel: ObservableObject {
         self.userId = firebaseManager.user?.uid
         self.favorites = FirebasePack(pack: Pack(id: UUID().uuidString, name: Localization.onlineFavorites, text: ""), tags: [], user: "", cards: 0)
         self.favorites.pack.color = "D44A13"
+        fetchMyUser()
+    }
+        
+    func fetchMyUser() {
+        firebaseManager.fetchMyUser { [weak self] user in
+            self?.myUser = user
+        }
     }
     
     func fetchPacks(_ userId: String? = nil, completion: (() -> Void)? = nil) {
@@ -197,6 +195,10 @@ final class OnlineViewModel: ObservableObject {
         firebaseManager.reset(for: email, completion: completion)
     }
     
+    func updatePassword(password: String, completion: @escaping (Bool) -> Void) {
+        firebaseManager.updatePassword(newPassword: password, completion: completion)
+    }
+    
     func signOut() {
         firebaseManager.signOut()
         isSignedIn = false
@@ -304,6 +306,78 @@ final class OnlineViewModel: ObservableObject {
         isLoading = true
         firebaseManager.updateName(newName) { [weak self] _ in
             self?.isLoading = false
+            self?.fetchMyUser()
+        }
+    }
+    
+    func updateShowEmail(_ newValue: Bool) {
+        isLoading = true
+        firebaseManager.updatePrivacy(["isShowEmail": newValue]) { [weak self] success in
+            self?.isLoading = false
+            if success {
+                self?.fetchMyUser()
+            }
+        }
+    }
+    
+    func updateShowContent(_ newValue: Bool) {
+        isLoading = true
+        firebaseManager.updatePrivacy(["isShowMyContent": newValue]) { [weak self] success in
+            self?.isLoading = false
+            if success {
+                self?.fetchMyUser()
+            }
+        }
+    }
+    
+    func updateShowStatus(_ newValue: Bool) {
+        isLoading = true
+        firebaseManager.updatePrivacy(["isShowStatus": newValue]) { [weak self] success in
+            self?.isLoading = false
+            if success {
+                self?.fetchMyUser()
+            }
+        }
+    }
+    
+    func updateImage(_ image: URL) {
+        isLoading = true
+        firebaseManager.updateImage(image) { [weak self] success in
+            self?.isLoading = false
+            self?.fetchMyUser()
+        }
+    }
+    
+    func updatePackName(_ name: String, for pack: Pack, completion: @escaping () -> Void) {
+        isLoading = true
+        firebaseManager.updatePack(["name": name], for: pack) { [weak self] success in
+            self?.isLoading = false
+            completion()
+        }
+    }
+    
+    func updatePackDescription(_ description: String, for pack: Pack, completion: @escaping () -> Void) {
+        isLoading = true
+        firebaseManager.updatePack(["description": description], for: pack) { [weak self] success in
+            self?.isLoading = false
+            completion()
+        }
+    }
+    
+    func updateQuestion(_ question: String, for card: Card, and pack: Pack, completion: @escaping () -> Void) {
+        isLoading = true
+        firebaseManager.updateQuestion(["question": question], for: card, and: pack.id) { [weak self] success in
+            self?.isLoading = false
+            completion()
+        }
+    }
+    
+    func updateAnswer(_ answer: String, for card: Card, and pack: Pack, completion: @escaping () -> Void) {
+        guard card.isFlipCard else { return }
+        isLoading = true
+        firebaseManager.updateQuestion(["answer": answer], for: card, and: pack.id) { [weak self] success in
+            self?.isLoading = false
+            completion()
         }
     }
     

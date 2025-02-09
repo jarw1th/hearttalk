@@ -17,5 +17,6 @@ struct FirebaseUser: Identifiable, Equatable {
     var isShowEmail: Bool
     var isShowMyContent: Bool
     var isShowStatus: Bool
+    var isShowMyProfile: Bool
     
 }

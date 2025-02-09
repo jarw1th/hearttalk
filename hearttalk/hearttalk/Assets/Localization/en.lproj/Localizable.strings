@@ -21,8 +21,6 @@
 
 "generateAI" = "Generate with AI";
 
-"settings" = "Settings";
-
 "goOnline" = "Go online";
 
 "goOffline" = "Go offline";
@@ -181,8 +179,6 @@
 
 "deleting" = "You are gonna delete all data after restart";
 
-"credential" = "Ruslan Parastaev";
-
 "version" = "version";
 
 "packs" = "Packs";
@@ -258,7 +254,7 @@
 
 "onlinePacks" = "Packs";
 
-"onlineAccounts" = "Accounts";
+"onlineAccounts" = "Profiles";
 
 "onlineAlert" = "Something wrong";
 
@@ -328,3 +324,41 @@
 
 "justNow" = "Just now";
 
+
+"lastSeen" = "Last seen";
+
+"email" = "E-mail";
+
+"privacy" = "Privacy";
+
+"password" = "Password";
+
+"passwordReset" = "Password reset";
+
+"reset" = "Reset";
+
+"showEmail" = "Show email?";
+
+"showContent" = "Show my content?";
+
+"showStatus" = "Show online status?";
+
+"credential" = "Credential";
+
+"autoRead" = "Auto-read card questions";
+
+"ruslan" = "Ruslan Parastaev";
+
+"appver" = "app version";
+
+"settings" = "Settings";
+
+"profile" = "Profile";
+
+"showProfile" = "Show profile?";
+
+"privatePack" = "Private pack?";
+
+"hidePack" = "Hide pack";
+
+"showPack" = "Show pack";

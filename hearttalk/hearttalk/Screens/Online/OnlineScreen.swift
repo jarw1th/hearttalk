@@ -18,7 +18,13 @@ struct OnlineScreen: View {
     
     var body: some View {
         makeContent()
-            .background(.lightBlack)
+            .background(
+                Color.lightBlack
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        UIApplication.shared.endEditing()
+                    }
+            )
             .onAppear {
                 if onlineViewModel.isSignedIn {
                     onlineViewModel.fetchAll()
@@ -103,7 +109,7 @@ struct OnlineScreen: View {
                                 } content: {
                                     makePacksFeed()
                                 }
-                                makeSection("Profiles") {
+                                makeSection(Localization.onlineAccounts) {
                                     preview = .profiles
                                 } content: {
                                     makeAccountsFeed()
@@ -166,6 +172,15 @@ struct OnlineScreen: View {
                             } label: {
                                 Text(Localization.changeDescription)
                             }
+                            Button {
+                                HapticManager.shared.triggerHapticFeedback(.light)
+                                SoundManager.shared.sound(.click1)
+                                onlineViewModel.updateShowPack(!formatedMyContent()[index].showPack, for: formatedMyContent()[index].pack) {
+                                    onlineViewModel.fetchAll()
+                                }
+                            } label: {
+                                Text(formatedMyContent()[index].showPack ? Localization.hidePack : Localization.showPack)
+                            }
                         }
                     }
                 }
@@ -204,6 +219,15 @@ struct OnlineScreen: View {
                                 selectedDescPack = formatedPacks()[index].pack
                             } label: {
                                 Text(Localization.changeDescription)
+                            }
+                            Button {
+                                HapticManager.shared.triggerHapticFeedback(.light)
+                                SoundManager.shared.sound(.click1)
+                                onlineViewModel.updateShowPack(!formatedPacks()[index].showPack, for: formatedPacks()[index].pack) {
+                                    onlineViewModel.fetchAll()
+                                }
+                            } label: {
+                                Text(formatedPacks()[index].showPack ? Localization.hidePack : Localization.showPack)
                             }
                         }
                     }

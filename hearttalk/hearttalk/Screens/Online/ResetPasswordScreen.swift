@@ -30,7 +30,7 @@ struct ResetPasswordScreen: View {
     
     private func makeContent() -> some View {
         VStack(spacing: 24) {
-            SingleBackTopBar(text: "Password reset") {
+            SingleBackTopBar(text: Localization.passwordReset) {
                 dismiss()
             }
             .padding(.vertical, 16)
@@ -55,7 +55,7 @@ struct ResetPasswordScreen: View {
                 alertType = .password
             }
         } label: {
-            Text(Localization.onlineSignIn)
+            Text(Localization.reset)
                 .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32))
                 .underline()
                 .multilineTextAlignment(.center)

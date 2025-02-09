@@ -141,7 +141,7 @@ struct TabScreen: View {
                 ForEach(formatedTabs()) { type in
                     if type == .add {
                         Menu {
-                            if tab == .home || tab == .settings {
+                            if tab == .home || tab == .settings || !onlineViewModel.isSignedIn {
                                 Button(Localization.addCard) {
                                     isShowCreateCard.toggle()
                                 }

@@ -138,6 +138,7 @@
 		21FB93C12D5523AB002C5E30 /* Data+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FB93C02D5523A9002C5E30 /* Data+.swift */; };
 		21FB93C32D552587002C5E30 /* SpeechManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FB93C22D552581002C5E30 /* SpeechManager.swift */; };
 		21FB93C72D554CAC002C5E30 /* PhotoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FB93C62D554CA5002C5E30 /* PhotoPicker.swift */; };
+		21FB93C92D55F603002C5E30 /* DeleteAccountScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FB93C82D55F5FA002C5E30 /* DeleteAccountScreen.swift */; };
 		27203AAEFEE5F8D249BCCBB5 /* Pods_hearttalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F04D0D3CFAA742CBEF7DDEB /* Pods_hearttalk.framework */; };
 		DC053A994C992465AD2BF698 /* Pods_hearttalkWidgetExtensionExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 018A66986B786D8101FFA613 /* Pods_hearttalkWidgetExtensionExtension.framework */; };
 /* End PBXBuildFile section */
@@ -296,6 +297,7 @@
 		21FB93C02D5523A9002C5E30 /* Data+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+.swift"; sourceTree = "<group>"; };
 		21FB93C22D552581002C5E30 /* SpeechManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechManager.swift; sourceTree = "<group>"; };
 		21FB93C62D554CA5002C5E30 /* PhotoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPicker.swift; sourceTree = "<group>"; };
+		21FB93C82D55F5FA002C5E30 /* DeleteAccountScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountScreen.swift; sourceTree = "<group>"; };
 		7F04D0D3CFAA742CBEF7DDEB /* Pods_hearttalk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_hearttalk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E46BEC5504BE82D606C22EB /* Pods-hearttalkWidgetExtensionExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hearttalkWidgetExtensionExtension.release.xcconfig"; path = "Target Support Files/Pods-hearttalkWidgetExtensionExtension/Pods-hearttalkWidgetExtensionExtension.release.xcconfig"; sourceTree = "<group>"; };
 		F1B06A95D27A6D9B24797D32 /* Pods-hearttalk.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hearttalk.release.xcconfig"; path = "Target Support Files/Pods-hearttalk/Pods-hearttalk.release.xcconfig"; sourceTree = "<group>"; };
@@ -416,6 +418,7 @@
 				21FB93AC2D5248B6002C5E30 /* OnlineAccountScreen.swift */,
 				21FB93BA2D53D8B4002C5E30 /* PrivacyScreen.swift */,
 				21FB93BC2D53DA2F002C5E30 /* ResetPasswordScreen.swift */,
+				21FB93C82D55F5FA002C5E30 /* DeleteAccountScreen.swift */,
 				21FB93BE2D53DD3C002C5E30 /* OnlinePreviewScreen.swift */,
 				215186EB2D453F7C00FFB614 /* OnlineScreen.swift */,
 			);
@@ -961,6 +964,7 @@
 				215187662D4C2C7200FFB614 /* Date+.swift in Sources */,
 				21BDB4352C8B1E300097F90E /* UIApplication+.swift in Sources */,
 				215186C52D43CD7B00FFB614 /* Cards.swift in Sources */,
+				21FB93C92D55F603002C5E30 /* DeleteAccountScreen.swift in Sources */,
 				215187372D4A48B500FFB614 /* Safari.swift in Sources */,
 				21BDB4162C89CA440097F90E /* Settings.swift in Sources */,
 				21FB93B12D5392B7002C5E30 /* TabScreen.swift in Sources */,
@@ -1216,6 +1220,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = hearttalk/hearttalk.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"hearttalk/Preview Content\"";
@@ -1240,6 +1245,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ruslanparastaev.hearttalk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -1256,6 +1262,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = hearttalk/hearttalk.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"hearttalk/Preview Content\"";
@@ -1280,6 +1287,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ruslanparastaev.hearttalk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

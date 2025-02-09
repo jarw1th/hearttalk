@@ -14,7 +14,6 @@ enum Localization {
     static let addPack: String = .localized("addPack", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     static let importCards: String = .localized("importCards", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     static let generateAI: String = .localized("generateAI", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
-    static let settings: String = .localized("settings", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     static let goOnline: String = .localized("goOnline", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     static let goOffline: String = .localized("goOffline", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     static let whatIsHT: String = .localized("whatIsHT", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
@@ -94,7 +93,6 @@ enum Localization {
     static let offlineHour: String = .localized("offlineHour", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     static let offlineForever: String = .localized("offlineForever", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     static let deleting: String = .localized("deleting", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
-    static let credential: String = .localized("credential", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     static let version: String = .localized("version", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     static let packs: String = .localized("packs", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     static let notSet: String = .localized("notSet", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
@@ -168,6 +166,25 @@ enum Localization {
     static let minutess: String = .localized("minutess", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     static let justNow: String = .localized("justNow", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     
+    static let lastSeen: String = .localized("lastSeen", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let email: String = .localized("email", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let privacy: String = .localized("privacy", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let password: String = .localized("password", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let passwordReset: String = .localized("passwordReset", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let reset: String = .localized("reset", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let showEmail: String = .localized("showEmail", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let showContent: String = .localized("showContent", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let showStatus: String = .localized("showStatus", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let credential: String = .localized("credential", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let autoRead: String = .localized("autoRead", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let ruslan: String = .localized("ruslan", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let appver: String = .localized("appver", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let settings: String = .localized("settings", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let profile: String = .localized("profile", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let showProfile: String = .localized("showProfile", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let privatePack: String = .localized("privatePack", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let hidePack: String = .localized("hidePack", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let showPack: String = .localized("showPack", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    
 }
-
 

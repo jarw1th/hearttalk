@@ -53,6 +53,7 @@ struct TagsTextField: View {
                     .foregroundStyle(.darkWhite)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .focused($isFocused)
+                    .frame(height: 36)
             }
             .frame(maxWidth: .infinity)
             .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
@@ -64,10 +65,14 @@ struct TagsTextField: View {
             )
         }
         .onChange(of: isFocused) { newValue in
+            text = text.replacingOccurrences(of: " ", with: "")
             guard !newValue,
                   !tags.contains(text),
                   text.count < 12,
-                  !text.isEmpty else { return }
+                  !text.isEmpty else {
+                text = ""
+                return
+            }
             if tags.count > 5 {
                 tags.removeFirst()
                 tags.append(text)

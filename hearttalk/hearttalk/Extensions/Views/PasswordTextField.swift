@@ -29,6 +29,7 @@ struct PasswordTextField: View {
                     .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24))
                     .foregroundStyle(.darkWhite)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .frame(height: 36)
             } else {
                 SecureField("", text: $text)
                     .autocapitalization(.none)
@@ -36,6 +37,7 @@ struct PasswordTextField: View {
                     .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24))
                     .foregroundStyle(.darkWhite)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .frame(height: 36)
             }
             HStack {
                 Spacer()
@@ -52,6 +54,7 @@ struct PasswordTextField: View {
         .background(
             RoundedRectangle(cornerRadius: 12)
                 .stroke(.darkWhite, lineWidth: 1)
+                .opacity(text.isEmpty ? 0.5 : 1)
         )
     }
     

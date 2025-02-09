@@ -16,6 +16,7 @@ struct OnlineCreatePackScreen: View {
     @State private var description: String = ""
     @State private var tags: [String] = []
     @State private var color: Color = Color(hex: "#9CAFB7")
+    @State private var isPrivatePack: Bool = false
     
     @State private var isShowAlert: Bool = false
     
@@ -48,6 +49,7 @@ struct OnlineCreatePackScreen: View {
                 }
                 ColorPicker(colors: colors, color: $color)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                QuestionToggle(text: Localization.privatePack, isOn: $isPrivatePack)
                 Spacer()
                 makeCreateButton()
             }
@@ -87,7 +89,7 @@ struct OnlineCreatePackScreen: View {
         pack.text = description
         pack.creator = "me"
         pack.isCustom = true
-        viewModel.createPack(pack, tags: tags)
+        viewModel.createPack(pack, tags: tags, showPack: !isPrivatePack)
     }
     
 }

@@ -41,6 +41,30 @@ final class FirebaseManager {
         }
     }
     
+    func delete(_ password: String, completion: @escaping (Bool) -> Void) {
+        guard let user,
+                let email = user.email else { return }
+        
+        let credential = EmailAuthProvider.credential(withEmail: email, password: password)
+        
+        user.reauthenticate(with: credential) { _, error in
+            if let error = error {
+                completion(false)
+                return
+            }
+            
+            let id = user.uid
+            user.delete { [weak self] _ in
+                self?.signOut()
+                self?.deleteAccount(id, completion: completion)
+            }
+        }
+    }
+    
+    private func deleteAccount(_ id: String, completion: @escaping (Bool) -> Void) {
+        delete(users.document(id), completion: completion)
+    }
+    
     func updatePassword(newPassword: String, completion: @escaping (Bool) -> Void) {
         guard let user else {
             completion(false)
@@ -70,9 +94,10 @@ final class FirebaseManager {
                 "email": authResult.user.email ?? email,
                 "displayName": authResult.user.displayName ?? email,
                 "opens": 0,
-                "isShowEmail": false,
-                "isShowMyContent": false,
-                "isShowStatus": false,
+                "isShowEmail": true,
+                "isShowMyContent": true,
+                "isShowMyProfile": true,
+                "isShowStatus": true,
                 "createdAt": Timestamp(date: Date())
             ]
             if let url = authResult.user.photoURL {
@@ -93,10 +118,9 @@ final class FirebaseManager {
         
         changeRequest.commitChanges { [weak self] error in
             if let error = error {
-                print("Error updating display name: \(error.localizedDescription)")
                 completion(false)
             } else {
-                self?.setData(["displayName": newName], path: self?.users.document(user.uid)) { success in
+                self?.updateData(["displayName": newName], path: self?.users.document(user.uid)) { success in
                     if success {
                         self?.user = Auth.auth().currentUser
                     }
@@ -121,8 +145,9 @@ final class FirebaseManager {
             return
         }
         
-        uploadImage(image: image) { url in
-            guard let url else {
+        uploadImage(image: image) { [weak self] url in
+            guard let url,
+                  let self else {
                 completion(false)
                 return
             }
@@ -140,7 +165,7 @@ final class FirebaseManager {
         
         let storageRef = Storage.storage().reference().child("images/\(user.uid).jpg")
         let uploadTask = storageRef.putData(imageData, metadata: nil) { metadata, error in
-            if let error = error {
+            if let _ = error {
                 completion(nil)
                 return
             }
@@ -152,10 +177,6 @@ final class FirebaseManager {
                     completion(nil)
                 }
             }
-        }
-        
-        uploadTask.observe(.progress) { snapshot in
-            let percentComplete = Double(snapshot.progress?.fractionCompleted ?? 0) * 100
         }
     }
     
@@ -273,17 +294,19 @@ final class FirebaseManager {
             let photoURL = URL(string: photoURLstring)
             let isShowEmail = data?["isShowEmail"] as? Bool ?? false
             let isShowMyContent = data?["isShowMyContent"] as? Bool ?? false
+            let isShowMyProfile = data?["isShowMyProfile"] as? Bool ?? false
             let isShowStatus = data?["isShowStatus"] as? Bool ?? false
             let lastSeen = data?["lastSeen"] as? Timestamp
             let lastSeenDate = lastSeen?.dateValue()
             
-            let user = FirebaseUser(id: id, email: email, displayName: displayName, photoURL: photoURL, lastSeen: lastSeenDate, isShowEmail: isShowEmail, isShowMyContent: isShowMyContent, isShowStatus: isShowStatus)
+            let user = FirebaseUser(id: id, email: email, displayName: displayName, photoURL: photoURL, lastSeen: lastSeenDate, isShowEmail: isShowEmail, isShowMyContent: isShowMyContent, isShowStatus: isShowStatus, isShowMyProfile: isShowMyProfile)
             completion(user)
             print(user)
         }
     }
     
-    func createPack(_ pack: Pack, tags: [String], completion: ((String?) -> Void)? = nil) {
+    func createPack(_ pack: Pack, tags: [String], showPack: Bool, completion: ((String?) -> Void)? = nil) {
+        setUserOnline()
         guard let user else {
             completion?(nil)
             return
@@ -300,6 +323,7 @@ final class FirebaseManager {
             "color": pack.color,
             "language": pack.language,
             "tags": tags,
+            "isShowPack": showPack,
             "opens": 0,
             "createdAt": Timestamp(date: Date()),
             "lastModifiedAt": Timestamp(date: Date())
@@ -324,7 +348,7 @@ final class FirebaseManager {
     }
     
     func uploadPack(_ pack: Pack, completion: ((Bool) -> Void)? = nil) {
-        createPack(pack, tags: []) { [weak self] id in
+        createPack(pack, tags: [], showPack: false) { [weak self] id in
             guard let id else {
                 completion?(false)
                 return
@@ -345,6 +369,7 @@ final class FirebaseManager {
     }
     
     func createQuestion(_ question: Card, for packId: String, completion: ((Bool) -> Void)? = nil) {
+        setUserOnline()
         guard let user else {
             completion?(false)
             return
@@ -378,6 +403,7 @@ final class FirebaseManager {
     }
     
     func addQuestionToFavorites(_ question: Card, completion: ((Bool) -> Void)? = nil) {
+        setUserOnline()
         guard let user else {
             completion?(false)
             return
@@ -408,6 +434,7 @@ final class FirebaseManager {
     }
     
     func removeQuestionFromFavorites(_ question: Card, completion: ((Bool) -> Void)? = nil) {
+        setUserOnline()
         guard let user else {
             completion?(false)
             return
@@ -426,27 +453,47 @@ final class FirebaseManager {
     }
     
     func deletePack(_ cardTypeId: String, completion: ((Bool) -> Void)? = nil) {
+        setUserOnline()
         guard let user else {
             completion?(false)
             return
         }
-        let path = users.document(user.uid).collection(packKey)
+        let path = users.document(user.uid).collection(packKey).document(cardTypeId)
         
-        delete(path.document(cardTypeId), completion: completion)
+        getDocuments(path.collection(contentKey)) { [weak self] querySnapshot in
+            guard let querySnapshot,
+                  let self,
+                  !querySnapshot.documents.isEmpty else {
+                self?.delete(path, completion: completion)
+                return
+            }
+            let group = DispatchGroup()
+            for document in querySnapshot.documents {
+                group.enter()
+                delete(path.collection(contentKey).document(document.documentID)) { _ in
+                    group.leave()
+                }
+            }
+            group.notify(queue: .main) {
+                self.delete(path, completion: completion)
+            }
+        }
     }
     
     func deleteQuestion(_ questionId: String, for pack: Pack, completion: ((Bool) -> Void)? = nil) {
+        setUserOnline()
         guard let user else {
             completion?(false)
             return
         }
         let path = users.document(user.uid).collection(packKey)
         
+        delete(users.document(user.uid).collection(favsKey).document(questionId))
         delete(path.document(pack.id).collection(contentKey).document(questionId), completion: completion)
     }
     
     func fetchFavorites(_ userId: String? = nil, completion: @escaping (FirebasePack) -> Void) {
-        var pack = FirebasePack(pack: Pack(id: UUID().uuidString, name: Localization.onlineFavorites, text: ""), tags: [], user: "", cards: 0)
+        var pack = FirebasePack(pack: Pack(id: UUID().uuidString, name: Localization.onlineFavorites, text: ""), tags: [], user: "", cards: 0, showPack: true)
         pack.pack.color = "D44A13"
         let userId = userId ?? user?.uid
         guard let userId else {
@@ -506,6 +553,8 @@ final class FirebaseManager {
                 let name = data["name"] as? String ?? "Unknown Name"
                 let description = data["description"] as? String ?? "Unknown description"
                 let color = data["color"] as? String ?? "Unknown color"
+                let isShowPackNum = data["isShowPack"] as? NSNumber ?? 1
+                let isShowPack = Bool(exactly: isShowPackNum) ?? true
                 let creator = data["creator"] as? String ?? "me"
                 let language = data["language"] as? String ?? "en"
                 let tags = data["tags"] as? [String] ?? []
@@ -515,7 +564,7 @@ final class FirebaseManager {
                 pack.creator = creator
                 pack.language = language
                 self.getNumberOfCards(path.document(document.documentID).collection(self.contentKey)) { count in
-                    let firebasePack = FirebasePack(pack: pack, tags: tags, user: user.uid, cards: count)
+                    let firebasePack = FirebasePack(pack: pack, tags: tags, user: user.uid, cards: count, showPack: isShowPack)
                     packs.append(firebasePack)
                     group.leave()
                 }
@@ -537,6 +586,7 @@ final class FirebaseManager {
     
     private func fetchAllPacks(completion: @escaping ([FirebasePack]) -> Void) {
         var query: Query = db.collectionGroup(packKey)
+//            .whereField("isShowPack", isEqualTo: true)
             .limit(to: limit)
         
         if let last = lastDocuments["packs"] {
@@ -559,6 +609,7 @@ final class FirebaseManager {
                 let name = data["name"] as? String ?? "Unknown Name"
                 let description = data["description"] as? String ?? "Unknown description"
                 let color = data["color"] as? String ?? "Unknown color"
+                let isShowPack = data["isShowPack"] as? Bool ?? true
                 let creator = data["creator"] as? String ?? "me"
                 let language = data["language"] as? String ?? "en"
                 let tags = data["tags"] as? [String] ?? []
@@ -568,7 +619,7 @@ final class FirebaseManager {
                 pack.creator = creator
                 pack.language = language
                 self.getNumberOfCards(users.document(userId).collection(packKey).document(document.documentID).collection(self.contentKey)) { count in
-                    let firebasePack = FirebasePack(pack: pack, tags: tags, user: userId, cards: count)
+                    let firebasePack = FirebasePack(pack: pack, tags: tags, user: userId, cards: count, showPack: isShowPack)
                     packs.append(firebasePack)
                     group.leave()
                 }
@@ -605,6 +656,7 @@ final class FirebaseManager {
                 let name = data["name"] as? String ?? "Unknown Name"
                 let description = data["description"] as? String ?? "Unknown description"
                 let color = data["color"] as? String ?? "Unknown color"
+                let isShowPack = data["isShowPack"] as? Bool ?? true
                 let creator = data["creator"] as? String ?? "me"
                 let language = data["language"] as? String ?? "en"
                 let tags = data["tags"] as? [String] ?? []
@@ -614,7 +666,7 @@ final class FirebaseManager {
                 pack.creator = creator
                 pack.language = language
                 self.getNumberOfCards(path.document(document.documentID).collection(self.contentKey)) { count in
-                    let firebasePack = FirebasePack(pack: pack, tags: tags, user: userId, cards: count)
+                    let firebasePack = FirebasePack(pack: pack, tags: tags, user: userId, cards: count, showPack: isShowPack)
                     packs.append(firebasePack)
                     group.leave()
                 }
@@ -743,6 +795,7 @@ final class FirebaseManager {
     
     func fetchAllUsers(completion: @escaping ([FirebaseUser]) -> Void) {
         var query: Query = users
+            .whereField("isShowMyProfile", isEqualTo: true)
             .limit(to: limit)
         
         if let last = lastDocuments["users"] {
@@ -761,15 +814,16 @@ final class FirebaseManager {
                 let id = data["id"] as? String ?? UUID().uuidString
                 let email = data["email"] as? String ?? "Unknown email"
                 let displayName = data["displayName"] as? String ?? email
-                let photoURLstring = data?["photoURL"] as? String ?? ""
+                let photoURLstring = data["photoURL"] as? String ?? ""
                 let photoURL = URL(string: photoURLstring)
                 let isShowEmail = data["isShowEmail"] as? Bool ?? false
                 let isShowMyContent = data["isShowMyContent"] as? Bool ?? false
+                let isShowMyProfile = data["isShowMyProfile"] as? Bool ?? false
                 let isShowStatus = data["isShowStatus"] as? Bool ?? false
                 let lastSeen = data["lastSeen"] as? Timestamp
                 let lastSeenDate = lastSeen?.dateValue()
                 
-                let user = FirebaseUser(id: id, email: email, displayName: displayName, photoURL: photoURL, lastSeen: lastSeenDate, isShowEmail: isShowEmail, isShowMyContent: isShowMyContent, isShowStatus: isShowStatus)
+                let user = FirebaseUser(id: id, email: email, displayName: displayName, photoURL: photoURL, lastSeen: lastSeenDate, isShowEmail: isShowEmail, isShowMyContent: isShowMyContent, isShowStatus: isShowStatus, isShowMyProfile: isShowMyProfile)
                 users.append(user)
             }
             self.lastDocuments["users"] = querySnapshot.documents.last

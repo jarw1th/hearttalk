@@ -15,6 +15,7 @@ struct PrivacyScreen: View {
     @State private var isEmail: Bool = false
     @State private var isMyPacks: Bool = false
     @State private var isLastSeen: Bool = false
+    @State private var isMyProfile: Bool = false
     
     var body: some View {
         makeContent()
@@ -24,6 +25,7 @@ struct PrivacyScreen: View {
                 isEmail = onlineViewModel.myUser?.isShowEmail ?? false
                 isMyPacks = onlineViewModel.myUser?.isShowMyContent ?? false
                 isLastSeen = onlineViewModel.myUser?.isShowStatus ?? false
+                isMyProfile = onlineViewModel.myUser?.isShowMyProfile ?? true
             }
             .onChange(of: isEmail) { new in
                 guard onlineViewModel.myUser?.isShowEmail != isEmail else { return }
@@ -40,12 +42,17 @@ struct PrivacyScreen: View {
                 onlineViewModel.myUser?.isShowStatus = new
                 onlineViewModel.updateShowStatus(new)
             }
+            .onChange(of: isMyProfile) { new in
+                guard onlineViewModel.myUser?.isShowMyProfile != isMyProfile else { return }
+                onlineViewModel.myUser?.isShowMyProfile = new
+                onlineViewModel.updateShowProfile(new)
+            }
     }
     
     @ViewBuilder
     private func makeContent() -> some View {
         VStack(spacing: 24) {
-            SingleBackTopBar(text: "Privacy") {
+            SingleBackTopBar(text: Localization.privacy) {
                 dismiss()
             }
                 .padding(.vertical, 16)
@@ -69,9 +76,10 @@ struct PrivacyScreen: View {
     @ViewBuilder
     private func makeButtonsList() -> some View {
         VStack(spacing: 16) {
-            QuestionToggle(text: "Show email?", isOn: $isEmail)
-            QuestionToggle(text: "Show my content?", isOn: $isMyPacks)
-            QuestionToggle(text: "Show online status?", isOn: $isLastSeen)
+            QuestionToggle(text: Localization.showEmail, isOn: $isEmail)
+            QuestionToggle(text: Localization.showContent, isOn: $isMyPacks)
+            QuestionToggle(text: Localization.showStatus, isOn: $isLastSeen)
+            QuestionToggle(text: Localization.showProfile, isOn: $isMyProfile)
         }
     }
     

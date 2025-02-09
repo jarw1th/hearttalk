@@ -31,7 +31,7 @@ final class OnlineViewModel: ObservableObject {
     init() {
         self.isSignedIn = firebaseManager.user != nil
         self.userId = firebaseManager.user?.uid
-        self.favorites = FirebasePack(pack: Pack(id: UUID().uuidString, name: Localization.onlineFavorites, text: ""), tags: [], user: "", cards: 0)
+        self.favorites = FirebasePack(pack: Pack(id: UUID().uuidString, name: Localization.onlineFavorites, text: ""), tags: [], user: "", cards: 0, showPack: true)
         self.favorites.pack.color = "D44A13"
         fetchMyUser()
     }
@@ -116,6 +116,7 @@ final class OnlineViewModel: ObservableObject {
                 self?.fetchUsers {
                     self?.fetchMyPacks {
                         self?.fetchFavorites {
+                            print(self?.favorites)
                             self?.isLoading = false
                         }
                     }
@@ -195,6 +196,10 @@ final class OnlineViewModel: ObservableObject {
         firebaseManager.reset(for: email, completion: completion)
     }
     
+    func deleteAccount(password: String, completion: @escaping (Bool) -> Void) {
+        firebaseManager.delete(password, completion: completion)
+    }
+    
     func updatePassword(password: String, completion: @escaping (Bool) -> Void) {
         firebaseManager.updatePassword(newPassword: password, completion: completion)
     }
@@ -210,8 +215,8 @@ final class OnlineViewModel: ObservableObject {
         }
     }
     
-    func createPack(_ pack: Pack, tags: [String]) {
-        firebaseManager.createPack(pack, tags: tags) { [weak self] _ in
+    func createPack(_ pack: Pack, tags: [String], showPack: Bool) {
+        firebaseManager.createPack(pack, tags: tags, showPack: showPack) { [weak self] _ in
             self?.needToUpdate = true
         }
     }
@@ -340,7 +345,25 @@ final class OnlineViewModel: ObservableObject {
         }
     }
     
-    func updateImage(_ image: URL) {
+    func updateShowProfile(_ newValue: Bool) {
+        isLoading = true
+        firebaseManager.updatePrivacy(["isShowMyProfile": newValue]) { [weak self] success in
+            self?.isLoading = false
+            if success {
+                self?.fetchMyUser()
+            }
+        }
+    }
+    
+    func updateName(_ name: String) {
+        isLoading = true
+        firebaseManager.updateName(name) { [weak self] success in
+            self?.isLoading = false
+            self?.fetchMyUser()
+        }
+    }
+    
+    func updateImage(_ image: UIImage) {
         isLoading = true
         firebaseManager.updateImage(image) { [weak self] success in
             self?.isLoading = false
@@ -359,6 +382,14 @@ final class OnlineViewModel: ObservableObject {
     func updatePackDescription(_ description: String, for pack: Pack, completion: @escaping () -> Void) {
         isLoading = true
         firebaseManager.updatePack(["description": description], for: pack) { [weak self] success in
+            self?.isLoading = false
+            completion()
+        }
+    }
+    
+    func updateShowPack(_ newValue: Bool, for pack: Pack, completion: @escaping () -> Void) {
+        isLoading = true
+        firebaseManager.updatePack(["isShowPack": newValue], for: pack) { [weak self] success in
             self?.isLoading = false
             completion()
         }

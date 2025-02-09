@@ -45,6 +45,7 @@ struct CustomTextField: View {
                 .font(.custom("Poppins-Regular", size: UIDevice.current.userInterfaceIdiom == .phone ? 16 : 24))
                 .foregroundStyle(.darkWhite)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(height: 36)
         }
         .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .phone ? 16 : 32)
         .padding(.vertical, UIDevice.current.userInterfaceIdiom == .phone ? 8 : 16)

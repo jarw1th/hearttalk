@@ -16,12 +16,16 @@ struct ProfileScreen: View {
     @State private var isShowSignScreen: Bool = false
     @State private var isShowPrivacy: Bool = false
     @State private var isShowReset: Bool = false
+    @State private var isShowDelete: Bool = false
     @State private var isShowAvatarPicker: Bool = false
     @State private var image: UIImage?
     
     var body: some View {
         makeContent()
             .background(.lightBlack)
+            .onAppear {
+                onlineViewModel.fetchMyUser()
+            }
             .fullScreenCover(isPresented: $isShowSignScreen) {
                 SignScreen()
                     .environmentObject(onlineViewModel)
@@ -32,6 +36,10 @@ struct ProfileScreen: View {
             }
             .fullScreenCover(isPresented: $isShowReset) {
                 ResetPasswordScreen()
+                    .environmentObject(onlineViewModel)
+            }
+            .fullScreenCover(isPresented: $isShowDelete) {
+                DeleteAccountScreen()
                     .environmentObject(onlineViewModel)
             }
             .sheet(isPresented: $isShowAvatarPicker) {
@@ -48,11 +56,16 @@ struct ProfileScreen: View {
         VStack(spacing: 24) {
             if onlineViewModel.isSignedIn {
                 VStack(spacing: 40) {
-                    OnlineAccountCredential(image: onlineViewModel.myUser?.photoURL, name: onlineViewModel.myUser?.displayName ?? "No name", isShowAvatarPicker: $isShowAvatarPicker)
+                    OnlineMyAccountCredential(image: onlineViewModel.myUser?.photoURL, name: onlineViewModel.myUser?.displayName ?? "No name", isShowAvatarPicker: $isShowAvatarPicker) { name in
+                        onlineViewModel.updateName(name)
+                    }
                     if let user = onlineViewModel.myUser {
                         OnlineAccountInfo(lastSeen: user.lastSeen, email: user.email)
                     }
                     makeAccountButtons()
+                    SettingsEraseButton(text: Localization.profile, buttonTitle: Localization.logOut) {
+                        onlineViewModel.signOut()
+                    }
                     Spacer()
                 }
             } else {
@@ -73,11 +86,14 @@ struct ProfileScreen: View {
     @ViewBuilder
     private func makeAccountButtons() -> some View {
         VStack(spacing: 16) {
-            SettingsButton(text: "Privacy") {
+            SettingsButton(text: Localization.privacy) {
                 isShowPrivacy.toggle()
             }
-            SettingsEraseButton(text: "Password", buttonTitle: "Reset") {
+            SettingsEraseButton(text: Localization.password, buttonTitle: Localization.reset) {
                 isShowReset.toggle()
+            }
+            SettingsEraseButton(text: Localization.profile, buttonTitle: Localization.delete) {
+                isShowDelete.toggle()
             }
         }
         .frame(maxWidth: .infinity)

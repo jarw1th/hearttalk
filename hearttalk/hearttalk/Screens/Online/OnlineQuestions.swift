@@ -231,24 +231,24 @@ struct OnlineQuestions: View {
                     } label: {
                         Text(Localization.addToFav)
                     }
-                    Button {
-                        HapticManager.shared.triggerHapticFeedback(.light)
-                        SoundManager.shared.sound(.click1)
-                        isShowChangeText.toggle()
-                    } label: {
-                        Text(Localization.changeQ)
-                    }
-                    if viewModel.cards.count > viewModel.cardIndex,
-                       viewModel.cards[viewModel.cardIndex].isFlipCard {
+                    if pack.user == onlineViewModel.myUser?.id {
                         Button {
                             HapticManager.shared.triggerHapticFeedback(.light)
                             SoundManager.shared.sound(.click1)
-                            isShowChangeAnswer.toggle()
+                            isShowChangeText.toggle()
                         } label: {
-                            Text(Localization.changeA)
+                            Text(Localization.changeQ)
                         }
-                    }
-                    if pack.user == onlineViewModel.myUser?.id {
+                        if viewModel.cards.count > viewModel.cardIndex,
+                           viewModel.cards[viewModel.cardIndex].isFlipCard {
+                            Button {
+                                HapticManager.shared.triggerHapticFeedback(.light)
+                                SoundManager.shared.sound(.click1)
+                                isShowChangeAnswer.toggle()
+                            } label: {
+                                Text(Localization.changeA)
+                            }
+                        }
                         Button(role: .destructive) {
                             HapticManager.shared.triggerHapticFeedback(.light)
                             SoundManager.shared.sound(.click1)

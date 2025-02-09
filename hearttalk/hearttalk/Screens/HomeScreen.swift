@@ -64,11 +64,15 @@ struct HomeScreen: View {
                         makeSection(Localization.myContent) {
                             makeMyFeed()
                         }
-                        makeSection(Localization.ourChoice) {
-                            makeHTFeed()
+                        if !viewModel.htPacks.isEmpty {
+                            makeSection(Localization.ourChoice) {
+                                makeHTFeed()
+                            }
                         }
-                        makeSection(Localization.flipCards) {
-                            makeQuizFeed()
+                        if !viewModel.quizPacks.isEmpty {
+                            makeSection(Localization.flipCards) {
+                                makeQuizFeed()
+                            }
                         }
                     }
                 }

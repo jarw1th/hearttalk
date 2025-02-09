@@ -24,9 +24,9 @@ enum TabType: String, CaseIterable, Identifiable {
         case .add:
             return ""
         case .profile:
-            return "Profile"
+            return ""
         case .settings:
-            return "Settings"
+            return Localization.settings
         }
     }
     

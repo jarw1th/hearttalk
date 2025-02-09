@@ -43,7 +43,7 @@ struct OnlineAccountScreen: View {
     @ViewBuilder
     private func makeContent() -> some View {
         VStack(spacing: 24) {
-            SingleBackTopBar(text: "Profile") {
+            SingleBackTopBar(text: Localization.profile) {
                 dismiss()
             }
             .padding(.vertical, 16)

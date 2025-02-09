@@ -124,7 +124,7 @@ struct Settings: View {
             SettingsButton(text: Localization.contacts) {
                 actionSheetType = .contacts
             }
-            SettingsButton(text: "Credential") {
+            SettingsButton(text: Localization.credential) {
                 isShowCredential.toggle()
             }
         }
@@ -135,7 +135,7 @@ struct Settings: View {
         VStack(spacing: 16) {
             SettingsToggle(text: Localization.vibrations, isOn: $isVibrations)
             SettingsToggle(text: Localization.sounds, isOn: $isSounds)
-            SettingsToggle(text: "Auto-read card questions", isOn: $isAutoRead)
+            SettingsToggle(text: Localization.autoRead, isOn: $isAutoRead)
             SettingsToggle(text: Localization.dailyCards, isOn: $isDailyCard)
             SettingsValueButton(text: Localization.language, selectedItem: selectedLang()) {
                 actionSheetType = .language

@@ -20,10 +20,10 @@ struct OnlineAccountInfo: View {
     private func makeAccountInfo(lastSeen: Date?, email: String?) -> some View {
         VStack(spacing: 16) {
             if let lastSeen {
-                makeText(title: "Last seen:", value: timeAgoSince(lastSeen))
+                makeText(title: "\(Localization.lastSeen):", value: timeAgoSince(lastSeen))
             }
             if let email {
-                makeText(title: "E-mail:", value: email)
+                makeText(title: "\(Localization.email):", value: email)
             }
         }
         .frame(maxWidth: .infinity, alignment: .center)
@@ -46,14 +46,26 @@ struct OnlineAccountInfo: View {
     
 }
 
-struct OnlineAccountCredential: View {
+struct OnlineMyAccountCredential: View {
     
     var image: URL?
     var name: String
     @Binding var isShowAvatarPicker: Bool
+    var onNameChange: (String) -> Void
+    
+    @State private var text: String = ""
+    @FocusState private var isFocused: Bool
     
     var body: some View {
         makeAccountCreds(image: image, name: name)
+            .onAppear {
+                text = name.isEmpty ? "No name" : name
+            }
+            .onChange(of: isFocused) { value in
+                guard !value,
+                      !text.isEmpty else { return }
+                onNameChange(text)
+            }
     }
     
     @ViewBuilder
@@ -70,6 +82,41 @@ struct OnlineAccountCredential: View {
                 } placeholder: {
                     Icon(name: "addImage", size: .custom(80))
                 }
+            }
+            TextField("", text: $text)
+                .autocapitalization(.none)
+                .keyboardType(.default)
+                .disableAutocorrection(true)
+                .font(.custom("Poppins-Regular", size: 24))
+                .foregroundStyle(.darkWhite)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .multilineTextAlignment(.center)
+                .focused($isFocused)
+        }
+        .frame(maxWidth: .infinity, alignment: .center)
+    }
+
+}
+
+struct OnlineAccountCredential: View {
+    
+    var image: URL?
+    var name: String
+    
+    var body: some View {
+        makeAccountCreds(image: image, name: name)
+    }
+    
+    @ViewBuilder
+    private func makeAccountCreds(image: URL?, name: String?) -> some View {
+        VStack(spacing: 16) {
+            AsyncImage(url: image) { img in
+                img
+                    .resizable()
+                    .frame(width: 80, height: 80)
+                    .clipShape(Circle())
+            } placeholder: {
+                EmptyView()
             }
             Text(name ?? "No name")
                 .font(.custom("Poppins-Regular", size: 24))

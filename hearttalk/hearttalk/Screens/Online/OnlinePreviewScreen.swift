@@ -23,7 +23,13 @@ struct OnlinePreviewScreen: View {
     
     var body: some View {
         makeContent()
-            .background(.lightBlack)
+            .background(
+                Color.lightBlack
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        UIApplication.shared.endEditing()
+                    }
+            )
             .onAppear {
                 if onlineViewModel.isSignedIn {
                     onlineViewModel.fetchAll()
@@ -65,7 +71,8 @@ struct OnlinePreviewScreen: View {
                         }
                     }
                 }
-                .padding(.vertical, 16)
+                .padding(.bottom, 16)
+                .padding(.top, 1)
             }
             .refreshable {
                 if onlineViewModel.isSignedIn {
@@ -107,6 +114,15 @@ struct OnlinePreviewScreen: View {
                             } label: {
                                 Text(Localization.changeDescription)
                             }
+                            Button {
+                                HapticManager.shared.triggerHapticFeedback(.light)
+                                SoundManager.shared.sound(.click1)
+                                onlineViewModel.updateShowPack(!formatedPacks()[index].showPack, for: formatedPacks()[index].pack) {
+                                    onlineViewModel.fetchAll()
+                                }
+                            } label: {
+                                Text(formatedPacks()[index].showPack ? Localization.hidePack : Localization.showPack)
+                            }
                         }
                     }
                     .onAppear {
@@ -146,6 +162,9 @@ struct OnlinePreviewScreen: View {
                                     onlineViewModel.addToFavorites(formatedCards()[index + 1])
                                 }
                             }
+                        } else {
+                            Spacer()
+                                .frame(maxWidth: .infinity)
                         }
                     }
                 }

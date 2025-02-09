@@ -31,7 +31,7 @@ struct OnlinePreviewCard: View {
                 .background(
                     RoundedRectangle(cornerRadius: 12)
                         .fill(.white)
-                        .opacity(favorites.pack.cards.contains(question) ? 1 : 0.5)
+                        .opacity(favorites.pack.cards.contains(where: { $0.id == question.id }) ? 1 : 0.5)
                 )
         }
     }

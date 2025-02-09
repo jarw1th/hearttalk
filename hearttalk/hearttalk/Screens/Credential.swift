@@ -34,7 +34,7 @@ struct Credential: View {
     
     private func makeContent() -> some View {
         VStack(spacing: 24) {
-            SingleBackTopBar(text: "Credential") {
+            SingleBackTopBar(text: Localization.credential) {
                 dismiss()
             }
             .padding(.vertical, 16)
@@ -45,7 +45,7 @@ struct Credential: View {
                         .resizable()
                         .frame(width: 80, height: 80)
                         .clipShape(Circle())
-                    Text("Ruslan Parastaev")
+                    Text(Localization.ruslan)
                         .font(.custom("Poppins-Regular", size: 24))
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.darkWhite)
@@ -56,7 +56,7 @@ struct Credential: View {
                 }
                 Spacer()
                 HStack {
-                    Text("app version:")
+                    Text("\(Localization.appver):")
                         .font(.custom("Poppins-Regular", size: 12))
                         .multilineTextAlignment(.leading)
                         .foregroundStyle(.darkWhite)

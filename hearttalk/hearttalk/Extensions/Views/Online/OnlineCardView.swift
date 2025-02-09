@@ -146,7 +146,11 @@ struct OnlineCardView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .sheet(item: $shareImage) { imageData in
-            ActivityViewControllerRepresentableCenter(activityItems: [imageData])
+            var activityItems: [Any] = [imageData]
+            if viewModel.cards.count > viewModel.cardIndex {
+                activityItems.append(viewModel.cards[viewModel.cardIndex].question)
+            }
+            return ActivityViewControllerRepresentableCenter(activityItems: activityItems)
         }
     }
     

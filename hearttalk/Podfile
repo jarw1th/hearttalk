@@ -10,7 +10,6 @@ target 'hearttalk' do
   pod 'FirebaseCore'
   pod 'FirebaseAuth'
   pod 'FirebaseFirestore'
-  pod 'FirebaseRemoteConfig'
   pod 'FirebaseStorage'
 
 end

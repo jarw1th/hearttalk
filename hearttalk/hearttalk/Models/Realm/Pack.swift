@@ -12,6 +12,7 @@ class Pack: Object, Identifiable {
     @Persisted var isFavorite: Bool
     @Persisted var isCustom: Bool
     @Persisted var creator: String = "ht"
+    @Persisted var categorie: String = "none"
     @Persisted var cards: List<Card>
     
     convenience init(id: String, name: String, text: String) {

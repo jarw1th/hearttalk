@@ -22,6 +22,7 @@ final class UserDefaultsManager {
     private let isVibrationsKey: String = "isVibrations"
     private let isSoundsKey: String = "isSounds"
     private let isReadCardKey: String = "isReadCard"
+    private let isShuffleCardsKey: String = "isShuffleCards"
     private let isDailyCardKey: String = "isDailyCard"
     private let AppleLanguageKey: String = "AppleLanguage"
     private let isDarkModeKey: String = "isDarkMode"
@@ -105,6 +106,17 @@ final class UserDefaultsManager {
         }
         set {
             userDefaults.set(newValue, forKey: isReadCardKey)
+        }
+    }
+    var isShuffleCards: Bool {
+        get {
+            if userDefaults.object(forKey: isShuffleCardsKey) == nil {
+                return false
+            }
+            return userDefaults.bool(forKey: isShuffleCardsKey)
+        }
+        set {
+            userDefaults.set(newValue, forKey: isShuffleCardsKey)
         }
     }
     var isDailyCard: Bool {

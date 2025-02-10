@@ -362,3 +362,9 @@
 "hidePack" = "Hide pack";
 
 "showPack" = "Show pack";
+
+"quizlet" = "Export cards from Quizlet in .csv or .txt(tab) formats.";
+
+"anki" = "Export cards from Anki in .csv or .txt(tab) formats.";
+
+"shuffleCards" = "Shuffle cards";

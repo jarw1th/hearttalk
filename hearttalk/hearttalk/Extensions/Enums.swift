@@ -168,18 +168,15 @@ enum OnlineAlertType: Identifiable, Hashable {
     
 }
 
-enum ImportAlertType: Identifiable, Hashable {
+enum ImportAlertType: String, Identifiable {
     
     case packName
     case txt
+    case quizlet
+    case anki
     
     var id: String {
-        switch self {
-        case .packName:
-            "packName"
-        case .txt:
-            "txt"
-        }
+        self.rawValue
     }
     
     var text: String {
@@ -188,7 +185,23 @@ enum ImportAlertType: Identifiable, Hashable {
             Localization.packNameAlert
         case .txt:
             Localization.txtAlertMessage
+        case .quizlet:
+            Localization.quizlet
+        case .anki:
+            Localization.anki
         }
+    }
+    
+}
+
+enum ImportType: String, Identifiable {
+    
+    case ht
+    case quizlet
+    case anki
+    
+    var id: String {
+        self.rawValue
     }
     
 }

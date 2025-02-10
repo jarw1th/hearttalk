@@ -13,11 +13,9 @@ final class ViewModel: ObservableObject {
     private var userDefaultsManager: UserDefaultsManager = UserDefaultsManager()
     private(set) var network: RequestManager = RequestManager.shared
     private var textFileManager: TextFileManager
-    private(set) var remoteConfigManager: RemoteConfigManager
     
     @Published var myPacks: [Pack] = []
-    @Published var htPacks: [Pack] = []
-    @Published var quizPacks: [Pack] = []
+    @Published var htPacks: [String: [Pack]] = [:]
     @Published var cards: [Card] = []
     @Published var notes: [Note] = []
     @Published var cardIndex: Int = 0 {
@@ -40,11 +38,6 @@ final class ViewModel: ObservableObject {
     
     init() {
         self.textFileManager = TextFileManager(realmManager)
-        self.remoteConfigManager = RemoteConfigManager(network.isConnected)
-        
-        if network.isConnected {
-            self.remoteConfigManager.fetchRemoteConfig {}
-        }
         
         if userDefaultsManager.isOnline && userDefaultsManager.offlineHourDate?.isMoreHour() != false {
             self.isOnline = true
@@ -76,14 +69,19 @@ final class ViewModel: ObservableObject {
         let packsResults = self.realmManager.getAllPacks()
         
         let lang = userDefaultsManager.appleLanguage
-        self.htPacks = Array(packsResults).filter { ($0.language == lang || $0.language == "none") && $0.creator == "ht" }.sorted(by: { $0.name > $1.name })
+        let allPacks = Array(packsResults).filter { ($0.language == lang || $0.language == "none") && $0.creator == "ht" }.sorted(by: { $0.name > $1.name })
+        for pack in allPacks {
+            if self.htPacks[pack.categorie] == nil {
+                self.htPacks[pack.categorie] = []
+            }
+            self.htPacks[pack.categorie]?.append(pack)
+        }
         self.myPacks = Array(packsResults).filter { ($0.language == lang || $0.language == "none") && $0.creator == "me" }.sorted {
             if $0.isFavorite != $1.isFavorite {
                 return $0.isFavorite
             }
             return $0.name < $1.name
         }
-        self.quizPacks = Array(packsResults).filter { ($0.language == lang || $0.language == "none") && $0.creator == "htq" }.sorted(by: { $0.name > $1.name })
         self.favoriteType = Array(packsResults).filter { ($0.language == lang || $0.language == "none") && $0.isFavorite }.first
         self.selectedSavingType = myPacks.first
     }
@@ -91,6 +89,9 @@ final class ViewModel: ObservableObject {
     func fetchCards(forPackId packId: String) {
         if let cardsList = self.realmManager.getCards(forPackId: packId) {
             self.cards = Array(cardsList)
+            if userDefaultsManager.isShuffleCards {
+                self.cards = self.cards.shuffled()
+            }
         } else {
             self.cards = []
         }
@@ -137,8 +138,10 @@ final class ViewModel: ObservableObject {
             
             DispatchQueue.main.async {
                 self.myPacks.removeAll(where: { $0 == pack })
-                self.htPacks.removeAll(where: { $0 == pack })
-                self.quizPacks.removeAll(where: { $0 == pack })
+                for (key, var packs) in self.htPacks {
+                    packs.removeAll(where: { $0 == pack })
+                    self.htPacks[key] = packs
+                }
                 self.cards = []
                 self.fetchAll()
             }
@@ -449,7 +452,36 @@ final class ViewModel: ObservableObject {
             if separatedTexts.count > 1 {
                 card.answer = separatedTexts[1]
             }
-            card.language = pack.language
+            if let packInstance = self.realmManager.getPack(forId: pack.id) {
+                realmManager.update {
+                    packInstance.cards.append(card)
+                }
+            }
+        }
+        
+        fetchAll()
+    }
+    
+    func importFromText(_ file: URL, for pack: Pack) {
+        guard file.startAccessingSecurityScopedResource() else {
+            print("Ошибка доступа к файлу")
+            return
+        }
+        defer { file.stopAccessingSecurityScopedResource() }
+        
+        let fileExt = detectFileTypeFromContent(from: file.path)
+        guard let fileExt else { return }
+        
+        let lines = readLines(from: file.path)
+        
+        let separatedBy = fileExt.lowercased() == "csv" ? "," : "\t"
+        for line in lines {
+            let separatedTexts = line.components(separatedBy: separatedBy)
+            guard separatedTexts.count > 1 else { continue }
+            
+            let card = Card(id: UUID().uuidString, question: separatedTexts[0])
+            card.isFlipCard = true
+            card.answer = separatedTexts[1]
             if let packInstance = self.realmManager.getPack(forId: pack.id) {
                 realmManager.update {
                     packInstance.cards.append(card)
@@ -469,6 +501,20 @@ final class ViewModel: ObservableObject {
             print("Error reading file: \(error.localizedDescription)")
             return []
         }
+    }
+    
+    private func detectFileTypeFromContent(from filePath: String) -> String? {
+        do {
+            let content = try String(contentsOfFile: filePath, encoding: .utf8)
+            if content.contains(",") && content.contains("\n") {
+                return "csv"
+            } else if content.contains("\t") {
+                return "txt"
+            }
+        } catch {
+            print("Error reading file: \(error.localizedDescription)")
+        }
+        return nil
     }
     
     func generate(from prompt: String, using pack: Pack, with cards: Int) {

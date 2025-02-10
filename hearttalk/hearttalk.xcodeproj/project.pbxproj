@@ -10,21 +10,66 @@
 		2103FEBF2C9EA0A80020D1AE /* ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2103FEBE2C9EA0A80020D1AE /* ColorPicker.swift */; };
 		2103FEC12CA0457A0020D1AE /* CreateNoteScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2103FEC02CA0457A0020D1AE /* CreateNoteScreen.swift */; };
 		2103FEC32CA04D4C0020D1AE /* NotesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2103FEC22CA04D4C0020D1AE /* NotesScreen.swift */; };
-		212B91462CA6BFA2009F9344 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212B91452CA6BF96009F9344 /* AppData.swift */; };
+		213366C32D58E8DC00258148 /* ppf_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213366C22D58E8DC00258148 /* ppf_en.txt */; };
+		213366C52D58E92100258148 /* dilemmas_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213366C42D58E92100258148 /* dilemmas_en.txt */; };
+		213366C72D58E95300258148 /* wau_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213366C62D58E95300258148 /* wau_en.txt */; };
+		213366CA2D58E99100258148 /* wyr_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213366C92D58E99100258148 /* wyr_en.txt */; };
+		213366CC2D58E9C500258148 /* tod_quiz_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213366CB2D58E9C500258148 /* tod_quiz_en.txt */; };
+		213366CE2D58E9E300258148 /* fts_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213366CD2D58E9E300258148 /* fts_en.txt */; };
+		213366D12D58EA1C00258148 /* love_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213366D02D58EA1C00258148 /* love_en.txt */; };
+		213366D32D58EA4300258148 /* ssparks_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213366D22D58EA4300258148 /* ssparks_en.txt */; };
+		213366D52D58EA6800258148 /* fdv_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213366D42D58EA6800258148 /* fdv_en.txt */; };
+		213366D82D58EB1F00258148 /* travel_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213366D72D58EB1F00258148 /* travel_en.txt */; };
+		213366DA2D58EB3900258148 /* whn_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213366D92D58EB3900258148 /* whn_en.txt */; };
+		213366DC2D58EB6100258148 /* movie_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213366DB2D58EB6100258148 /* movie_en.txt */; };
+		213366DF2D58EB9100258148 /* party_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213366DE2D58EB9100258148 /* party_en.txt */; };
+		213366E12D58EBAC00258148 /* drunk_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213366E02D58EBAC00258148 /* drunk_en.txt */; };
+		213366E32D58EBD100258148 /* hwdykm_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213366E22D58EBD100258148 /* hwdykm_en.txt */; };
+		213366E62D58EC1100258148 /* fantasies_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213366E52D58EC1100258148 /* fantasies_en.txt */; };
+		213366E82D58EC2B00258148 /* bedroom_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213366E72D58EC2B00258148 /* bedroom_en.txt */; };
+		213366EA2D58EC4300258148 /* spicy_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213366E92D58EC4300258148 /* spicy_en.txt */; };
+		213366EC2D58EC5B00258148 /* forbidden_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213366EB2D58EC5B00258148 /* forbidden_en.txt */; };
+		213366EE2D58ECC000258148 /* hottakes_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213366ED2D58ECC000258148 /* hottakes_en.txt */; };
+		213366F02D58ECF900258148 /* ttal_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213366EF2D58ECF900258148 /* ttal_en.txt */; };
+		213367162D58F3A500258148 /* love_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2133670A2D58F3A500258148 /* love_ru.txt */; };
+		213367172D58F3A500258148 /* ttal_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213367062D58F3A500258148 /* ttal_ru.txt */; };
+		213367182D58F3A500258148 /* tod_quiz_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213367052D58F3A500258148 /* tod_quiz_ru.txt */; };
+		213367192D58F3A500258148 /* bedroom_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2133670D2D58F3A500258148 /* bedroom_ru.txt */; };
+		2133671A2D58F3A500258148 /* dilemmas_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213366FF2D58F3A500258148 /* dilemmas_ru.txt */; };
+		2133671B2D58F3A500258148 /* fantasies_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2133670E2D58F3A500258148 /* fantasies_ru.txt */; };
+		2133671C2D58F3A500258148 /* hottakes_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213367042D58F3A500258148 /* hottakes_ru.txt */; };
+		2133671D2D58F3A500258148 /* fdv_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213367092D58F3A500258148 /* fdv_ru.txt */; };
+		2133671E2D58F3A500258148 /* forbidden_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2133670F2D58F3A500258148 /* forbidden_ru.txt */; };
+		2133671F2D58F3A500258148 /* wau_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213367012D58F3A500258148 /* wau_ru.txt */; };
+		213367202D58F3A500258148 /* spicy_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213367102D58F3A500258148 /* spicy_ru.txt */; };
+		213367212D58F3A500258148 /* whn_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213366FD2D58F3A500258148 /* whn_ru.txt */; };
+		213367222D58F3A500258148 /* ppf_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213367002D58F3A500258148 /* ppf_ru.txt */; };
+		213367232D58F3A500258148 /* movie_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213366FB2D58F3A500258148 /* movie_ru.txt */; };
+		213367242D58F3A500258148 /* party_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213367142D58F3A500258148 /* party_ru.txt */; };
+		213367252D58F3A500258148 /* ssparks_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2133670B2D58F3A500258148 /* ssparks_ru.txt */; };
+		213367262D58F3A500258148 /* hwdykm_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213367132D58F3A500258148 /* hwdykm_ru.txt */; };
+		213367272D58F3A500258148 /* fts_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213367032D58F3A500258148 /* fts_ru.txt */; };
+		213367282D58F3A500258148 /* travel_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213366FC2D58F3A500258148 /* travel_ru.txt */; };
+		213367292D58F3A500258148 /* wyr_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213367072D58F3A500258148 /* wyr_ru.txt */; };
+		2133672A2D58F3A500258148 /* drunk_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213367122D58F3A500258148 /* drunk_ru.txt */; };
+		2133672E2D59063800258148 /* quizes_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2133672D2D59063800258148 /* quizes_en.txt */; };
+		213367302D59065200258148 /* sex_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2133672F2D59065200258148 /* sex_en.txt */; };
+		213367322D59066C00258148 /* parties_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213367312D59066C00258148 /* parties_en.txt */; };
+		213367342D59067F00258148 /* adventure_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213367332D59067F00258148 /* adventure_en.txt */; };
+		213367362D59068D00258148 /* romantic_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213367352D59068D00258148 /* romantic_en.txt */; };
+		213367382D59069C00258148 /* games_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213367372D59069C00258148 /* games_en.txt */; };
+		2133673A2D5906AA00258148 /* deep_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213367392D5906AA00258148 /* deep_en.txt */; };
+		2133673C2D59093200258148 /* adventure_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2133673B2D59093200258148 /* adventure_ru.txt */; };
+		2133673E2D59097800258148 /* deep_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2133673D2D59097800258148 /* deep_ru.txt */; };
+		213367402D59099D00258148 /* games_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2133673F2D59099D00258148 /* games_ru.txt */; };
+		213367422D5909BA00258148 /* romantic_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213367412D5909BA00258148 /* romantic_ru.txt */; };
+		213367442D5909DB00258148 /* sex_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213367432D5909DB00258148 /* sex_ru.txt */; };
+		213367462D590A0B00258148 /* parties_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213367452D590A0B00258148 /* parties_ru.txt */; };
+		213367482D590A3C00258148 /* quizes_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 213367472D590A3C00258148 /* quizes_ru.txt */; };
 		215186C32D43CBA800FFB614 /* Vibration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215186C22D43CBA500FFB614 /* Vibration.swift */; };
 		215186C52D43CD7B00FFB614 /* Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215186C42D43CD7800FFB614 /* Cards.swift */; };
 		215186C62D43CD7B00FFB614 /* Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215186C42D43CD7800FFB614 /* Cards.swift */; };
-		215186CB2D45241600FFB614 /* sex_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 215186CA2D45240600FFB614 /* sex_en.txt */; };
 		215186CE2D45262F00FFB614 /* TextFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215186CD2D45262100FFB614 /* TextFileManager.swift */; };
-		215186D32D452D1F00FFB614 /* taboo_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 215186D22D452D1600FFB614 /* taboo_en.txt */; };
-		215186D52D452D6900FFB614 /* family_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 215186D42D452D5B00FFB614 /* family_en.txt */; };
-		215186D92D452EA300FFB614 /* simple_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 215186D82D452E9D00FFB614 /* simple_en.txt */; };
-		215186DB2D452EE100FFB614 /* couples_en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 215186DA2D452EDA00FFB614 /* couples_en.txt */; };
-		215186DE2D452F6300FFB614 /* sex_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 215186DD2D452F5800FFB614 /* sex_ru.txt */; };
-		215186E02D452F6E00FFB614 /* taboo_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 215186DF2D452F6500FFB614 /* taboo_ru.txt */; };
-		215186E22D452F7700FFB614 /* family_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 215186E12D452F7000FFB614 /* family_ru.txt */; };
-		215186E42D452F7F00FFB614 /* simple_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 215186E32D452F7900FFB614 /* simple_ru.txt */; };
-		215186E82D452F9900FFB614 /* couples_ru.txt in Resources */ = {isa = PBXBuildFile; fileRef = 215186E72D452F9200FFB614 /* couples_ru.txt */; };
 		215186EA2D453F2B00FFB614 /* OnlineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215186E92D453F2700FFB614 /* OnlineViewModel.swift */; };
 		215186EC2D453F8000FFB614 /* OnlineScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215186EB2D453F7C00FFB614 /* OnlineScreen.swift */; };
 		215186EE2D45502100FFB614 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 215186ED2D45502100FFB614 /* GoogleService-Info.plist */; };
@@ -95,7 +140,6 @@
 		21835FDA2CA30B85002A17E9 /* DailyCardWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21835FD92CA30B85002A17E9 /* DailyCardWidget.swift */; };
 		21835FDC2CA30CEC002A17E9 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB3A52C899ADD0097F90E /* Localization.swift */; };
 		21835FDE2CA3109C002A17E9 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BDB4022C89B42D0097F90E /* RealmManager.swift */; };
-		219979732CAAB776008688A5 /* RemoteConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219979722CAAB76E008688A5 /* RemoteConfigManager.swift */; };
 		219979752CAED2D3008688A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219979742CAED2B5008688A5 /* AppDelegate.swift */; };
 		219979772CAED8F3008688A5 /* QuickActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219979762CAED8EE008688A5 /* QuickActions.swift */; };
 		21A18B832CA319DF00D0EB6B /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21835FB22CA1545A002A17E9 /* String+.swift */; };
@@ -173,20 +217,65 @@
 		2103FEBE2C9EA0A80020D1AE /* ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPicker.swift; sourceTree = "<group>"; };
 		2103FEC02CA0457A0020D1AE /* CreateNoteScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNoteScreen.swift; sourceTree = "<group>"; };
 		2103FEC22CA04D4C0020D1AE /* NotesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesScreen.swift; sourceTree = "<group>"; };
-		212B91452CA6BF96009F9344 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
+		213366C22D58E8DC00258148 /* ppf_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ppf_en.txt; sourceTree = "<group>"; };
+		213366C42D58E92100258148 /* dilemmas_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = dilemmas_en.txt; sourceTree = "<group>"; };
+		213366C62D58E95300258148 /* wau_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = wau_en.txt; sourceTree = "<group>"; };
+		213366C92D58E99100258148 /* wyr_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = wyr_en.txt; sourceTree = "<group>"; };
+		213366CB2D58E9C500258148 /* tod_quiz_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = tod_quiz_en.txt; sourceTree = "<group>"; };
+		213366CD2D58E9E300258148 /* fts_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = fts_en.txt; sourceTree = "<group>"; };
+		213366D02D58EA1C00258148 /* love_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = love_en.txt; sourceTree = "<group>"; };
+		213366D22D58EA4300258148 /* ssparks_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ssparks_en.txt; sourceTree = "<group>"; };
+		213366D42D58EA6800258148 /* fdv_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = fdv_en.txt; sourceTree = "<group>"; };
+		213366D72D58EB1F00258148 /* travel_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = travel_en.txt; sourceTree = "<group>"; };
+		213366D92D58EB3900258148 /* whn_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = whn_en.txt; sourceTree = "<group>"; };
+		213366DB2D58EB6100258148 /* movie_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = movie_en.txt; sourceTree = "<group>"; };
+		213366DE2D58EB9100258148 /* party_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = party_en.txt; sourceTree = "<group>"; };
+		213366E02D58EBAC00258148 /* drunk_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = drunk_en.txt; sourceTree = "<group>"; };
+		213366E22D58EBD100258148 /* hwdykm_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = hwdykm_en.txt; sourceTree = "<group>"; };
+		213366E52D58EC1100258148 /* fantasies_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = fantasies_en.txt; sourceTree = "<group>"; };
+		213366E72D58EC2B00258148 /* bedroom_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = bedroom_en.txt; sourceTree = "<group>"; };
+		213366E92D58EC4300258148 /* spicy_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = spicy_en.txt; sourceTree = "<group>"; };
+		213366EB2D58EC5B00258148 /* forbidden_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = forbidden_en.txt; sourceTree = "<group>"; };
+		213366ED2D58ECC000258148 /* hottakes_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = hottakes_en.txt; sourceTree = "<group>"; };
+		213366EF2D58ECF900258148 /* ttal_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ttal_en.txt; sourceTree = "<group>"; };
+		213366FB2D58F3A500258148 /* movie_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = movie_ru.txt; sourceTree = "<group>"; };
+		213366FC2D58F3A500258148 /* travel_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = travel_ru.txt; sourceTree = "<group>"; };
+		213366FD2D58F3A500258148 /* whn_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = whn_ru.txt; sourceTree = "<group>"; };
+		213366FF2D58F3A500258148 /* dilemmas_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = dilemmas_ru.txt; sourceTree = "<group>"; };
+		213367002D58F3A500258148 /* ppf_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ppf_ru.txt; sourceTree = "<group>"; };
+		213367012D58F3A500258148 /* wau_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = wau_ru.txt; sourceTree = "<group>"; };
+		213367032D58F3A500258148 /* fts_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = fts_ru.txt; sourceTree = "<group>"; };
+		213367042D58F3A500258148 /* hottakes_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = hottakes_ru.txt; sourceTree = "<group>"; };
+		213367052D58F3A500258148 /* tod_quiz_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = tod_quiz_ru.txt; sourceTree = "<group>"; };
+		213367062D58F3A500258148 /* ttal_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ttal_ru.txt; sourceTree = "<group>"; };
+		213367072D58F3A500258148 /* wyr_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = wyr_ru.txt; sourceTree = "<group>"; };
+		213367092D58F3A500258148 /* fdv_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = fdv_ru.txt; sourceTree = "<group>"; };
+		2133670A2D58F3A500258148 /* love_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = love_ru.txt; sourceTree = "<group>"; };
+		2133670B2D58F3A500258148 /* ssparks_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ssparks_ru.txt; sourceTree = "<group>"; };
+		2133670D2D58F3A500258148 /* bedroom_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = bedroom_ru.txt; sourceTree = "<group>"; };
+		2133670E2D58F3A500258148 /* fantasies_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = fantasies_ru.txt; sourceTree = "<group>"; };
+		2133670F2D58F3A500258148 /* forbidden_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = forbidden_ru.txt; sourceTree = "<group>"; };
+		213367102D58F3A500258148 /* spicy_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = spicy_ru.txt; sourceTree = "<group>"; };
+		213367122D58F3A500258148 /* drunk_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = drunk_ru.txt; sourceTree = "<group>"; };
+		213367132D58F3A500258148 /* hwdykm_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = hwdykm_ru.txt; sourceTree = "<group>"; };
+		213367142D58F3A500258148 /* party_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = party_ru.txt; sourceTree = "<group>"; };
+		2133672D2D59063800258148 /* quizes_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = quizes_en.txt; sourceTree = "<group>"; };
+		2133672F2D59065200258148 /* sex_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = sex_en.txt; sourceTree = "<group>"; };
+		213367312D59066C00258148 /* parties_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = parties_en.txt; sourceTree = "<group>"; };
+		213367332D59067F00258148 /* adventure_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = adventure_en.txt; sourceTree = "<group>"; };
+		213367352D59068D00258148 /* romantic_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = romantic_en.txt; sourceTree = "<group>"; };
+		213367372D59069C00258148 /* games_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = games_en.txt; sourceTree = "<group>"; };
+		213367392D5906AA00258148 /* deep_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = deep_en.txt; sourceTree = "<group>"; };
+		2133673B2D59093200258148 /* adventure_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = adventure_ru.txt; sourceTree = "<group>"; };
+		2133673D2D59097800258148 /* deep_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = deep_ru.txt; sourceTree = "<group>"; };
+		2133673F2D59099D00258148 /* games_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = games_ru.txt; sourceTree = "<group>"; };
+		213367412D5909BA00258148 /* romantic_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = romantic_ru.txt; sourceTree = "<group>"; };
+		213367432D5909DB00258148 /* sex_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = sex_ru.txt; sourceTree = "<group>"; };
+		213367452D590A0B00258148 /* parties_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = parties_ru.txt; sourceTree = "<group>"; };
+		213367472D590A3C00258148 /* quizes_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = quizes_ru.txt; sourceTree = "<group>"; };
 		215186C22D43CBA500FFB614 /* Vibration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vibration.swift; sourceTree = "<group>"; };
 		215186C42D43CD7800FFB614 /* Cards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cards.swift; sourceTree = "<group>"; };
-		215186CA2D45240600FFB614 /* sex_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = sex_en.txt; sourceTree = "<group>"; };
 		215186CD2D45262100FFB614 /* TextFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFileManager.swift; sourceTree = "<group>"; };
-		215186D22D452D1600FFB614 /* taboo_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = taboo_en.txt; sourceTree = "<group>"; };
-		215186D42D452D5B00FFB614 /* family_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = family_en.txt; sourceTree = "<group>"; };
-		215186D82D452E9D00FFB614 /* simple_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = simple_en.txt; sourceTree = "<group>"; };
-		215186DA2D452EDA00FFB614 /* couples_en.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = couples_en.txt; sourceTree = "<group>"; };
-		215186DD2D452F5800FFB614 /* sex_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = sex_ru.txt; sourceTree = "<group>"; };
-		215186DF2D452F6500FFB614 /* taboo_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = taboo_ru.txt; sourceTree = "<group>"; };
-		215186E12D452F7000FFB614 /* family_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = family_ru.txt; sourceTree = "<group>"; };
-		215186E32D452F7900FFB614 /* simple_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = simple_ru.txt; sourceTree = "<group>"; };
-		215186E72D452F9200FFB614 /* couples_ru.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = couples_ru.txt; sourceTree = "<group>"; };
 		215186E92D453F2700FFB614 /* OnlineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineViewModel.swift; sourceTree = "<group>"; };
 		215186EB2D453F7C00FFB614 /* OnlineScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineScreen.swift; sourceTree = "<group>"; };
 		215186ED2D45502100FFB614 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -253,7 +342,6 @@
 		21835FCD2CA30030002A17E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		21835FD62CA3008E002A17E9 /* AddCardWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCardWidget.swift; sourceTree = "<group>"; };
 		21835FD92CA30B85002A17E9 /* DailyCardWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCardWidget.swift; sourceTree = "<group>"; };
-		219979722CAAB76E008688A5 /* RemoteConfigManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigManager.swift; sourceTree = "<group>"; };
 		219979742CAED2B5008688A5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		219979762CAED8EE008688A5 /* QuickActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickActions.swift; sourceTree = "<group>"; };
 		21A18B852CA323A200D0EB6B /* hearttalk.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = hearttalk.entitlements; sourceTree = "<group>"; };
@@ -337,6 +425,162 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		213366BD2D58E84E00258148 /* Deep Conversations */ = {
+			isa = PBXGroup;
+			children = (
+				213366C22D58E8DC00258148 /* ppf_en.txt */,
+				213366C42D58E92100258148 /* dilemmas_en.txt */,
+				213366C62D58E95300258148 /* wau_en.txt */,
+				213367392D5906AA00258148 /* deep_en.txt */,
+			);
+			path = "Deep Conversations";
+			sourceTree = "<group>";
+		};
+		213366C82D58E97D00258148 /* Fun & Games */ = {
+			isa = PBXGroup;
+			children = (
+				213366C92D58E99100258148 /* wyr_en.txt */,
+				213366CB2D58E9C500258148 /* tod_quiz_en.txt */,
+				213366CD2D58E9E300258148 /* fts_en.txt */,
+				213366ED2D58ECC000258148 /* hottakes_en.txt */,
+				213366EF2D58ECF900258148 /* ttal_en.txt */,
+				213367372D59069C00258148 /* games_en.txt */,
+			);
+			path = "Fun & Games";
+			sourceTree = "<group>";
+		};
+		213366CF2D58EA0C00258148 /* Romantic & Flirty */ = {
+			isa = PBXGroup;
+			children = (
+				213366D02D58EA1C00258148 /* love_en.txt */,
+				213366D22D58EA4300258148 /* ssparks_en.txt */,
+				213366D42D58EA6800258148 /* fdv_en.txt */,
+				213367352D59068D00258148 /* romantic_en.txt */,
+			);
+			path = "Romantic & Flirty";
+			sourceTree = "<group>";
+		};
+		213366D62D58EAFD00258148 /* Adventure & Storytelling */ = {
+			isa = PBXGroup;
+			children = (
+				213366D72D58EB1F00258148 /* travel_en.txt */,
+				213366D92D58EB3900258148 /* whn_en.txt */,
+				213366DB2D58EB6100258148 /* movie_en.txt */,
+				213367332D59067F00258148 /* adventure_en.txt */,
+			);
+			path = "Adventure & Storytelling";
+			sourceTree = "<group>";
+		};
+		213366DD2D58EB7B00258148 /* Social & Party Mode */ = {
+			isa = PBXGroup;
+			children = (
+				213366DE2D58EB9100258148 /* party_en.txt */,
+				213366E02D58EBAC00258148 /* drunk_en.txt */,
+				213366E22D58EBD100258148 /* hwdykm_en.txt */,
+				213367312D59066C00258148 /* parties_en.txt */,
+			);
+			path = "Social & Party Mode";
+			sourceTree = "<group>";
+		};
+		213366E42D58EBDE00258148 /* Sex & Intimate Questions */ = {
+			isa = PBXGroup;
+			children = (
+				213366E52D58EC1100258148 /* fantasies_en.txt */,
+				213366E72D58EC2B00258148 /* bedroom_en.txt */,
+				213366E92D58EC4300258148 /* spicy_en.txt */,
+				213366EB2D58EC5B00258148 /* forbidden_en.txt */,
+				2133672F2D59065200258148 /* sex_en.txt */,
+			);
+			path = "Sex & Intimate Questions";
+			sourceTree = "<group>";
+		};
+		213366F32D58ED3500258148 /* Quizes */ = {
+			isa = PBXGroup;
+			children = (
+				2151874A2D4AA5DE00FFB614 /* countries_quiz_en.txt */,
+				2133672D2D59063800258148 /* quizes_en.txt */,
+			);
+			path = Quizes;
+			sourceTree = "<group>";
+		};
+		213366F42D58F06300258148 /* Quizes */ = {
+			isa = PBXGroup;
+			children = (
+				2151874C2D4AA63700FFB614 /* countries_quiz_ru.txt */,
+				213367472D590A3C00258148 /* quizes_ru.txt */,
+			);
+			path = Quizes;
+			sourceTree = "<group>";
+		};
+		213366FE2D58F3A500258148 /* Adventure & Storytelling */ = {
+			isa = PBXGroup;
+			children = (
+				213366FB2D58F3A500258148 /* movie_ru.txt */,
+				213366FC2D58F3A500258148 /* travel_ru.txt */,
+				213366FD2D58F3A500258148 /* whn_ru.txt */,
+				2133673B2D59093200258148 /* adventure_ru.txt */,
+			);
+			path = "Adventure & Storytelling";
+			sourceTree = "<group>";
+		};
+		213367022D58F3A500258148 /* Deep Conversations */ = {
+			isa = PBXGroup;
+			children = (
+				213366FF2D58F3A500258148 /* dilemmas_ru.txt */,
+				213367002D58F3A500258148 /* ppf_ru.txt */,
+				213367012D58F3A500258148 /* wau_ru.txt */,
+				2133673D2D59097800258148 /* deep_ru.txt */,
+			);
+			path = "Deep Conversations";
+			sourceTree = "<group>";
+		};
+		213367082D58F3A500258148 /* Fun & Games */ = {
+			isa = PBXGroup;
+			children = (
+				213367032D58F3A500258148 /* fts_ru.txt */,
+				213367042D58F3A500258148 /* hottakes_ru.txt */,
+				213367052D58F3A500258148 /* tod_quiz_ru.txt */,
+				213367062D58F3A500258148 /* ttal_ru.txt */,
+				213367072D58F3A500258148 /* wyr_ru.txt */,
+				2133673F2D59099D00258148 /* games_ru.txt */,
+			);
+			path = "Fun & Games";
+			sourceTree = "<group>";
+		};
+		2133670C2D58F3A500258148 /* Romantic & Flirty */ = {
+			isa = PBXGroup;
+			children = (
+				213367092D58F3A500258148 /* fdv_ru.txt */,
+				2133670A2D58F3A500258148 /* love_ru.txt */,
+				2133670B2D58F3A500258148 /* ssparks_ru.txt */,
+				213367412D5909BA00258148 /* romantic_ru.txt */,
+			);
+			path = "Romantic & Flirty";
+			sourceTree = "<group>";
+		};
+		213367112D58F3A500258148 /* Sex & Intimate Questions */ = {
+			isa = PBXGroup;
+			children = (
+				2133670D2D58F3A500258148 /* bedroom_ru.txt */,
+				2133670E2D58F3A500258148 /* fantasies_ru.txt */,
+				2133670F2D58F3A500258148 /* forbidden_ru.txt */,
+				213367102D58F3A500258148 /* spicy_ru.txt */,
+				213367432D5909DB00258148 /* sex_ru.txt */,
+			);
+			path = "Sex & Intimate Questions";
+			sourceTree = "<group>";
+		};
+		213367152D58F3A500258148 /* Social & Party Mode */ = {
+			isa = PBXGroup;
+			children = (
+				213367122D58F3A500258148 /* drunk_ru.txt */,
+				213367132D58F3A500258148 /* hwdykm_ru.txt */,
+				213367142D58F3A500258148 /* party_ru.txt */,
+				213367452D590A0B00258148 /* parties_ru.txt */,
+			);
+			path = "Social & Party Mode";
+			sourceTree = "<group>";
+		};
 		215186C92D4523F600FFB614 /* Content */ = {
 			isa = PBXGroup;
 			children = (
@@ -349,12 +593,13 @@
 		215186CC2D45242900FFB614 /* en */ = {
 			isa = PBXGroup;
 			children = (
-				215186CA2D45240600FFB614 /* sex_en.txt */,
-				215186D22D452D1600FFB614 /* taboo_en.txt */,
-				215186D42D452D5B00FFB614 /* family_en.txt */,
-				215186D82D452E9D00FFB614 /* simple_en.txt */,
-				215186DA2D452EDA00FFB614 /* couples_en.txt */,
-				2151874A2D4AA5DE00FFB614 /* countries_quiz_en.txt */,
+				213366F32D58ED3500258148 /* Quizes */,
+				213366E42D58EBDE00258148 /* Sex & Intimate Questions */,
+				213366DD2D58EB7B00258148 /* Social & Party Mode */,
+				213366D62D58EAFD00258148 /* Adventure & Storytelling */,
+				213366CF2D58EA0C00258148 /* Romantic & Flirty */,
+				213366C82D58E97D00258148 /* Fun & Games */,
+				213366BD2D58E84E00258148 /* Deep Conversations */,
 			);
 			path = en;
 			sourceTree = "<group>";
@@ -363,7 +608,6 @@
 			isa = PBXGroup;
 			children = (
 				21FB93C22D552581002C5E30 /* SpeechManager.swift */,
-				219979722CAAB76E008688A5 /* RemoteConfigManager.swift */,
 				21F4DDCA2CAA89F9008B3589 /* FirebaseManager.swift */,
 				215186CD2D45262100FFB614 /* TextFileManager.swift */,
 				21BDB3B02C899ADD0097F90E /* RequestManager.swift */,
@@ -376,12 +620,13 @@
 		215186DC2D452F4800FFB614 /* ru */ = {
 			isa = PBXGroup;
 			children = (
-				215186DD2D452F5800FFB614 /* sex_ru.txt */,
-				215186DF2D452F6500FFB614 /* taboo_ru.txt */,
-				215186E12D452F7000FFB614 /* family_ru.txt */,
-				215186E32D452F7900FFB614 /* simple_ru.txt */,
-				215186E72D452F9200FFB614 /* couples_ru.txt */,
-				2151874C2D4AA63700FFB614 /* countries_quiz_ru.txt */,
+				213366FE2D58F3A500258148 /* Adventure & Storytelling */,
+				213367022D58F3A500258148 /* Deep Conversations */,
+				213367082D58F3A500258148 /* Fun & Games */,
+				2133670C2D58F3A500258148 /* Romantic & Flirty */,
+				213367112D58F3A500258148 /* Sex & Intimate Questions */,
+				213367152D58F3A500258148 /* Social & Party Mode */,
+				213366F42D58F06300258148 /* Quizes */,
 			);
 			path = ru;
 			sourceTree = "<group>";
@@ -504,7 +749,6 @@
 			isa = PBXGroup;
 			children = (
 				215186ED2D45502100FFB614 /* GoogleService-Info.plist */,
-				212B91452CA6BF96009F9344 /* AppData.swift */,
 				215186C92D4523F600FFB614 /* Content */,
 				21BDB4442C8B69520097F90E /* Localization */,
 				21835FB62CA16C50002A17E9 /* Sounds */,
@@ -801,25 +1045,71 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				215186DB2D452EE100FFB614 /* couples_en.txt in Resources */,
-				215186D32D452D1F00FFB614 /* taboo_en.txt in Resources */,
 				21835FBA2CA16E24002A17E9 /* Click1.mp3 in Resources */,
 				21835FB82CA16C60002A17E9 /* CardSwipe.mp3 in Resources */,
+				213366E12D58EBAC00258148 /* drunk_en.txt in Resources */,
 				215186EE2D45502100FFB614 /* GoogleService-Info.plist in Resources */,
-				215186E42D452F7F00FFB614 /* simple_ru.txt in Resources */,
-				215186E02D452F6E00FFB614 /* taboo_ru.txt in Resources */,
-				215186D92D452EA300FFB614 /* simple_en.txt in Resources */,
+				213366E62D58EC1100258148 /* fantasies_en.txt in Resources */,
+				213366C32D58E8DC00258148 /* ppf_en.txt in Resources */,
 				215187112D4A1E7400FFB614 /* Poppins-Regular.ttf in Resources */,
+				213366CC2D58E9C500258148 /* tod_quiz_en.txt in Resources */,
 				215187122D4A1E7400FFB614 /* Poppins-SemiBold.ttf in Resources */,
+				213366DC2D58EB6100258148 /* movie_en.txt in Resources */,
+				213366E82D58EC2B00258148 /* bedroom_en.txt in Resources */,
+				213366D12D58EA1C00258148 /* love_en.txt in Resources */,
+				213366C52D58E92100258148 /* dilemmas_en.txt in Resources */,
+				213366EE2D58ECC000258148 /* hottakes_en.txt in Resources */,
+				213366E32D58EBD100258148 /* hwdykm_en.txt in Resources */,
+				213367302D59065200258148 /* sex_en.txt in Resources */,
+				213366CA2D58E99100258148 /* wyr_en.txt in Resources */,
 				21BDB3FD2C89A0220097F90E /* Preview Assets.xcassets in Resources */,
-				215186D52D452D6900FFB614 /* family_en.txt in Resources */,
-				215186DE2D452F6300FFB614 /* sex_ru.txt in Resources */,
+				213366D52D58EA6800258148 /* fdv_en.txt in Resources */,
+				213366D32D58EA4300258148 /* ssparks_en.txt in Resources */,
 				21BDB4472C8B69630097F90E /* Localizable.strings in Resources */,
-				215186E22D452F7700FFB614 /* family_ru.txt in Resources */,
-				215186CB2D45241600FFB614 /* sex_en.txt in Resources */,
+				213366D82D58EB1F00258148 /* travel_en.txt in Resources */,
+				213367162D58F3A500258148 /* love_ru.txt in Resources */,
+				213367172D58F3A500258148 /* ttal_ru.txt in Resources */,
+				213367182D58F3A500258148 /* tod_quiz_ru.txt in Resources */,
+				2133673E2D59097800258148 /* deep_ru.txt in Resources */,
+				213367462D590A0B00258148 /* parties_ru.txt in Resources */,
+				213367192D58F3A500258148 /* bedroom_ru.txt in Resources */,
+				2133671A2D58F3A500258148 /* dilemmas_ru.txt in Resources */,
+				2133671B2D58F3A500258148 /* fantasies_ru.txt in Resources */,
+				2133671C2D58F3A500258148 /* hottakes_ru.txt in Resources */,
+				213367322D59066C00258148 /* parties_en.txt in Resources */,
+				2133671D2D58F3A500258148 /* fdv_ru.txt in Resources */,
+				2133671E2D58F3A500258148 /* forbidden_ru.txt in Resources */,
+				2133672E2D59063800258148 /* quizes_en.txt in Resources */,
+				2133673C2D59093200258148 /* adventure_ru.txt in Resources */,
+				213367422D5909BA00258148 /* romantic_ru.txt in Resources */,
+				213367342D59067F00258148 /* adventure_en.txt in Resources */,
+				213367382D59069C00258148 /* games_en.txt in Resources */,
+				2133671F2D58F3A500258148 /* wau_ru.txt in Resources */,
+				213367202D58F3A500258148 /* spicy_ru.txt in Resources */,
+				213367212D58F3A500258148 /* whn_ru.txt in Resources */,
+				213367222D58F3A500258148 /* ppf_ru.txt in Resources */,
+				213367232D58F3A500258148 /* movie_ru.txt in Resources */,
+				213367242D58F3A500258148 /* party_ru.txt in Resources */,
+				213367252D58F3A500258148 /* ssparks_ru.txt in Resources */,
+				2133673A2D5906AA00258148 /* deep_en.txt in Resources */,
+				213367442D5909DB00258148 /* sex_ru.txt in Resources */,
+				213367402D59099D00258148 /* games_ru.txt in Resources */,
+				213367262D58F3A500258148 /* hwdykm_ru.txt in Resources */,
+				213367482D590A3C00258148 /* quizes_ru.txt in Resources */,
+				213367272D58F3A500258148 /* fts_ru.txt in Resources */,
+				213367282D58F3A500258148 /* travel_ru.txt in Resources */,
+				213367292D58F3A500258148 /* wyr_ru.txt in Resources */,
+				2133672A2D58F3A500258148 /* drunk_ru.txt in Resources */,
+				213366F02D58ECF900258148 /* ttal_en.txt in Resources */,
+				213366CE2D58E9E300258148 /* fts_en.txt in Resources */,
+				213367362D59068D00258148 /* romantic_en.txt in Resources */,
+				213366EC2D58EC5B00258148 /* forbidden_en.txt in Resources */,
+				213366DA2D58EB3900258148 /* whn_en.txt in Resources */,
+				213366DF2D58EB9100258148 /* party_en.txt in Resources */,
+				213366EA2D58EC4300258148 /* spicy_en.txt in Resources */,
 				21BDB3D82C899ADD0097F90E /* Assets.xcassets in Resources */,
+				213366C72D58E95300258148 /* wau_en.txt in Resources */,
 				2151874D2D4AA63B00FFB614 /* countries_quiz_ru.txt in Resources */,
-				215186E82D452F9900FFB614 /* couples_ru.txt in Resources */,
 				2151874B2D4AA5EB00FFB614 /* countries_quiz_en.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -924,7 +1214,6 @@
 				2103FEBF2C9EA0A80020D1AE /* ColorPicker.swift in Sources */,
 				2151871B2D4A22C200FFB614 /* SingleBackTopBar.swift in Sources */,
 				21F4DCB92CA99D82008B3589 /* Pack.swift in Sources */,
-				219979732CAAB776008688A5 /* RemoteConfigManager.swift in Sources */,
 				21BDB3F32C899ADD0097F90E /* LoadingScreen.swift in Sources */,
 				21BDB4272C8AFC0B0097F90E /* CardForShare.swift in Sources */,
 				21FB93BD2D53DA37002C5E30 /* ResetPasswordScreen.swift in Sources */,
@@ -950,7 +1239,6 @@
 				215187162D4A210200FFB614 /* HomeTopBar.swift in Sources */,
 				2151872D2D4A2A2D00FFB614 /* CustomTextField.swift in Sources */,
 				21BDB3DE2C899ADD0097F90E /* ViewModel.swift in Sources */,
-				212B91462CA6BFA2009F9344 /* AppData.swift in Sources */,
 				215186EC2D453F8000FFB614 /* OnlineScreen.swift in Sources */,
 				21F4DCBD2CA99D96008B3589 /* Note.swift in Sources */,
 				215187292D4A26DE00FFB614 /* CardsListItem.swift in Sources */,

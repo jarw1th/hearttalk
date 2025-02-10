@@ -15,6 +15,7 @@ struct Settings: View {
     @State private var isDailyCard: Bool = false
     @State private var isSounds: Bool = false
     @State private var isAutoRead: Bool = false
+    @State private var isShuffleCards: Bool = false
     
     var body: some View {
         NavigationView {
@@ -31,6 +32,7 @@ struct Settings: View {
                     isSounds = UserDefaultsManager.shared.isSounds
                     isDailyCard = UserDefaultsManager.shared.isDailyCard
                     isAutoRead = UserDefaultsManager.shared.isReadCard
+                    isShuffleCards = UserDefaultsManager.shared.isShuffleCards
                 }
                 .onChange(of: isVibrations) { new in
                     UserDefaultsManager.shared.isVibrations = new
@@ -43,6 +45,9 @@ struct Settings: View {
                 }
                 .onChange(of: isAutoRead) { new in
                     UserDefaultsManager.shared.isReadCard = new
+                }
+                .onChange(of: isShuffleCards) { new in
+                    UserDefaultsManager.shared.isShuffleCards = new
                 }
                 .alert(isPresented: $isClearAlert) {
                     Alert(title: Text(Localization.deleting), primaryButton: .destructive(Text(Localization.delete), action: {
@@ -136,6 +141,7 @@ struct Settings: View {
             SettingsToggle(text: Localization.vibrations, isOn: $isVibrations)
             SettingsToggle(text: Localization.sounds, isOn: $isSounds)
             SettingsToggle(text: Localization.autoRead, isOn: $isAutoRead)
+            SettingsToggle(text: Localization.shuffleCards, isOn: $isShuffleCards)
             SettingsToggle(text: Localization.dailyCards, isOn: $isDailyCard)
             SettingsValueButton(text: Localization.language, selectedItem: selectedLang()) {
                 actionSheetType = .language

@@ -17,10 +17,13 @@ struct ImportCardsScreen: View {
     @State private var packDescription: String = ""
     @State private var color: Color = Color(hex: "#9CAFB7")
     @State private var htFile: URL?
+    @State private var qlFile: URL?
+    @State private var apFile: URL?
     
     @State private var alertType: ImportAlertType? = nil
     @State private var isShowPackSelect: Bool = false
-    @State private var isShowHeartTalkFiles: Bool = false
+    @State private var importType: ImportType? = nil
+    @State private var isShowFileImporter: Bool = false
     
     private let colors: [Color] = [Color(hex: "#9CAFB7"), Color(hex: "#ce796b"), Color(hex: "#e6b89c"), Color(hex: "#ead2ac"), Color(hex: "#8d8d92"), Color(hex: "#4281a4"), Color(hex: "#6b9080"), Color(hex: "#f6ca83"), Color(hex: "#63474d"), Color(hex: "#c57b57")]
     
@@ -40,8 +43,17 @@ struct ImportCardsScreen: View {
                     buttons: makeActionSheetButtons()
                 )
             }
-            .fileImporter(isPresented: $isShowHeartTalkFiles, allowedContentTypes: [.plainText]) { result in
-                htFile = try? result.get()
+            .fileImporter(isPresented: $isShowFileImporter, allowedContentTypes: [.plainText]) { result in
+                switch importType {
+                case .ht:
+                    htFile = try? result.get()
+                case .quizlet:
+                    qlFile = try? result.get()
+                case .anki:
+                    apFile = try? result.get()
+                case nil:
+                    return
+                }
             }
     }
     
@@ -54,12 +66,35 @@ struct ImportCardsScreen: View {
             
             VStack(spacing: 40) {
                 VStack(spacing: 16) {
-                    ImportOption(text: "Heart Talk (.txt)", isImported: htFile != nil) {
-                        isShowHeartTalkFiles.toggle()
-                    } closeTapAction: {
-                        htFile = nil
-                    } tipTapAction: {
-                        alertType = .txt
+                    if (qlFile == nil && htFile == nil && apFile == nil) || htFile != nil {
+                        ImportOption(text: "Heart Talk (.txt)", isImported: htFile != nil) {
+                            importType = .ht
+                            isShowFileImporter.toggle()
+                        } closeTapAction: {
+                            htFile = nil
+                        } tipTapAction: {
+                            alertType = .txt
+                        }
+                    }
+                    if (qlFile == nil && htFile == nil && apFile == nil) || qlFile != nil {
+                        ImportOption(text: "Quizlet (.txt, .csv)", isImported: qlFile != nil) {
+                            importType = .quizlet
+                            isShowFileImporter.toggle()
+                        } closeTapAction: {
+                            qlFile = nil
+                        } tipTapAction: {
+                            alertType = .quizlet
+                        }
+                    }
+                    if (qlFile == nil && htFile == nil && apFile == nil) || apFile != nil {
+                        ImportOption(text: "AnkiPro (.txt, .csv)", isImported: apFile != nil) {
+                            importType = .anki
+                            isShowFileImporter.toggle()
+                        } closeTapAction: {
+                            apFile = nil
+                        } tipTapAction: {
+                            alertType = .anki
+                        }
                     }
                 }
                 QuestionToggle(text: Localization.createNewPack, isOn: $isCreateNewPack)
@@ -111,8 +146,14 @@ struct ImportCardsScreen: View {
         if isCreateNewPack {
             pack = viewModel.createPack(name: packName, color: color.hex() ?? "", description: packDescription, cardQuestions: [])
         }
-        guard let pack, let htFile else { return }
-        viewModel.importFrom(htFile, for: pack)
+        guard let pack else { return }
+        if let htFile {
+            viewModel.importFrom(htFile, for: pack)
+        } else if let qlFile {
+            viewModel.importFromText(qlFile, for: pack)
+        } else if let apFile {
+            viewModel.importFromText(apFile, for: pack)
+        }
     }
     
     private func makeActionSheetButtons() -> [ActionSheet.Button]  {

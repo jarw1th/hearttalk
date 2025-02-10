@@ -36,7 +36,6 @@ struct TabScreen: View {
                 if viewModel.isOnline && onlineViewModel.isSignedIn && requestManager.isConnected {
                     setUserOnline()
                 }
-                isShowGlobalAlert = (viewModel.remoteConfigManager.appData?.isShowAlert) ?? false
                 if let action = QuickActionsManager.shared.quickAction {
                     switch action {
                     case .addCard:
@@ -109,9 +108,6 @@ struct TabScreen: View {
                         tab = .settings
                     }
                 }
-            }
-            .alert(isPresented: $isShowGlobalAlert) {
-                Alert(title: Text(viewModel.remoteConfigManager.appData?.alertTitle ?? ""), message: Text(viewModel.remoteConfigManager.appData?.alertMessage ?? ""), dismissButton: .default(Text(Localization.confirm), action: {}))
             }
     }
     

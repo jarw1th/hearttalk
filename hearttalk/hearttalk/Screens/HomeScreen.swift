@@ -8,7 +8,6 @@ struct HomeScreen: View {
     @State private var requestManager: RequestManager = RequestManager.shared
     
     @State private var isShowAgeAlert: Bool = false
-    @State private var searchText: String = ""
     
     @State private var selectedPack: Pack?
     @State private var selectedNamePack: Pack?
@@ -64,14 +63,10 @@ struct HomeScreen: View {
                         makeSection(Localization.myContent) {
                             makeMyFeed()
                         }
-                        if !viewModel.htPacks.isEmpty {
-                            makeSection(Localization.ourChoice) {
-                                makeHTFeed()
-                            }
-                        }
-                        if !viewModel.quizPacks.isEmpty {
-                            makeSection(Localization.flipCards) {
-                                makeQuizFeed()
+                        
+                        ForEach(Array(viewModel.htPacks.keys).sorted(by: { $0 > $1 }), id: \.self) { key in
+                            makeSection(key) {
+                                makeHTFeed(for: viewModel.htPacks[key] ?? [])
                             }
                         }
                     }
@@ -85,7 +80,7 @@ struct HomeScreen: View {
     private func makeMyFeed() -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 16) {
-                ForEach(formatedMyPacks()) { pack in
+                ForEach(viewModel.myPacks) { pack in
                     Button {
                         HapticManager.shared.triggerHapticFeedback(.light)
                         SoundManager.shared.sound(.click1)
@@ -132,51 +127,21 @@ struct HomeScreen: View {
     }
     
     @ViewBuilder
-    private func makeHTFeed() -> some View {
+    private func makeHTFeed(for packs: [Pack]) -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 16) {
-                ForEach(formatedOurChoice()) { pack in
+                ForEach(packs) { pack in
                     Button {
-                        selectedPack = pack
-                    } label: {
-                        PackView(color: pack.color, name: pack.name, numberOfCards: pack.cards.count)
-                    }
-                    .contextMenu {
-                        Button(role: .destructive) {
+                        HapticManager.shared.triggerHapticFeedback(.light)
+                        SoundManager.shared.sound(.click1)
+                        guard selectedPack == nil else { return }
+                        if pack.isAdult && UserDefaultsManager.shared.isShowAgeAlert {
+                            isShowAgeAlert.toggle()
+                        } else {
                             HapticManager.shared.triggerHapticFeedback(.light)
                             SoundManager.shared.sound(.click1)
-                            viewModel.deletePack(pack)
-                        } label: {
-                            Text(Localization.delete)
+                            selectedPack = pack
                         }
-                        Button {
-                            HapticManager.shared.triggerHapticFeedback(.light)
-                            SoundManager.shared.sound(.click1)
-                            selectedNamePack = pack
-                        } label: {
-                            Text(Localization.changeName)
-                        }
-                        Button {
-                            HapticManager.shared.triggerHapticFeedback(.light)
-                            SoundManager.shared.sound(.click1)
-                            selectedDescPack = pack
-                        } label: {
-                            Text(Localization.changeDescription)
-                        }
-                    }
-                }
-            }
-            .padding(.leading, 20)
-        }
-    }
-    
-    @ViewBuilder
-    private func makeQuizFeed() -> some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            LazyHStack(spacing: 16) {
-                ForEach(formatedFlipPacks()) { pack in
-                    Button {
-                        selectedPack = pack
                     } label: {
                         PackView(color: pack.color, name: pack.name, numberOfCards: pack.cards.count)
                     }
@@ -222,30 +187,6 @@ struct HomeScreen: View {
             .padding(.horizontal, 20)
             content()
                 .frame(height: 142)
-        }
-    }
-    
-    private func formatedMyPacks() -> [Pack] {
-        if searchText.isEmpty {
-            return viewModel.myPacks
-        } else {
-            return viewModel.myPacks.filter({ $0.name.lowercased().contains(searchText.lowercased()) || $0.description.lowercased().contains(searchText.lowercased()) || String($0.cards.count).contains(searchText.lowercased()) })
-        }
-    }
-    
-    private func formatedOurChoice() -> [Pack] {
-        if searchText.isEmpty {
-            return viewModel.htPacks
-        } else {
-            return viewModel.htPacks.filter({ $0.name.lowercased().contains(searchText.lowercased()) || $0.description.lowercased().contains(searchText.lowercased()) || String($0.cards.count).contains(searchText.lowercased()) })
-        }
-    }
-    
-    private func formatedFlipPacks() -> [Pack] {
-        if searchText.isEmpty {
-            return viewModel.quizPacks
-        } else {
-            return viewModel.quizPacks.filter({ $0.name.lowercased().contains(searchText.lowercased()) || $0.description.lowercased().contains(searchText.lowercased()) || String($0.cards.count).contains(searchText.lowercased()) })
         }
     }
     

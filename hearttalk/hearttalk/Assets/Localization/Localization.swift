@@ -185,6 +185,10 @@ enum Localization {
     static let privatePack: String = .localized("privatePack", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     static let hidePack: String = .localized("hidePack", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     static let showPack: String = .localized("showPack", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let quizlet: String = .localized("quizlet", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let anki: String = .localized("anki", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
+    static let shuffleCards: String = .localized("shuffleCards", language: UserDefaults.standard.string(forKey: "AppleLanguage"))
     
 }
+
 

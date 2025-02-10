@@ -7,8 +7,13 @@ final class TextFileManager {
     
     private var realmManager: RealmManager
     
-    private let cardTypeNames: [String: Bool] = ["sex": true, "taboo": true, "family": false, "simple": false, "couples": false]
-    private let quizNames: [String: Bool] = ["countries_quiz": false]
+    private let packsNames: [String: [String: Bool]] = ["quizes": ["countries_quiz": false],
+                                                        "sex": ["bedroom": true, "fantasies": true, "forbidden": true, "spicy": true],
+                                                        "parties": ["party": false, "drunk": true, "hwdykm": false],
+                                                        "adventure": ["travel": false, "whn": false, "movie": false],
+                                                        "romantic": ["love": false, "ssparks": false, "fdv": false],
+                                                        "games": ["wyr": false, "tod_quiz": false, "fts": false, "hottakes": false, "ttal": false],
+                                                        "deep": ["ppf": false, "dilemmas": false, "wau": false]]
     private var tempCardPacks: [Pack] = []
     
     init(_ realmManager: RealmManager) {
@@ -42,23 +47,30 @@ final class TextFileManager {
         let langs = Locale.preferredLanguages.map({ String($0.prefix(2)) })
         
         for lang in langs {
-            for (name, isAdult) in cardTypeNames {
-                addPack(name: name, isAdult: isAdult, lang: lang) { [weak self] pack in
-                    self?.tempCardPacks.append(pack)
-                }
-            }
-            
-            for (name, isAdult) in quizNames {
-                addQuizPack(name: name, isAdult: isAdult, lang: lang) { [weak self] pack in
-                    self?.tempCardPacks.append(pack)
+            for (categorie, packs) in packsNames {
+                for (pack, isAdult) in packs {
+                    addPack(name: pack, theme: categorie, isAdult: isAdult, lang: lang) { [weak self] pack in
+                        self?.tempCardPacks.append(pack)
+                    }
                 }
             }
         }
     }
     
-    private func addPack(name: String, isAdult: Bool, lang: String, completion: @escaping (Pack) -> Void) {
+    private func addPack(name: String, theme: String, isAdult: Bool, lang: String, completion: @escaping (Pack) -> Void) {
+        if name.contains("quiz") {
+            addQuizPack(name: name, theme: theme, isAdult: isAdult, lang: lang, completion: completion)
+        } else {
+            addDefaultPack(name: name, theme: theme, isAdult: isAdult, lang: lang, completion: completion)
+        }
+    }
+    
+    private func addDefaultPack(name: String, theme: String, isAdult: Bool, lang: String, completion: @escaping (Pack) -> Void) {
         if let filePath = Bundle.main.path(forResource: "\(name)_\(lang)", ofType: "txt"),
+           let categoriePath = Bundle.main.path(forResource: "\(theme)_\(lang)", ofType: "txt"),
+           readLines(from: categoriePath).count == 1,
            readLines(from: filePath).count >= 3 {
+            let categorieName = readLines(from: categoriePath)[0]
             var lines = readLines(from: filePath)
             let pack = Pack(id: UUID().uuidString, name: lines[0], text: lines[1])
             pack.color = lines[2]
@@ -66,6 +78,7 @@ final class TextFileManager {
             pack.isCustom = false
             pack.isFavorite = false
             pack.isAdult = isAdult
+            pack.categorie = categorieName
             lines = Array(lines.dropFirst(3))
             for question in lines {
                 let card = Card(id: UUID().uuidString, question: question)
@@ -77,9 +90,12 @@ final class TextFileManager {
         }
     }
     
-    private func addQuizPack(name: String, isAdult: Bool, lang: String, completion: @escaping (Pack) -> Void) {
+    private func addQuizPack(name: String, theme: String, isAdult: Bool, lang: String, completion: @escaping (Pack) -> Void) {
         if let filePath = Bundle.main.path(forResource: "\(name)_\(lang)", ofType: "txt"),
+           let categoriePath = Bundle.main.path(forResource: "\(theme)_\(lang)", ofType: "txt"),
+           readLines(from: categoriePath).count == 1,
            readLines(from: filePath).count >= 3 {
+            let categorieName = readLines(from: categoriePath)[0]
             var lines = readLines(from: filePath)
             let pack = Pack(id: UUID().uuidString, name: lines[0], text: "")
             pack.color = lines[1]
@@ -87,7 +103,7 @@ final class TextFileManager {
             pack.isCustom = false
             pack.isFavorite = false
             pack.isAdult = isAdult
-            pack.creator = "htq"
+            pack.categorie = categorieName
             lines = Array(lines.dropFirst(3))
             for text in lines {
                 let separatedTexts = text.components(separatedBy: "/")

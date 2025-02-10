@@ -17,7 +17,7 @@ struct LoadingScreen: View {
             .ignoresSafeArea()
             .preferredColorScheme(UserDefaultsManager.shared.isDarkMode ? .dark : .light)
             .onChange(of: viewModel.htPacks) { value in
-                if !value.isEmpty && UserDefaultsManager.shared.isOnboarded {
+                if UserDefaultsManager.shared.isOnboarded {
                     isShowNext = true
                 }
             }
